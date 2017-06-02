@@ -4,7 +4,7 @@ public class LoginResult {
 	
 	private String error;
 	
-	private User user;
+	private Player player;
 	
 	public String getError() {
 		return error;
@@ -12,11 +12,11 @@ public class LoginResult {
 	public void setError(String error) {
 		this.error = error;
 	}
-	public User getUser() {
-		return user;
+	public Player getPlayer() {
+		return player;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 
 }

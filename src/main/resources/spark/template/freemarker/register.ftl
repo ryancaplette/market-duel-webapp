@@ -34,9 +34,9 @@
         </div>
 
         <div class="form-group">
-            <label for="password2" class="col-sm-2 control-label">Verify Password:</label>
+            <label for="passwordVerify" class="col-sm-2 control-label">Verify Password:</label>
             <div class="col-sm-10">
-                <input type="password" class="form-control" name="password2" placeholder="Password"/>
+                <input type="password" class="form-control" name="passwordVerify" placeholder="Password"/>
             </div>
         </div>
 

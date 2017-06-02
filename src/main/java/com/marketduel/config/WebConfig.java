@@ -14,7 +14,7 @@ import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
 
 import com.marketduel.model.LoginResult;
-import com.marketduel.model.User;
+import com.marketduel.model.Player;
 import com.marketduel.service.impl.MarketDuelService;
 import com.marketduel.util.stockdata.MarketDataFeed;
 import com.marketduel.util.stockdata.Stock;
@@ -37,15 +37,15 @@ public class WebConfig {
 	
 	private void setupRoutes() {
 		get("/", (req, res) -> {
-			User user = getAuthenticatedUser(req);
+			Player player = getAuthenticatedPlayer(req);
 			Map<String, Object> map = new HashMap<>();
 			map.put("pageTitle", "Welcome to Market Duel! Please login or register to continue.");
-			map.put("user", user);
+			map.put("player", player);
 			return new ModelAndView(map, "homescreen.ftl");
         }, new FreeMarkerEngine());
 		before("/", (req, res) -> {
-			User user = getAuthenticatedUser(req);
-			if(user != null) {
+			Player player = getAuthenticatedPlayer(req);
+			if(player != null) {
 				res.redirect("/account");
 				halt();
 			}
@@ -63,31 +63,31 @@ public class WebConfig {
 
 		post("/login", (req, res) -> {
 			Map<String, Object> map = new HashMap<>();
-			User user = new User();
+			Player player = new Player();
 			try {
 				MultiMap<String> params = new MultiMap<String>();
 				UrlEncoded.decodeTo(req.body(), params, "UTF-8");
-				BeanUtils.populate(user, params);
+				BeanUtils.populate(player, params);
 			} catch (Exception e) {
 				halt(501);
 				return null;
 			}
-			LoginResult result = service.checkUser(user);
-			if(result.getUser() != null) {
-				addAuthenticatedUser(req, result.getUser());
+			LoginResult result = service.checkPlayer(player);
+			if(result.getPlayer() != null) {
+				addAuthenticatedPlayer(req, result.getPlayer());
 				res.redirect("/");
 				halt();
 			} else {
 				map.put("error", result.getError());
 			}
-			map.put("username", user.getUsername());
+			map.put("username", player.getUsername());
 			return new ModelAndView(map, "login.ftl");
         }, new FreeMarkerEngine());
 
 
 		before("/login", (req, res) -> {
-			User authUser = getAuthenticatedUser(req);
-			if(authUser != null) {
+			Player authPlayer = getAuthenticatedPlayer(req);
+			if(authPlayer != null) {
 				res.redirect("/");
 				halt();
 			}
@@ -102,20 +102,22 @@ public class WebConfig {
 
 		post("/register", (req, res) -> {
 			Map<String, Object> map = new HashMap<>();
-			User user = new User();
+			Player player = new Player();
 			try {
 				MultiMap<String> params = new MultiMap<String>();
 				UrlEncoded.decodeTo(req.body(), params, "UTF-8");
-				BeanUtils.populate(user, params);
+				BeanUtils.populate(player, params);
 			} catch (Exception e) {
 				halt(501);
 				return null;
 			}
-			String error = user.validate();
+
+			String error = player.validate();
 			if(StringUtils.isEmpty(error)) {
-				User existingUser = service.getUserbyUsername(user.getUsername());
-				if(existingUser == null) {
-					service.registerUser(user);
+				Player existingPlayer = service.getPlayerbyUsername(player.getUsername());
+				if(existingPlayer == null) {
+					System.out.println("Trying to add new player!");
+					service.registerPlayer(player);
 					res.redirect("/login?r=1");
 					halt();
 				} else {
@@ -123,15 +125,15 @@ public class WebConfig {
 				}
 			}
 			map.put("error", error);
-			map.put("username", user.getUsername());
-			map.put("email", user.getEmail());
+			map.put("username", player.getUsername());
+			map.put("email", player.getEmail());
 			return new ModelAndView(map, "register.ftl");
         }, new FreeMarkerEngine());
 
 
 		before("/register", (req, res) -> {
-			User authUser = getAuthenticatedUser(req);
-			if(authUser != null) {
+			Player authPlayer = getAuthenticatedPlayer(req);
+			if(authPlayer != null) {
 				res.redirect("/");
 				halt();
 			}
@@ -139,40 +141,40 @@ public class WebConfig {
 
 
 		get("/logout", (req, res) -> {
-			removeAuthenticatedUser(req);
+			removeAuthenticatedPlayer(req);
 			res.redirect("/");
 			return null;
         });
 
 
 		get("/account", (req, res) -> {
-			User user = getAuthenticatedUser(req);
+			Player player = getAuthenticatedPlayer(req);
 			Map<String, Object> map = new HashMap<>();
 			map.put("pageTitle", "Account Dashboard");
-			map.put("user", user);
+			map.put("player", player);
 			return new ModelAndView(map, "account.ftl");
 		}, new FreeMarkerEngine());
 		before("/account", (req, res) -> {
-			User authUser = getAuthenticatedUser(req);
-			if(authUser == null) {
+			Player authPlayer = getAuthenticatedPlayer(req);
+			if(authPlayer == null) {
 				res.redirect("/");
 				halt();
 			}
 		});
 
 		get("/research", (req, res) -> {
-			User user = getAuthenticatedUser(req);
+			Player player = getAuthenticatedPlayer(req);
 			Map<String, Object> map = new HashMap<>();
 			map.put("pageTitle", "Research");
-			map.put("user", user);
+			map.put("player", player);
 			return new ModelAndView(map, "research.ftl");
 		}, new FreeMarkerEngine());
 
 		post("/research", (req, res) -> {
-			User user = getAuthenticatedUser(req);
+			Player player = getAuthenticatedPlayer(req);
 			Map<String, Object> map = new HashMap<>();
 			map.put("pageTitle", "Research");
-			map.put("user", user);
+			map.put("player", player);
 
 			if(req.queryParams("ticker") != null) {
 				String tickerSymbol = req.queryParams("ticker").toUpperCase();
@@ -194,15 +196,17 @@ public class WebConfig {
 
 
 		get("/quickmatch", (req, res) -> {
-			User user = getAuthenticatedUser(req);
+			Player player = getAuthenticatedPlayer(req);
 			Map<String, Object> map = new HashMap<>();
 			map.put("pageTitle", "Quick Match");
-			map.put("user", user);
+			map.put("player", player);
 			return new ModelAndView(map, "quickmatch.ftl");
 		}, new FreeMarkerEngine());
+		
+		
 		before("/quickmatch", (req, res) -> {
-			User authUser = getAuthenticatedUser(req);
-			if(authUser == null) {
+			Player authPlayer = getAuthenticatedPlayer(req);
+			if(authPlayer == null) {
 				res.redirect("/");
 				halt();
 			}
@@ -210,17 +214,17 @@ public class WebConfig {
 
 	}
 
-	private void addAuthenticatedUser(Request request, User u) {
-		request.session().attribute(USER_SESSION_ID, u);
+	private void addAuthenticatedPlayer(Request request, Player p) {
+		request.session().attribute(USER_SESSION_ID, p);
 		
 	}
 
-	private void removeAuthenticatedUser(Request request) {
+	private void removeAuthenticatedPlayer(Request request) {
 		request.session().removeAttribute(USER_SESSION_ID);
 		
 	}
 
-	private User getAuthenticatedUser(Request request) {
+	private Player getAuthenticatedPlayer(Request request) {
 		return request.session().attribute(USER_SESSION_ID);
 	}
 }

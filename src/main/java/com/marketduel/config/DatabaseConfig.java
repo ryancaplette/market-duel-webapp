@@ -4,22 +4,18 @@ import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+
+import com.mysql.cj.jdbc.MysqlDataSource;
 
 @Configuration
 public class DatabaseConfig {
 
 	@Bean
 	public DataSource dataSource() {
-		EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-		EmbeddedDatabase db = builder
-				.setType(EmbeddedDatabaseType.HSQL)
-				.addScript("sql/create-db.sql")
-				.addScript("sql/insert-data.sql")
-				.build();
-		return db;
+		MysqlDataSource dataSource = new MysqlDataSource();
+		dataSource.setURL("jdbc:mysql://sweng500-db.cmvcqoa7soac.us-west-2.rds.amazonaws.com:3306/sweng_500_db");
+		dataSource.setUser("dbmasteruser");
+		dataSource.setPassword("sweng500*");
+		return dataSource;
 	}
-
 }
