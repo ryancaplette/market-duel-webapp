@@ -16,6 +16,8 @@ import org.eclipse.jetty.util.UrlEncoded;
 import com.marketduel.model.LoginResult;
 import com.marketduel.model.User;
 import com.marketduel.service.impl.MarketDuelService;
+import com.marketduel.util.stockdata.MarketDataFeed;
+import com.marketduel.util.stockdata.Stock;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -165,6 +167,31 @@ public class WebConfig {
 			map.put("user", user);
 			return new ModelAndView(map, "research.ftl");
 		}, new FreeMarkerEngine());
+
+		post("/research", (req, res) -> {
+			User user = getAuthenticatedUser(req);
+			Map<String, Object> map = new HashMap<>();
+			map.put("pageTitle", "Research");
+			map.put("user", user);
+
+			if(req.queryParams("ticker") != null) {
+				String tickerSymbol = req.queryParams("ticker").toUpperCase();
+				map.put("pageTitle", "Research: " + tickerSymbol);
+				MarketDataFeed dataFeed = new MarketDataFeed();
+				Stock stock = dataFeed.requestStockByTickerSymbol(tickerSymbol);
+				if (stock != null) {
+					map.put("stockData", stock);
+					map.put("message", "Woohoo! Stock data was found for \"" + tickerSymbol + "\"");
+				} else {
+					map.put("error", "Stock data could not be found for \"" + tickerSymbol + "\". Please try a different ticker symbol");
+				}
+			} else {
+				map.put("error", "Please enter a stock ticker");
+			}
+
+			return new ModelAndView(map, "research.ftl");
+		}, new FreeMarkerEngine());
+
 
 		get("/quickmatch", (req, res) -> {
 			User user = getAuthenticatedUser(req);
