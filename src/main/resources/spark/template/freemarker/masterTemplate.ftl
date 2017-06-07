@@ -21,7 +21,7 @@
 
         <div class="collapse navbar-collapse" id="example-navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-                <#if user??>
+                <#if player??>
                     <li><a href="/research">Research</a></li>
                     <li><a href="/account">My Account</a></li>
                     <li><a href="/quickmatch">Quick Match</a></li>
