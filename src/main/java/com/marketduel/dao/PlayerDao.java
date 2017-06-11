@@ -6,5 +6,7 @@ public interface PlayerDao {
 	
 	Player getPlayerbyUsername(String username);
 	
-	void registerPlayer(Player player);
+	Boolean registerPlayer(Player player);
+	
+	Boolean deletePlayerbyUsername(String username);
 }
