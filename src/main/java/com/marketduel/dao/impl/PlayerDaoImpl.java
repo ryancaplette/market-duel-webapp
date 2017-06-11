@@ -43,9 +43,21 @@ public class PlayerDaoImpl implements PlayerDao {
         
 		return result;
 	}
+	
+	@Override
+	public Boolean deletePlayerbyUsername(String username) {
+		Map<String, Object> params = new HashMap<String, Object>();
+        params.put("name", username);
+        
+		String sql = "DELETE FROM player WHERE username=:name";
+		
+		int result = template.update(sql, params);
+        //A delete should modify 1 row
+        return (result == 1);
+	}
 
 	@Override
-	public void registerPlayer(Player player) {
+	public Boolean registerPlayer(Player player) {
 		String sql = "INSERT INTO player (Username, Email, UserPwd) values (:username, :email, :pw)";
 		
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -53,8 +65,11 @@ public class PlayerDaoImpl implements PlayerDao {
         params.put("email", player.getEmail());
         params.put("pw", player.getPassword());
 		
-        template.update(sql, params);
+        int result = template.update(sql, params);
         System.out.println("Created Player " + player.getUsername());
+	
+        //A new add should modify 1 row
+        return (result == 1);
 	}
 
 	private RowMapper<Player> userMapper = (rs, rowNum) -> {
