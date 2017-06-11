@@ -19,7 +19,7 @@ public class Stock {
     private Double openPrice = null;
     private Double highPrice = null;
     private Double lowPrice = null;
-    private Double closePprice = null;
+    private Double closePrice = null;
     private Double lastPrice = null;
     private Double change = null;
     private Double volume = null;
@@ -31,6 +31,10 @@ public class Stock {
     private Double dividend = null;
     private Double trailingDividendYield = null;
 
+    public Stock () {
+    	
+    }
+    
     public Stock (StockDataItem[] stockDataItems) throws Exception {
         this.setData(stockDataItems);
     }
@@ -64,7 +68,7 @@ public class Stock {
         this.setOpenPrice(dataItems.get("open_price"));
         this.setHighPrice(dataItems.get("high_price"));
         this.setLowPrice(dataItems.get("low_price"));
-        this.setClosePprice(dataItems.get("close_price"));
+        this.setClosePrice(dataItems.get("close_price"));
         this.setLastPrice(dataItems.get("last_price"));
         this.setChange(dataItems.get("change"));
         this.setVolume(dataItems.get("volume"));
@@ -181,12 +185,12 @@ public class Stock {
         this.lowPrice = this.parseDouble(lowPrice);
     }
 
-    public Double getClosePprice() {
-        return closePprice;
+    public Double getClosePrice() {
+        return closePrice;
     }
 
-    public void setClosePprice(String closePprice) {
-        this.closePprice = this.parseDouble(closePprice);
+    public void setClosePrice(String closePrice) {
+        this.closePrice = this.parseDouble(closePrice);
     }
 
     public Double getLastPrice() {

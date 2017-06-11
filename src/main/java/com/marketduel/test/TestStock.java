@@ -4,236 +4,290 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.marketduel.util.stockdata.Stock;
+
 public class TestStock {
 
+	private Stock stock;
+	
+	public TestStock () {
+		this.stock = new Stock();
+	}
+	
 	@Test
 	public void testGetCompanyName() {
-		assert (false);
+		this.stock.setCompanyName("Test Inc.");
+		assertTrue (this.stock.getCompanyName().equals("Test Inc."));
 	}
 
 	@Test
 	public void testSetCompanyName() {
-		assert (false);
+		this.stock.setCompanyName("Set Company Inc.");
+		assertTrue (this.stock.getCompanyName().equals("Set Company Inc."));
 	}
 
 	@Test
 	public void testGetTicker() {
-		assert (false);
+		this.stock.setTicker("AAPL");
+		assertTrue (this.stock.getTicker().equals("AAPL"));
 	}
 
 	@Test
 	public void testSetTicker() {
-		assert (false);
+		this.stock.setTicker("AAPL");
+		assertTrue (this.stock.getTicker().equals("AAPL"));
 	}
 
 	@Test
 	public void testGetStockExchange() {
-		assert (false);
+		this.stock.setStockExchange("NASDAQ");
+		assertTrue (this.stock.getStockExchange().equals("NASDAQ"));
 	}
 
 	@Test
 	public void testSetStockExchange() {
-		assert (false);
+		this.stock.setStockExchange("NASDAQ");
+		assertTrue (this.stock.getStockExchange().equals("NASDAQ"));
 	}
 
 	@Test
 	public void testGetCountry() {
-		assert (false);
+		this.stock.setCountry("USA");
+		assertTrue (this.stock.getCountry().equals("USA"));
 	}
 
 	@Test
 	public void testSetCountry() {
-		assert (false);
+		this.stock.setCountry("USA");
+		assertTrue (this.stock.getCountry().equals("USA"));
 	}
 
 	@Test
 	public void testGetCompanyUrl() {
-		assert (false);
+		this.stock.setCompanyUrl("www.company.net");
+		assertTrue (this.stock.getCompanyUrl().equals("www.company.net"));
 	}
 
 	@Test
 	public void testSetCompanyUrl() {
-		assert (false);
+		this.stock.setCompanyUrl("www.company.net");
+		assertTrue (this.stock.getCompanyUrl().equals("www.company.net"));
 	}
 
 	@Test
 	public void testGetBusinessAddress() {
-		assert (false);
+		this.stock.setBusinessAddress("123 test road");
+		assertTrue (this.stock.getBusinessAddress().equals("123 test road"));
 	}
 
 	@Test
 	public void testSetBusinessAddress() {
-		assert (false);
+		this.stock.setBusinessAddress("123 test road");
+		assertTrue (this.stock.getBusinessAddress().equals("123 test road"));
 	}
 
 	@Test
 	public void testGetBusinessPhoneNumber() {
-		assert (false);
+		this.stock.setBusinessPhoneNumber("1 800 888 8888");
+		assertTrue (this.stock.getBusinessPhoneNumber().equals("1 800 888 8888"));
 	}
 
 	@Test
 	public void testSetBusinessPhoneNumber() {
-		assert (false);
+		this.stock.setBusinessPhoneNumber("1 800 888 8888");
+		assertTrue (this.stock.getBusinessPhoneNumber().equals("1 800 888 8888"));
 	}
 
 	@Test
 	public void testGetCeo() {
-		assert (false);
+		this.stock.setCeo("Tim Cook");
+		assertTrue (this.stock.getCeo().equals("Tim Cook"));
 	}
 
 	@Test
 	public void testSetCeo() {
-		assert (false);
+		this.stock.setCeo("Tim Cook");
+		assertTrue (this.stock.getCeo().equals("Tim Cook"));
 	}
 
 	@Test
 	public void testGetEmployees() {
-		assert (false);
+		this.stock.setEmployees("101");
+		assertTrue (this.stock.getEmployees() == 101);
 	}
 
 	@Test
 	public void testSetEmployees() {
-		assert (false);
+		this.stock.setEmployees("101");
+		assertTrue (this.stock.getEmployees() == 101);
 	}
 
 	@Test
 	public void testGetOpenPrice() {
-		assert (false);
+		this.stock.setOpenPrice("101.50");
+		assertTrue (this.stock.getOpenPrice() == 101.50);
 	}
 
 	@Test
 	public void testSetOpenPrice() {
-		assert (false);
+		this.stock.setOpenPrice("101.50");
+		assertTrue (this.stock.getOpenPrice() == 101.50);
 	}
 
 	@Test
 	public void testGetHighPrice() {
-		assert (false);
+		this.stock.setHighPrice("101.50");
+		assertTrue (this.stock.getHighPrice() == 101.50);
 	}
 
 	@Test
 	public void testSetHighPrice() {
-		assert (false);
+		this.stock.setHighPrice("101.50");
+		assertTrue (this.stock.getHighPrice() == 101.50);
 	}
 
 	@Test
 	public void testGetLowPrice() {
-		assert (false);
+		this.stock.setLowPrice("99.50");
+		assertTrue (this.stock.getLowPrice() == 99.50);
 	}
 
 	@Test
 	public void testSetLowPrice() {
-		assert (false);
+		this.stock.setLowPrice("99.50");
+		assertTrue (this.stock.getLowPrice() == 99.50);
 	}
 
 	@Test
 	public void testGetClosePprice() {
-		assert (false);
+		this.stock.setClosePrice("100.50");
+		assertTrue (this.stock.getClosePrice() == 100.50);
 	}
 
 	@Test
 	public void testSetClosePprice() {
-		assert (false);
+		this.stock.setClosePrice("100.50");
+		assertTrue (this.stock.getClosePrice() == 100.50);
 	}
 
 	@Test
 	public void testGetLastPrice() {
-		assert (false);
+		this.stock.setLastPrice("100.50");
+		assertTrue (this.stock.getLastPrice() == 100.50);
 	}
 
 	@Test
 	public void testSetLastPrice() {
-		assert (false);
+		this.stock.setLastPrice("100.50");
+		assertTrue (this.stock.getLastPrice() == 100.50);
 	}
 
 	@Test
 	public void testGetChange() {
-		assert (false);
+		this.stock.setChange("0.07");
+		assertTrue (this.stock.getChange() == 0.07);
 	}
 
 	@Test
 	public void testSetChange() {
-		assert (false);
+		this.stock.setChange("0.07");
+		assertTrue (this.stock.getChange() == 0.07);
 	}
 
 	@Test
 	public void testGetVolume() {
-		assert (false);
+		this.stock.setVolume("100000.5");
+		assertTrue (this.stock.getVolume() == 100000.5);
 	}
 
 	@Test
 	public void testSetVolume() {
-		assert (false);
+		this.stock.setVolume("100000.5");
+		assertTrue (this.stock.getVolume() == 100000.5);
 	}
 
 	@Test
 	public void testGetAverageDailyVolume() {
-		assert (false);
+		this.stock.setAverageDailyVolume("100000.5");
+		assertTrue (this.stock.getAverageDailyVolume() == 100000.5);
 	}
 
 	@Test
 	public void testSetAverageDailyVolume() {
-		assert (false);
+		this.stock.setAverageDailyVolume("100000.5");
+		assertTrue (this.stock.getAverageDailyVolume() == 100000.5);
 	}
 
 	@Test
 	public void testGetWeek52High() {
-		assert (false);
+		this.stock.setWeek52High("10.66");
+		assertTrue (this.stock.getWeek52High() == 10.66);
 	}
 
 	@Test
 	public void testSetWeek52High() {
-		assert (false);
+		this.stock.setWeek52High("10.66");
+		assertTrue (this.stock.getWeek52High() == 10.66);
 	}
 
 	@Test
 	public void testGetWeek52Low() {
-		assert (false);
+		this.stock.setWeek52Low("9.66");
+		assertTrue (this.stock.getWeek52Low() == 9.66);
 	}
 
 	@Test
 	public void testSetWeek52Low() {
-		assert (false);
+		this.stock.setWeek52Low("9.66");
+		assertTrue (this.stock.getWeek52Low() == 9.66);
 	}
 
 	@Test
 	public void testGetDividendExDate() {
-		assert (false);
+		this.stock.setDividendExDate("2017-05-01");
+		assertTrue (this.stock.getDividendExDate().equals("2017-05-01"));
 	}
 
 	@Test
 	public void testSetDividendExDate() {
-		assert (false);
+		this.stock.setDividendExDate("2017-05-01");
+		assertTrue (this.stock.getDividendExDate().equals("2017-05-01"));
 	}
 
 	@Test
 	public void testGetDividendPayDate() {
-		assert (false);
+		this.stock.setDividendPayDate("2017-06-01");
+		assertTrue (this.stock.getDividendPayDate().equals("2017-06-01"));
 	}
 
 	@Test
 	public void testSetDividendPayDate() {
-		assert (false);
+		this.stock.setDividendPayDate("2017-06-01");
+		assertTrue (this.stock.getDividendPayDate().equals("2017-06-01"));
 	}
 
 	@Test
 	public void testGetDividend() {
-		assert (false);
+		this.stock.setDividend("1.06");
+		assertTrue (this.stock.getDividend() == 1.06);
 	}
 
 	@Test
 	public void testSetDividend() {
-		assert (false);
+		this.stock.setDividend("1.06");
+		assertTrue (this.stock.getDividend() == 1.06);
 	}
 
 	@Test
 	public void testGetTrailingDividendYield() {
-		assert (false);
+		this.stock.setTrailingDividendYield("0.02");
+		assertTrue (this.stock.getTrailingDividendYield() == 0.02);
 	}
 
 	@Test
 	public void testSetTrailingDividendYield() {
-		assert (false);
+		this.stock.setTrailingDividendYield("0.02");
+		assertTrue (this.stock.getTrailingDividendYield() == 0.02);
 	}
 
 }

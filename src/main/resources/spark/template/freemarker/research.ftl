@@ -48,7 +48,7 @@
                     <b>Open Price:</b> ${stockData.openPrice}<br/>
                     <b>High Price:</b> ${stockData.highPrice}<br/>
                     <b>Low Price:</b> ${stockData.lowPrice}<br/>
-                    <b>Close Price:</b> ${stockData.closePprice}<br/>
+                    <b>Close Price:</b> ${stockData.closePrice}<br/>
                     <b>Last Price:</b> ${stockData.lastPrice}<br/>
                     <b>Change:</b> ${stockData.change}<br/>
                     <b>Volume:</b> ${stockData.volume}<br/>
