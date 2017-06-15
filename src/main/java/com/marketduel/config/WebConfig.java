@@ -192,11 +192,13 @@ public class WebConfig {
 					map.put("message", "Woohoo! Stock data was found for \"" + tickerSymbol + "\"");
 
 					StockPriceData stockPriceData = stock.getStockPriceToday();
-					map.put("open", String.valueOf(stockPriceData.getOpen()));
-					map.put("high", String.valueOf(stockPriceData.getHigh()));
-					map.put("low", String.valueOf(stockPriceData.getLow()));
-					map.put("close", String.valueOf(stockPriceData.getClose()));
-					map.put("volume",new BigDecimal(stockPriceData.getVolume()).toPlainString());
+					if (stockPriceData != null) {
+						map.put("open", String.valueOf(stockPriceData.getOpen()));
+						map.put("high", String.valueOf(stockPriceData.getHigh()));
+						map.put("low", String.valueOf(stockPriceData.getLow()));
+						map.put("close", String.valueOf(stockPriceData.getClose()));
+						map.put("volume",new BigDecimal(stockPriceData.getVolume()).toPlainString());
+					}
 
 				} else {
 					map.put("error", "Stock data could not be found for \"" + tickerSymbol + "\". Please try a different ticker symbol");

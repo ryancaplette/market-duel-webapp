@@ -160,6 +160,10 @@ public class IntrinioApi {
 
     private StockDataItem[] parseCompanyInfoJsonResponse(String companyInfoJsonResponse) {
 
+        if (companyInfoJsonResponse == null || companyInfoJsonResponse.length() <= 0) {
+            return null;
+        }
+
         String[] dataPoints = { //list of data points to collect from json response
                 "business_address",
                 "business_phone_no",
@@ -257,7 +261,6 @@ public class IntrinioApi {
             e.printStackTrace();
         }
 
-        StockPriceData[] stockPriceDataItemsArray = new StockPriceData[stockPriceDataItems.size()];
         return stockPriceDataItems;
     }
 

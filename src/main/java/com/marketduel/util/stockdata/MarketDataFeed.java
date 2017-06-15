@@ -1,5 +1,7 @@
 package com.marketduel.util.stockdata;
 
+import java.util.HashMap;
+
 /**
  * Created by ryan on 5/28/2017.
  *
@@ -23,16 +25,28 @@ public class MarketDataFeed {
 //            return null;
 //        }
 //
+        boolean doesCompanyExist = false;
         Stock stock = null;
         try {
             stock = new Stock();
-            stock.setDataPointItems(api.getCompanyInfo(tickerSymbol));
-            stock.updatePriceDataHistory(api.getStockPriceDataToday(tickerSymbol));
+
+            StockDataItem[] companyInfo = api.getCompanyInfo(tickerSymbol);
+            if (companyInfo != null && companyInfo.length > 0) {
+                doesCompanyExist = true;
+                stock.setDataPointItems(companyInfo);
+            }
+
+            HashMap<String, StockPriceData> stockPriceData = api.getStockPriceDataToday(tickerSymbol);
+            stock.updatePriceDataHistory(stockPriceData);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        if (doesCompanyExist) {
+            return stock;
+        }
 
-        return stock;
+        return null;
     }
 }
