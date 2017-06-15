@@ -5,6 +5,7 @@ import java.util.ListIterator;
 
 public class Portfolio {
 	private int portfolioId;
+	private float initialValue;
 	private ArrayList<StockHolding> stockHoldings=new ArrayList<StockHolding>();
 	
 	public Portfolio() {
@@ -15,19 +16,23 @@ public class Portfolio {
 	{
 		ListIterator<StockHolding> itr = stockHoldings.listIterator();
 		while(itr.hasNext()) {
-			itr.next().updatePrice();
+			itr.next().updatePurchasePrice();
 		}
 	}
 	
-	public float getPortfolioValue() {
+	public void setInitialValue() {
 		float totalValue = 0.0f;
 		ListIterator<StockHolding> itr = stockHoldings.listIterator();
 		
 		while(itr.hasNext()) {
-			totalValue += itr.next().getValue();
+			totalValue += itr.next().getPurchaseValue();
 		}
 	
-		return totalValue;
+		initialValue = totalValue;
+	}
+	
+	public float getInitialValue() {
+		return initialValue;
 	}
 	
 	/* Since players may add and remove stocks between the game start and the match start, the value of each portfolio
@@ -39,11 +44,17 @@ public class Portfolio {
 		float valueBalanceDifference = 0.0f;
 		float differencePerStock = 0.0f;
 		float shareAdjustment = 0.0f;
+		int index = 0;
 		
 		ListIterator<StockHolding> itr = stockHoldings.listIterator();
 		
+		// Update each purchase price to match the current price at time of the start of the match
+		while(itr.hasNext()) {
+			itr.next().updatePurchasePrice();
+		}
+		
 		// Get portfolio value
-		portfolioValue = this.getPortfolioValue();
+		portfolioValue = this.getInitialValue();
 		
 		// Calculate difference between portfolio value and initial balance
 		valueBalanceDifference = portfolioValue - balance;
@@ -54,9 +65,10 @@ public class Portfolio {
 		differencePerStock = (float) (Math.round(differencePerStock*100.0)/100.0);
 		
 		// Change each stock's number of shares by the value of the stock divided by the differencePerStock
-		while(itr.hasNext()) {
-			shareAdjustment = itr.next().getValue()/differencePerStock;
-			itr.next().addShares(shareAdjustment);
+		while(itr.hasPrevious()) {
+			index = itr.previousIndex();
+			shareAdjustment = stockHoldings.get(index).getPurchaseValue()/differencePerStock;
+			itr.previous().addShares(shareAdjustment);
 		}
 	}
 
@@ -74,7 +86,18 @@ public class Portfolio {
 
 	public void setPortfolioId() {
 		// Get next portfolio ID from database
-		this.portfolioId = getNextPortfolioId();
+		//this.portfolioId = getNextPortfolioId();
+	}
+
+	public float getCurrentValue() {
+		float totalValue = 0.0f;
+		ListIterator<StockHolding> itr = stockHoldings.listIterator();
+		
+		while(itr.hasNext()) {
+			totalValue += itr.next().getCurrentValue();
+		}
+	
+		return totalValue;
 	}
 
 }

@@ -4,23 +4,23 @@ public class StockHolding {
 
 	private String ticker;
 	private float shares;
-	private float price;
+	private float purchasePrice;
 	
 	
 	public StockHolding(String ticker, float shares, float price) {
 		this.ticker = ticker;
 		this.shares = shares;
-		this.price = price;
+		this.purchasePrice = price;
 	}
 
 
-	public float getPrice() {
-		return price;
+	public float getPurchasePrice() {
+		return purchasePrice;
 	}
 
 
-	public void setPrice(float price) {
-		this.price = price;
+	public void setPurchasePrice(float price) {
+		this.purchasePrice = price;
 	}
 
 
@@ -43,15 +43,23 @@ public class StockHolding {
 		this.shares += shareAdjustment;
 	}
 
-
-	public void updatePrice() {
+	public void updatePurchasePrice() {
 		float currentPrice = 0.0f;
 		// Get current value from API
 		// currentValue = ?
-		this.price = currentPrice;
+		this.purchasePrice = currentPrice;
 	}
 	
-	public float getValue() {
-		return shares*price;
+	public float getPurchaseValue() {
+		return shares*purchasePrice;
+	}
+
+
+	public float getCurrentValue() {
+		float currentPrice = 0.0f;
+		
+		// Get currentPrice from API
+		
+		return shares*currentPrice;
 	}
 }

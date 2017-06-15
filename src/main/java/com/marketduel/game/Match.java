@@ -1,4 +1,5 @@
 package com.marketduel.game;
+import java.util.ArrayList;
 import java.util.Date;
 
 public abstract class Match {
@@ -9,22 +10,17 @@ public abstract class Match {
 	private Date endDate;
 	private int duration;
 	private int maxPlayersInMatch;
-	private int playersInMatch;
+	private int initialBalance;
+	private String winner;
 	
-	protected int[] playerIds;
+	protected ArrayList<Integer> playerIds = new ArrayList<Integer>();
+	protected ArrayList<Portfolio> portfolios = new ArrayList<Portfolio>();
 	
 	void addPlayer(int playerId)
 	{
-		if (playersInMatch < maxPlayersInMatch)
+		if (playerIds.size() < maxPlayersInMatch)
 		{	
-			for (int i = 0; i < getMaxPlayersInMatch(); i++) {
-		        if (playerIds[i] == -1)
-		        {
-		        	playerIds[i] = playerId;
-		        	playersInMatch++;
-		        	break;
-		        }
-		    }
+			playerIds.add(playerId);
 		}
 		else
 		{
@@ -33,7 +29,7 @@ public abstract class Match {
 	}
 	
 	void removePlayer(int playerId)	{
-		
+		playerIds.remove(playerId);
 	}
 	
 	void setStartDate(Date start) {
@@ -69,6 +65,21 @@ public abstract class Match {
 	}
 	
 	public int getPlayersInMatch() {
-		return playersInMatch;
+		return playerIds.size();
 	}
+	
+	public int getInitialBalance() {
+		return initialBalance;
+	}
+	
+	public void setInitialBalance(int initialBalance) {
+		this.initialBalance = initialBalance;
+	}
+	public String getWinner() {
+		return winner;
+	}
+	public void setWinner(String winner) {
+		this.winner = winner;
+	}
+
 }
