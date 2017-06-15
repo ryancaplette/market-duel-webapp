@@ -16,18 +16,22 @@ public class MarketDataFeed {
         tickerSymbol = tickerSymbol.toUpperCase();
 
         IntrinioApi api = new IntrinioApi();
-        StockDataItem[] stockDataItems = api.getStockData(tickerSymbol);
 
-        if (stockDataItems.length == 0) {
-            return null;
-        }
-
+// Stock data point api disabled due to excessive calls
+//        StockDataItem[] stockDataItems = api.getStockDataPoints(tickerSymbol);
+//        if (stockDataItems.length == 0) {
+//            return null;
+//        }
+//
         Stock stock = null;
         try {
-            stock = new Stock(stockDataItems);
+            stock = new Stock();
+            stock.setDataPointItems(api.getCompanyInfo(tickerSymbol));
+            stock.updatePriceDataHistory(api.getStockPriceDataToday(tickerSymbol));
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
         return stock;
     }

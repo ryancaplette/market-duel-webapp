@@ -123,66 +123,6 @@ public class TestStock {
 	}
 
 	@Test
-	public void testGetOpenPrice() {
-		this.stock.setOpenPrice("101.50");
-		assertTrue (this.stock.getOpenPrice() == 101.50);
-	}
-
-	@Test
-	public void testSetOpenPrice() {
-		this.stock.setOpenPrice("101.50");
-		assertTrue (this.stock.getOpenPrice() == 101.50);
-	}
-
-	@Test
-	public void testGetHighPrice() {
-		this.stock.setHighPrice("101.50");
-		assertTrue (this.stock.getHighPrice() == 101.50);
-	}
-
-	@Test
-	public void testSetHighPrice() {
-		this.stock.setHighPrice("101.50");
-		assertTrue (this.stock.getHighPrice() == 101.50);
-	}
-
-	@Test
-	public void testGetLowPrice() {
-		this.stock.setLowPrice("99.50");
-		assertTrue (this.stock.getLowPrice() == 99.50);
-	}
-
-	@Test
-	public void testSetLowPrice() {
-		this.stock.setLowPrice("99.50");
-		assertTrue (this.stock.getLowPrice() == 99.50);
-	}
-
-	@Test
-	public void testGetClosePprice() {
-		this.stock.setClosePrice("100.50");
-		assertTrue (this.stock.getClosePrice() == 100.50);
-	}
-
-	@Test
-	public void testSetClosePprice() {
-		this.stock.setClosePrice("100.50");
-		assertTrue (this.stock.getClosePrice() == 100.50);
-	}
-
-	@Test
-	public void testGetLastPrice() {
-		this.stock.setLastPrice("100.50");
-		assertTrue (this.stock.getLastPrice() == 100.50);
-	}
-
-	@Test
-	public void testSetLastPrice() {
-		this.stock.setLastPrice("100.50");
-		assertTrue (this.stock.getLastPrice() == 100.50);
-	}
-
-	@Test
 	public void testGetChange() {
 		this.stock.setChange("0.07");
 		assertTrue (this.stock.getChange() == 0.07);
@@ -192,18 +132,6 @@ public class TestStock {
 	public void testSetChange() {
 		this.stock.setChange("0.07");
 		assertTrue (this.stock.getChange() == 0.07);
-	}
-
-	@Test
-	public void testGetVolume() {
-		this.stock.setVolume("100000.5");
-		assertTrue (this.stock.getVolume() == 100000.5);
-	}
-
-	@Test
-	public void testSetVolume() {
-		this.stock.setVolume("100000.5");
-		assertTrue (this.stock.getVolume() == 100000.5);
 	}
 
 	@Test

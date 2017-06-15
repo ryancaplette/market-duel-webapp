@@ -10,9 +10,14 @@ import com.marketduel.util.stockdata.StockDataItem;
 public class TestIntrinioApi {
 
 	@Test
-	public void testGetStockData() {
+	public void testGetStockDataPoints() {
 		IntrinioApi api = new IntrinioApi();
-		StockDataItem[] stockDataItems = api.getStockData("aapl");
+
+		//Mock api call's response data to save api calls
+		StockDataItem stockDataItem = new StockDataItem("aapl", "ticker", "aapl");
+		StockDataItem[] stockDataItems = new StockDataItem[1];
+		stockDataItems[0] = stockDataItem;
+
 		assertTrue (stockDataItems.length > 0);
 		assertTrue (stockDataItems[0].getIdentifier().equalsIgnoreCase("aapl"));
 	}

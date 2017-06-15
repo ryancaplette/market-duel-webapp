@@ -1,5 +1,9 @@
 package com.marketduel.util.stockdata;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -16,13 +20,7 @@ public class Stock {
     private String businessPhoneNumber = null;
     private String ceo = null;
     private int employees = 0;
-    private Double openPrice = null;
-    private Double highPrice = null;
-    private Double lowPrice = null;
-    private Double closePrice = null;
-    private Double lastPrice = null;
     private Double change = null;
-    private Double volume = null;
     private Double averageDailyVolume = null;
     private Double week52High = null;
     private Double week52Low = null;
@@ -30,16 +28,17 @@ public class Stock {
     private String dividendPayDate = null;
     private Double dividend = null;
     private Double trailingDividendYield = null;
+    private HashMap<String, StockPriceData> stockPriceHistory = new HashMap<String, StockPriceData>();
 
     public Stock () {
     	
     }
     
     public Stock (StockDataItem[] stockDataItems) throws Exception {
-        this.setData(stockDataItems);
+        this.setDataPointItems(stockDataItems);
     }
 
-    private void setData(StockDataItem[] stockDataItems) throws Exception {
+    public void setDataPointItems(StockDataItem[] stockDataItems) throws Exception {
 
         String uniqueIdentifier = null;
 
@@ -59,19 +58,13 @@ public class Stock {
         this.setCompanyName(dataItems.get("name"));
         this.setTicker(dataItems.get("ticker"));
         this.setStockExchange(dataItems.get("stock_exchange"));
-        this.setCountry(dataItems.get("country"));
+        this.setCountry(dataItems.get("hq_country"));
         this.setCompanyUrl(dataItems.get("company_url"));
         this.setBusinessAddress(dataItems.get("business_address"));
         this.setBusinessPhoneNumber(dataItems.get("business_phone_no"));
         this.setCeo(dataItems.get("ceo"));
         this.setEmployees(dataItems.get("employees"));
-        this.setOpenPrice(dataItems.get("open_price"));
-        this.setHighPrice(dataItems.get("high_price"));
-        this.setLowPrice(dataItems.get("low_price"));
-        this.setClosePrice(dataItems.get("close_price"));
-        this.setLastPrice(dataItems.get("last_price"));
         this.setChange(dataItems.get("change"));
-        this.setVolume(dataItems.get("volume"));
         this.setAverageDailyVolume(dataItems.get("average_daily_volume"));
         this.setWeek52High(dataItems.get("52_week_high"));
         this.setWeek52Low(dataItems.get("52_week_low"));
@@ -81,11 +74,23 @@ public class Stock {
         this.setTrailingDividendYield(dataItems.get("trailing_dividend_yield"));
     }
 
+    public void updatePriceDataHistory(HashMap<String, StockPriceData> stockPriceData) {
+        this.stockPriceHistory.putAll(stockPriceData);
+    }
+
     private Double parseDouble (String i) {
         try {
             return Double.parseDouble(i);
         } catch (Exception e) {
-            return 0.0;
+            return null;
+        }
+    }
+
+    private int parseInt (String i) {
+        try {
+            return Integer.parseInt(i);
+        } catch (Exception e) {
+            return 0;
         }
     }
 
@@ -158,47 +163,7 @@ public class Stock {
     }
 
     public void setEmployees(String employees) {
-        this.employees = Integer.parseInt(employees);
-    }
-
-    public Double getOpenPrice() {
-        return openPrice;
-    }
-
-    public void setOpenPrice(String openPrice) {
-        this.openPrice = this.parseDouble(openPrice);
-    }
-
-    public Double getHighPrice() {
-        return highPrice;
-    }
-
-    public void setHighPrice(String highPrice) {
-        this.highPrice = this.parseDouble(highPrice);
-    }
-
-    public Double getLowPrice() {
-        return lowPrice;
-    }
-
-    public void setLowPrice(String lowPrice) {
-        this.lowPrice = this.parseDouble(lowPrice);
-    }
-
-    public Double getClosePrice() {
-        return closePrice;
-    }
-
-    public void setClosePrice(String closePrice) {
-        this.closePrice = this.parseDouble(closePrice);
-    }
-
-    public Double getLastPrice() {
-        return lastPrice;
-    }
-
-    public void setLastPrice(String lastPrice) {
-        this.lastPrice = this.parseDouble(lastPrice);
+        this.employees = this.parseInt(employees);
     }
 
     public Double getChange() {
@@ -207,14 +172,6 @@ public class Stock {
 
     public void setChange(String change) {
         this.change = this.parseDouble(change);
-    }
-
-    public Double getVolume() {
-        return volume;
-    }
-
-    public void setVolume(String volume) {
-        this.volume = this.parseDouble(volume);
     }
 
     public Double getAverageDailyVolume() {
@@ -272,4 +229,29 @@ public class Stock {
     public void setTrailingDividendYield(String trailingDividendYield) {
         this.trailingDividendYield = this.parseDouble(trailingDividendYield);
     }
+
+    public HashMap<String, StockPriceData> getStockPriceHistory() {
+        return stockPriceHistory;
+    }
+
+    public StockPriceData getStockPriceHistory(String requestedDate) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        StockPriceData stockPriceData = null;
+        try {
+            String date = dateFormat.format(dateFormat.parse(requestedDate));
+            stockPriceData = this.stockPriceHistory.get(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return stockPriceData;
+    }
+
+    public StockPriceData getStockPriceToday() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        String todaysDate = dateFormat.format(date);
+
+        return this.getStockPriceHistory(todaysDate);
+    }
+
 }
