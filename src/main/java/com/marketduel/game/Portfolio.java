@@ -8,8 +8,9 @@ public class Portfolio {
 	private float initialValue;
 	private ArrayList<StockHolding> stockHoldings=new ArrayList<StockHolding>();
 	
+	public static final int MAX_NUM_HOLDINGS = 10;
+	
 	public Portfolio() {
-		setPortfolioId();
 	}
 	
 	public void updateHoldingPrices()
@@ -83,10 +84,9 @@ public class Portfolio {
 	public int getPortfolioId() {
 		return portfolioId;
 	}
-
-	public void setPortfolioId() {
-		// Get next portfolio ID from database
-		//this.portfolioId = getNextPortfolioId();
+	
+	public void setPortfolioId(int portfolioId) {
+		this.portfolioId = portfolioId;
 	}
 
 	public float getCurrentValue() {
@@ -100,4 +100,9 @@ public class Portfolio {
 		return totalValue;
 	}
 
+	public int getNumStockHoldings()
+	{
+		return stockHoldings.size();
+		
+	}
 }

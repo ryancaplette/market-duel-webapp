@@ -18,10 +18,10 @@ public class LeagueGame extends Game {
 
 	}
 
-	@Override
-	void addPlayer(int plyr) {
-		// TODO Auto-generated method stub
-
-	}
+//	@Override
+//	void addPlayer(int plyr) {
+//		// TODO Auto-generated method stub
+//
+//	}
 
 }

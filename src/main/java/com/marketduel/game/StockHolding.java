@@ -7,7 +7,7 @@ public class StockHolding {
 	private float purchasePrice;
 	
 	
-	public StockHolding(String ticker, float shares, float price) {
+	public StockHolding(String ticker, int shares, float price) {
 		this.ticker = ticker;
 		this.shares = shares;
 		this.purchasePrice = price;

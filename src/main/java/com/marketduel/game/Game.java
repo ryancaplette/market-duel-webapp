@@ -1,11 +1,17 @@
 package com.marketduel.game;
 
+import java.util.ArrayList;
 import java.util.Date;   // Didn't get much time to research date classes. May make more sense to use something else
 
 public abstract class Game {
 	abstract void startGame();
 	abstract void endGame();
-	abstract void addPlayer(int plyr);
+	
+	public static final int MAX_MATCHES_PER_GAME = 10;
+	//Shouldnt be needed because these are all things associated with Matches
+	//abstract void addPlayer(int plyr);//See below
+	//private int initialBalance;
+	//protected int[] playerIds;  // A different type of container may make more sense. Made it an array for now.
 	
 	private int gameId;
 	private GameType type;	
@@ -14,12 +20,10 @@ public abstract class Game {
 	private int playersInGame;
 	private Date firstMatchStart;
 	private int matchDurationInDays;
-	private int initialBalance;
 	
-	protected int[] playerIds;  // A different type of container may make more sense. Made it an array for now.
-	protected Match[][] matches;  // All matches in the game by round and match number
+	protected ArrayList<Integer> matchIds;
 	
-	protected enum GameType {
+	public enum GameType {
 	    QUICK, LEAGUE
 	}
 	
@@ -27,21 +31,17 @@ public abstract class Game {
 		return gameId;
 	}
 	
-	public void setGameId() {
-		this.gameId = getNextGameId();
+	public void setGameId(int gameId) {
+		this.gameId = gameId;
 	}
 	
-	private int getNextGameId()	{
-		return 0;  // Update with code to return new game ID based on next available number in the database
-	}
-	
-	public int getInitialBalance() {
-		return initialBalance;
-	}
-	
-	public void setInitialBalance(int initialBalance) {
-		this.initialBalance = initialBalance;
-	}
+//	public int getInitialBalance() {
+//		return initialBalance;
+//	}
+//	
+//	public void setInitialBalance(int initialBalance) {
+//		this.initialBalance = initialBalance;
+//	}
 	
 	public int getMaxPlayersInGame() {
 		return maxPlayersInGame;
@@ -89,5 +89,20 @@ public abstract class Game {
 	
 	public void setContinuous(boolean continuous){
 		this.continuous = continuous;
+	}
+	
+	public void addMatch(int matchId){
+		if (matchIds.size() < maxPlayersInGame)
+		{	
+			matchIds.add(matchId);
+		}
+		else
+		{
+			//Error: Game is full
+		}
+	}
+	
+	public void removePortfolio(int portId)	{
+		matchIds.remove(portId);
 	}
 }
