@@ -1,5 +1,6 @@
 package com.marketduel.util.stockdata;
 
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -9,15 +10,15 @@ import java.util.HashMap;
  */
 public class MarketDataFeed {
 
-    public MarketDataFeed () {
+    private IntrinioApi api;
 
+    public MarketDataFeed () {
+        this.api = new IntrinioApi();
     }
 
     public Stock requestStockByTickerSymbol (String tickerSymbol) {
 
         tickerSymbol = tickerSymbol.toUpperCase();
-
-        IntrinioApi api = new IntrinioApi();
 
 // Stock data point api disabled due to excessive calls
 //        StockDataItem[] stockDataItems = api.getStockDataPoints(tickerSymbol);
@@ -36,7 +37,8 @@ public class MarketDataFeed {
                 stock.setDataPointItems(companyInfo);
             }
 
-            HashMap<String, StockPriceData> stockPriceData = api.getStockPriceDataToday(tickerSymbol);
+
+            StockPriceData stockPriceData = api.getStockPriceDataToday(tickerSymbol);
             stock.updatePriceDataHistory(stockPriceData);
 
         } catch (Exception e) {
@@ -48,5 +50,11 @@ public class MarketDataFeed {
         }
 
         return null;
+    }
+
+    public StockPriceData requestStockPriceDataForDate(String tickerSymbol, Date date) {
+
+        tickerSymbol = tickerSymbol.toUpperCase();
+        return api.getStockPriceDataForDate(tickerSymbol, date);
     }
 }

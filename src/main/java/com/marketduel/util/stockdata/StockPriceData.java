@@ -5,6 +5,7 @@ package com.marketduel.util.stockdata;
  */
 public class StockPriceData {
 
+    private String tickerSymbol;
     private String date = "";
     private double open = 0;
     private double high = 0;
@@ -12,8 +13,16 @@ public class StockPriceData {
     private double volume = 0;
     private double close = 0;
 
-    public StockPriceData () {
+    public StockPriceData (String tickerSymbol) {
+        this.setTickerSymbol(tickerSymbol);
+    }
 
+    public String getTickerSymbol() {
+        return tickerSymbol;
+    }
+
+    public void setTickerSymbol(String tickerSymbol) {
+        this.tickerSymbol = tickerSymbol;
     }
 
     public String getDate() {
