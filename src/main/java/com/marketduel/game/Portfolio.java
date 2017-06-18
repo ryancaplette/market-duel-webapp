@@ -5,9 +5,6 @@ import java.util.ListIterator;
 
 public class Portfolio {
 	private int portfolioId;
-	private int playerId;
-	private int gameId;
-	private int matchId;
 
 	private float initialValue;
 	private ArrayList<StockHolding> stockHoldings=new ArrayList<StockHolding>();
@@ -16,30 +13,6 @@ public class Portfolio {
 	
 	public Portfolio() {
 
-	}
-
-	public int getPlayerId() {
-		return playerId;
-	}
-
-	public void setPlayerId(int playerId) {
-		this.playerId = playerId;
-	}
-
-	public int getGameId() {
-		return gameId;
-	}
-
-	public void setGameId(int gameId) {
-		this.gameId = gameId;
-	}
-
-	public int getMatchId() {
-		return matchId;
-	}
-
-	public void setMatchId(int matchId) {
-		this.matchId = matchId;
 	}
 
 	public void updateHoldingPrices()
