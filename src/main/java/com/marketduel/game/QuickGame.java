@@ -6,7 +6,9 @@ import java.util.Date;
 import com.marketduel.model.Player;
 
 public class QuickGame extends Game {
-	
+
+	Match match;
+
 	// When a Quick Game is created, the game opens immediately for others to join, but the single match
 	// doesn't start until the set date
 	public QuickGame(int plyrs, Date start, int duration, int balance) {
@@ -27,7 +29,11 @@ public class QuickGame extends Game {
 
 	@Override
 	void startGame() {
-//		matches[0][0] = new ClosedMatch(getMaxPlayersInGame(), getFirstMatchStart(), getMatchDurationInDays(), MatchType.Closed);
+		this.match = new ClosedMatch(getMaxPlayersInGame(), getFirstMatchStart(), getMatchDurationInDays(), MatchType.Closed);
+	}
+
+	public Match getMatch() {
+		return this.match;
 	}
 
 	@Override

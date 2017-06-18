@@ -30,7 +30,10 @@ public abstract class Match {
 	public void addPlayer(int playerId)
 	{
 		if (playerIds.size() < maxPlayersInMatch)
-		{	
+		{
+			if (playerIds.contains(playerId)) {
+				return; //player has already been added
+			}
 			playerIds.add(playerId);
 		}
 		else

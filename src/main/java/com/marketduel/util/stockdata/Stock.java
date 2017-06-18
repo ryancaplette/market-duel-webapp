@@ -74,8 +74,22 @@ public class Stock {
         this.setTrailingDividendYield(dataItems.get("trailing_dividend_yield"));
     }
 
+    /**
+     * For inserting multiple stock price data into price history
+     *
+     * @param HashMap<String, StockPriceData> stockPriceData
+     */
     public void updatePriceDataHistory(HashMap<String, StockPriceData> stockPriceData) {
         this.stockPriceHistory.putAll(stockPriceData);
+    }
+
+    /**
+     * For inserting one record of stock price data into price history
+     *
+     * @param StockPriceData stockPriceData
+     */
+    public void updatePriceDataHistory(StockPriceData stockPriceData) {
+        this.stockPriceHistory.put(stockPriceData.getDate(), stockPriceData);
     }
 
     private Double parseDouble (String i) {

@@ -55,12 +55,28 @@ public class IntrinioApi {
         return stockDataItems;
     }
 
-    public HashMap<String, StockPriceData> getStockPriceDataToday(String tickerSymbol) {
+    public StockPriceData getStockPriceDataToday(String tickerSymbol) {
+
+        Date today = new Date();
+        return getStockPriceDataForDate(tickerSymbol, today);
+    }
+
+    public StockPriceData getStockPriceDataForDate(String tickerSymbol, Date date) {
 
         try {
-            String stockPriceDataJsonResponse = this.requestStockPriceDataToday(tickerSymbol);
-            HashMap<String, StockPriceData> stockPriceData = this.parseStockPriceDataJsonResponse(stockPriceDataJsonResponse);
+            //format date to what api accepts
+            DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+            String requestedDay = dateFormat.format(date);
 
+            String stockPriceDataJsonResponse = this.requestStockPriceHistory(tickerSymbol, requestedDay, requestedDay, "daily");
+            HashMap<String, StockPriceData> stockPriceHashmap = this.parseStockPriceDataJsonResponse(tickerSymbol, stockPriceDataJsonResponse);
+
+            //format date to how api returns date format
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            requestedDay = dateFormat.format(date);
+
+            //since this is a method for returing one date we can pull the stock price data out of the hashmap
+            StockPriceData stockPriceData = stockPriceHashmap.get(requestedDay);
             return stockPriceData;
 
         } catch (IOException e) {
@@ -109,17 +125,6 @@ public class IntrinioApi {
         return jsonResponse;
     }
 
-    private String requestStockPriceDataToday(String tickerSymbol) throws IOException {
-
-        String frequency = "daily";
-
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        Date date = new Date();
-        String todaysDate = dateFormat.format(date);
-
-        return requestStockPriceHistory(tickerSymbol, todaysDate, todaysDate, frequency);
-    }
-
     private String requestStockPriceHistory(String tickerSymbol, String startDate, String endDate, String frequency) throws IOException {
         String restfulCall = "https://api.intrinio.com/prices?identifier="
                 + tickerSymbol
@@ -127,6 +132,7 @@ public class IntrinioApi {
                 + "&end_date=" + endDate
                 + "&frequency=" + frequency;
         String jsonResponse = requestApiCall(restfulCall);
+
         return jsonResponse;
     }
 
@@ -228,7 +234,7 @@ public class IntrinioApi {
         return stockDataItems.toArray(stockDataItemArray);
     }
 
-    private HashMap<String, StockPriceData> parseStockPriceDataJsonResponse(String stockPriceDataJsonResponse) {
+    private HashMap<String, StockPriceData> parseStockPriceDataJsonResponse(String tickerSymbol, String stockPriceDataJsonResponse) {
         HashMap<String, StockPriceData> stockPriceDataItems = new HashMap<String, StockPriceData>();
         JSONParser parser = new JSONParser();
         try {
@@ -240,7 +246,7 @@ public class IntrinioApi {
             for (Object o: data) {
                 JSONObject priceData = (JSONObject) o;
 
-                StockPriceData stockPriceData = new StockPriceData();
+                StockPriceData stockPriceData = new StockPriceData(tickerSymbol);
 
                 String date = priceData.get("date").toString();
                 if (date == null || date.equals("")) { //prevent hash mapping invalid data
