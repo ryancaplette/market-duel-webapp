@@ -18,7 +18,6 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
 
-import com.marketduel.game.GameLogicController;
 import com.marketduel.model.LoginResult;
 import com.marketduel.model.Player;
 import com.marketduel.service.impl.MarketDuelService;
