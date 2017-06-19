@@ -21,7 +21,13 @@ public abstract class Game {
 	private Date firstMatchStart;
 	private int matchDurationInDays;
 	
-	protected ArrayList<Integer> matchIds;
+	private ArrayList<Integer> matchIds;
+	
+	public Game()
+	{
+		System.out.println("Creating new game");
+		matchIds = new ArrayList<Integer>();
+	}
 	
 	public enum GameType {
 	    QUICK, LEAGUE
@@ -92,7 +98,7 @@ public abstract class Game {
 	}
 	
 	public void addMatch(int matchId){
-		if (matchIds.size() < maxPlayersInGame)
+		if (matchIds != null && matchIds.size() < maxPlayersInGame)
 		{	
 			matchIds.add(matchId);
 		}

@@ -18,6 +18,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
 
+import com.marketduel.game.GameLogicController;
 import com.marketduel.model.LoginResult;
 import com.marketduel.model.Player;
 import com.marketduel.service.impl.MarketDuelService;
@@ -211,16 +212,17 @@ public class WebConfig {
 		}, new FreeMarkerEngine());
 
 
-		get("/quickmatch", (req, res) -> {
+		get("/games", (req, res) -> {
 			Player player = getAuthenticatedPlayer(req);
 			Map<String, Object> map = new HashMap<>();
-			map.put("pageTitle", "Quick Match");
+			map.put("pageTitle", "Games");
 			map.put("player", player);
-			return new ModelAndView(map, "quickmatch.ftl");
+			map.put("gamesList", service.getGamesForPlayer(player));
+			return new ModelAndView(map, "games.ftl");
 		}, new FreeMarkerEngine());
 		
 		
-		before("/quickmatch", (req, res) -> {
+		before("/games", (req, res) -> {
 			Player authPlayer = getAuthenticatedPlayer(req);
 			if(authPlayer == null) {
 				res.redirect("/");

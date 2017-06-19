@@ -24,7 +24,7 @@
                 <#if player??>
                     <li><a href="/research">Research</a></li>
                     <li><a href="/account">My Account</a></li>
-                    <li><a href="/quickmatch">Quick Match</a></li>
+                    <li><a href="/games">Games</a></li>
                     <li><a href="/logout">Log Out</a></li>
                 <#else>
                     <li><a href="/research">Research</a></li>

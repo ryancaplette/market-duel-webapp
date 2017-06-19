@@ -133,6 +133,8 @@ public class GameDaoImpl implements GameDao {
 		
 		Map<String, Object> params = new HashMap<String, Object>();
         params.put("playerId", p.getPlayerId());
+        
+        System.out.println("PlayerId: " + p.getPlayerId());
 		
         List<Game> playerGameList = template.query(
                 sql,

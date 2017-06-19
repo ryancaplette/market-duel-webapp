@@ -1,9 +1,13 @@
 package com.marketduel.service.impl;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.marketduel.dao.GameDao;
 import com.marketduel.dao.PlayerDao;
+import com.marketduel.game.Game;
 import com.marketduel.model.LoginResult;
 import com.marketduel.model.Player;
 import com.marketduel.util.PasswordUtil;
@@ -13,6 +17,9 @@ public class MarketDuelService {
 	
 	@Autowired
 	private PlayerDao playerDao;
+	
+	@Autowired
+	private GameDao gamesDao;
 
 	public Player getPlayerbyUsername(String username) {
 		return playerDao.getPlayerbyUsername(username);
@@ -36,9 +43,18 @@ public class MarketDuelService {
 		player.setPassword(PasswordUtil.hashPassword(player.getPassword()));
 		playerDao.registerPlayer(player);
 	}
+	
+	public ArrayList<Game> getGamesForPlayer(Player p)
+	{
+		return (ArrayList<Game>) gamesDao.getPlayersGames(p);	
+	}
 
 	public void setPlayerDao(PlayerDao playerDao) {
 		this.playerDao = playerDao;
+	}
+	
+	public void setGameDao(GameDao gamesDao) {
+		this.gamesDao = gamesDao;
 	}
 
 }
