@@ -17,4 +17,8 @@ public interface GameDao {
 	Boolean updateMatchIds(Game g, ArrayList<Integer> matchList);
 	
 	List<Game> getPlayersGames(Player p);
+
+	List<Game> getAvailableGames();
+
+	boolean addPlayerToGame(int gameId, int PlayerId);
 }

@@ -144,4 +144,44 @@ public class GameDaoImpl implements GameDao {
 		return playerGameList;
 	}
 
+	@Override
+	public List<Game> getAvailableGames() {
+
+		String sql ="SELECT DISTINCT * FROM game "
+				+ "WHERE FirstMatchStart >= CURDATE()";
+//				+ "WHERE FirstMatchStart >= \"2017-01-01\"";
+
+		List<Game> availableGameList = template.query(
+				sql,
+				gameMapper);
+
+		return availableGameList;
+	}
+
+	@Override
+	public boolean addPlayerToGame(int gameId, int playerId) {
+		//this just needs to insert the playerId into the first match for the given gameId
+
+//		String sql ="SELECT GameID FROM game "
+//				+ "WHERE :playerId "
+//				+ GameID = " + String.valueOf(gameId);
+//
+//		Map<String, Object> params = new HashMap<String, Object>();
+//		params.put("wefij",gameId);
+//
+//		List<Game> game = template.query(
+//				sql,
+//				params,
+//				gameMapper);
+//
+//		if (game.size() != 1) {
+//			return false;
+//		} else {
+//			System.out.println("Worked");
+//			System.out.println(game.get(0).getGameId());
+//		}
+
+		return true;
+	}
+
 }

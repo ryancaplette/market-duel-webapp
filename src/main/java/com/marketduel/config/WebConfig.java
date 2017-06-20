@@ -9,10 +9,9 @@ import static spark.Spark.staticFileLocation;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
+import com.marketduel.game.Game;
 import com.marketduel.util.stockdata.StockPriceData;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
@@ -216,10 +215,77 @@ public class WebConfig {
 			Map<String, Object> map = new HashMap<>();
 			map.put("pageTitle", "Games");
 			map.put("player", player);
-			map.put("gamesList", service.getGamesForPlayer(player));
+
+			//get array list games player belongs too
+			//get list of all games
+			//subtract them
+			//show drop down  list of games they can join by clicking button that form submits similar tot he register
+			List<Game> playersGames = service.getGamesForPlayer(player);
+			map.put("playerGamesList", playersGames);
+
+			HashMap<Integer, Boolean> playerGameIdsDict = new HashMap<Integer, Boolean>();
+			for(Game game : playersGames) {
+				playerGameIdsDict.put(game.getGameId(), true);
+			}
+
+			List<Game> availableGames = service.getAvailableGames();
+			ArrayList<Game> joinableGames = new ArrayList<>();
+			for(Game game : availableGames) {
+				if (!playerGameIdsDict.containsKey(game.getGameId())) {
+					joinableGames.add(game);
+					System.out.println("Joinable GameID: " + game.getGameId() );
+				}
+			}
+
+			if (joinableGames.size() > 0) {
+				map.put("isJoinableGamesList", true);
+				map.put("joinableGamesList", joinableGames);
+			}
+
 			return new ModelAndView(map, "games.ftl");
 		}, new FreeMarkerEngine());
-		
+
+		post("/games", (req, res) -> {
+			Player player = getAuthenticatedPlayer(req);
+			Map<String, Object> map = new HashMap<>();
+			map.put("pageTitle", "Games");
+			map.put("player", player);
+
+			if(req.queryParams("join-game") != null) {
+				System.out.println(req.queryParams("join-game"));
+				service.addPlayerToGame(Integer.parseInt(req.queryParams("join-game")), player.getPlayerId());
+			} else {
+				System.out.println("fail");
+			}
+
+			//get array list games player belongs too
+			//get list of all games
+			//subtract them
+			//show drop down  list of games they can join by clicking button that form submits similar tot he register
+			List<Game> playersGames = service.getGamesForPlayer(player);
+			map.put("playerGamesList", playersGames);
+
+			HashMap<Integer, Boolean> playerGameIdsDict = new HashMap<Integer, Boolean>();
+			for(Game game : playersGames) {
+				playerGameIdsDict.put(game.getGameId(), true);
+			}
+
+			List<Game> availableGames = service.getAvailableGames();
+			ArrayList<Game> joinableGames = new ArrayList<>();
+			for(Game game : availableGames) {
+				if (!playerGameIdsDict.containsKey(game.getGameId())) {
+					joinableGames.add(game);
+					System.out.println("Joinable GameID: " + game.getGameId() );
+				}
+			}
+
+			if (joinableGames.size() > 0) {
+				map.put("isJoinableGamesList", true);
+				map.put("joinableGamesList", joinableGames);
+			}
+
+			return new ModelAndView(map, "games.ftl");
+		}, new FreeMarkerEngine());
 		
 		before("/games", (req, res) -> {
 			Player authPlayer = getAuthenticatedPlayer(req);

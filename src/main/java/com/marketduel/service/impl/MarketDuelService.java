@@ -46,7 +46,17 @@ public class MarketDuelService {
 	
 	public ArrayList<Game> getGamesForPlayer(Player p)
 	{
-		return (ArrayList<Game>) gamesDao.getPlayersGames(p);	
+		return (ArrayList<Game>) gamesDao.getPlayersGames(p);
+	}
+
+	public ArrayList<Game> getAvailableGames()
+	{
+		return (ArrayList<Game>) gamesDao.getAvailableGames();
+	}
+
+	public boolean addPlayerToGame(int gameId, int playerId)
+	{
+		return gamesDao.addPlayerToGame(gameId, playerId);
 	}
 
 	public void setPlayerDao(PlayerDao playerDao) {
