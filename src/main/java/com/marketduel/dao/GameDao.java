@@ -20,5 +20,5 @@ public interface GameDao {
 
 	List<Game> getAvailableGames();
 
-	boolean addPlayerToGame(int gameId, int PlayerId);
+	boolean addPlayerToQuickGame(int gameId, int PlayerId);
 }

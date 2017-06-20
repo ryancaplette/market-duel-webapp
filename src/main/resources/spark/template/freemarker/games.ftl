@@ -29,9 +29,6 @@ ${message}
 </div>
 <div class="row">
     <div class="col-xs-11">
-    </div>
-
-    <div class="col-xs-11">
     <#if isJoinableGamesList??>
         <form class="form-horizontal" action="/games" role="form" method="post">
 

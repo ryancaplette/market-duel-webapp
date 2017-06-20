@@ -23,9 +23,11 @@ public abstract class Game {
 	
 	private ArrayList<Integer> matchIds;
 	
+	public ArrayList<Integer> getMatchIds() {
+		return matchIds;
+	}
 	public Game()
 	{
-		System.out.println("Creating new game");
 		matchIds = new ArrayList<Integer>();
 	}
 	
@@ -98,14 +100,11 @@ public abstract class Game {
 	}
 	
 	public void addMatch(int matchId){
-		if (matchIds != null && matchIds.size() < maxPlayersInGame)
-		{	
-			matchIds.add(matchId);
-		}
-		else
-		{
-			//Error: Game is full
-		}
+
+		// Adding Match to game object
+		System.out.println("adding matchId " + matchId);
+		matchIds.add(matchId);
+
 	}
 	
 	public void removePortfolio(int portId)	{

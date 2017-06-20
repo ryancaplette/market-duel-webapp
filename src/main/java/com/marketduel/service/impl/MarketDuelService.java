@@ -56,7 +56,7 @@ public class MarketDuelService {
 
 	public boolean addPlayerToGame(int gameId, int playerId)
 	{
-		return gamesDao.addPlayerToGame(gameId, playerId);
+		return gamesDao.addPlayerToQuickGame(gameId, playerId);
 	}
 
 	public void setPlayerDao(PlayerDao playerDao) {

@@ -115,8 +115,9 @@ public class GameDaoImpl implements GameDao {
 		
         for(int i = 1; i < (Game.MAX_MATCHES_PER_GAME+1); i++)
         {
-        	g.addMatch(rs.getInt("Match"+i+"ID"));
+        	g.addMatch(rs.getInt("Match"+i+"Id"));
         }
+        System.out.println("MatchListSize: " + g.getMatchIds().size());
         
 		return g;
 	};
@@ -149,7 +150,6 @@ public class GameDaoImpl implements GameDao {
 
 		String sql ="SELECT DISTINCT * FROM game "
 				+ "WHERE FirstMatchStart >= CURDATE()";
-//				+ "WHERE FirstMatchStart >= \"2017-01-01\"";
 
 		List<Game> availableGameList = template.query(
 				sql,
@@ -159,29 +159,41 @@ public class GameDaoImpl implements GameDao {
 	}
 
 	@Override
-	public boolean addPlayerToGame(int gameId, int playerId) {
-		//this just needs to insert the playerId into the first match for the given gameId
+	public boolean addPlayerToQuickGame(int gameId, int playerId) {
+		String sql ="SELECT DISTINCT * FROM game WHERE GameID = :gameId";
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+        params.put("gameId", gameId);
 
-//		String sql ="SELECT GameID FROM game "
-//				+ "WHERE :playerId "
-//				+ GameID = " + String.valueOf(gameId);
-//
-//		Map<String, Object> params = new HashMap<String, Object>();
-//		params.put("wefij",gameId);
-//
-//		List<Game> game = template.query(
-//				sql,
-//				params,
-//				gameMapper);
-//
-//		if (game.size() != 1) {
-//			return false;
-//		} else {
-//			System.out.println("Worked");
-//			System.out.println(game.get(0).getGameId());
-//		}
+		List<Game> curGame = template.query(
+				sql,
+				params,
+				gameMapper);
+		
+		int retVal = 0;
+		if (curGame.size() == 1)
+		{
+			//So this statement works to find and set next null value but does not stop after first field
+			//it finds so all null player ID fields will be set. After demo should implement a number of players in match
+			//and use that to grab the next spot in the match
+			sql = "UPDATE matches"
+			    + " SET Player1ID = CASE WHEN Player1ID IS NULL THEN :playerId ELSE Player1ID END,"
+			    + "     Player2ID = CASE WHEN Player2ID IS NULL AND Player1ID IS NOT NULL THEN :playerId ELSE Player2ID END,"
+			    + "     Player3ID = CASE WHEN Player3ID IS NULL AND Player2ID IS NOT NULL THEN :playerId ELSE Player3ID END "
+			    + "WHERE MatchID = :matchId";
+			params = new HashMap<String, Object>();
+	        params.put("matchId", curGame.get(0).getMatchIds().get(0));
+	        params.put("playerId", playerId);
+	        
+	        retVal = template.update(sql, params);
+	        
+	        System.out.println("Added player to game: " + retVal);
 
-		return true;
+		}
+		
+		//Need to create portfolio in next open spot of match for new player added to match
+
+		return (retVal == 1);
 	}
 
 }
