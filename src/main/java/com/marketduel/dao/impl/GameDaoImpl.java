@@ -173,13 +173,17 @@ public class GameDaoImpl implements GameDao {
 		int retVal = 0;
 		if (curGame.size() == 1)
 		{
-			//So this statement works to find and set next null value but does not stop after first field
-			//it finds so all null player ID fields will be set. After demo should implement a number of players in match
-			//and use that to grab the next spot in the match
 			sql = "UPDATE matches"
-			    + " SET Player1ID = CASE WHEN Player1ID IS NULL THEN :playerId ELSE Player1ID END,"
+			    + " SET Player10ID = CASE WHEN Player10ID IS NULL AND Player9ID IS NOT NULL THEN :playerId ELSE Player10ID END,"
+			    + "     Player9ID = CASE WHEN Player9ID IS NULL AND Player8ID IS NOT NULL THEN :playerId ELSE Player9ID END,"
+			    + "     Player8ID = CASE WHEN Player8ID IS NULL AND Player7ID IS NOT NULL THEN :playerId ELSE Player8ID END,"
+			    + "     Player7ID = CASE WHEN Player7ID IS NULL AND Player6ID IS NOT NULL THEN :playerId ELSE Player7ID END,"
+			    + "     Player6ID = CASE WHEN Player6ID IS NULL AND Player5ID IS NOT NULL THEN :playerId ELSE Player6ID END,"
+			    + "     Player5ID = CASE WHEN Player5ID IS NULL AND Player4ID IS NOT NULL THEN :playerId ELSE Player5ID END,"
+			    + "     Player4ID = CASE WHEN Player4ID IS NULL AND Player3ID IS NOT NULL THEN :playerId ELSE Player4ID END,"
+			    + "     Player3ID = CASE WHEN Player3ID IS NULL AND Player2ID IS NOT NULL THEN :playerId ELSE Player3ID END,"
 			    + "     Player2ID = CASE WHEN Player2ID IS NULL AND Player1ID IS NOT NULL THEN :playerId ELSE Player2ID END,"
-			    + "     Player3ID = CASE WHEN Player3ID IS NULL AND Player2ID IS NOT NULL THEN :playerId ELSE Player3ID END "
+			    + "     Player1ID = CASE WHEN Player1ID IS NULL THEN :playerId ELSE Player1ID END "
 			    + "WHERE MatchID = :matchId";
 			params = new HashMap<String, Object>();
 	        params.put("matchId", curGame.get(0).getMatchIds().get(0));
