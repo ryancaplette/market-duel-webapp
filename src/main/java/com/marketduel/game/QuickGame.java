@@ -1,13 +1,12 @@
 package com.marketduel.game;
 
-import java.util.Arrays;
 import java.util.Date;
 
 import com.marketduel.model.Player;
 
 public class QuickGame extends Game {
 
-	Match match;
+	private Match match;
 
 	// When a Quick Game is created, the game opens immediately for others to join, but the single match
 	// doesn't start until the set date
