@@ -23,7 +23,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <#if player??>
                     <li><a href="/research">Research</a></li>
-                    <li><a href="/account">My Account</a></li>
+                    <li><a href="/account">My Account <strong>(${player.username})</strong></a></li>
                     <li><a href="/logout">Log Out</a></li>
                 <#else>
                     <li><a href="/research">Research</a></li>
@@ -39,7 +39,7 @@
     </div>
 
     <footer class="footer">
-        <p><a href="/help">Help</a> | <a href="/contact">Contact</a></p>
+        <p><a href="#">Help</a> | <a href="#">Contact</a></p>
         <p>Market Duel v1.0.1 - <b>${.now?long?number_to_datetime}</b></p>
     </footer>
 </div><!-- /container -->

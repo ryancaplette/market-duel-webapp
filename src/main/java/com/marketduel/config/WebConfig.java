@@ -295,6 +295,114 @@ public class WebConfig {
 			}
 		});
 
+
+		get("/game-detail", (req, res) -> {
+			Player player = getAuthenticatedPlayer(req);
+			Map<String, Object> map = new HashMap<>();
+			map.put("pageTitle", "Game Detail");
+			map.put("player", player);
+			return new ModelAndView(map, "game-detail.ftl");
+        }, new FreeMarkerEngine());
+		before("/game-detail", (req, res) -> {
+			Player authPlayer = getAuthenticatedPlayer(req);
+			if(authPlayer == null) {
+				res.redirect("/");
+				halt();
+			}
+		});
+
+
+		get("/portfolios", (req, res) -> {
+			Player player = getAuthenticatedPlayer(req);
+			Map<String, Object> map = new HashMap<>();
+			map.put("pageTitle", "Portfolios");
+			map.put("player", player);
+			return new ModelAndView(map, "portfolio.ftl");
+        }, new FreeMarkerEngine());
+		before("/portfolios", (req, res) -> {
+			Player authPlayer = getAuthenticatedPlayer(req);
+			if(authPlayer == null) {
+				res.redirect("/");
+				halt();
+			}
+		});
+
+
+
+		get("/portfolio-detail", (req, res) -> {
+			Player player = getAuthenticatedPlayer(req);
+			Map<String, Object> map = new HashMap<>();
+			map.put("pageTitle", "Portfolio Detail");
+			map.put("player", player);
+			return new ModelAndView(map, "portfolio-detail.ftl");
+        }, new FreeMarkerEngine());
+		before("/portfolio-detail", (req, res) -> {
+			Player authPlayer = getAuthenticatedPlayer(req);
+			if(authPlayer == null) {
+				res.redirect("/");
+				halt();
+			}
+		});
+
+
+
+
+
+        get("/players", (req, res) -> {
+			Player player = getAuthenticatedPlayer(req);
+			Map<String, Object> map = new HashMap<>();
+			map.put("pageTitle", "Players");
+			map.put("player", player);
+			return new ModelAndView(map, "players.ftl");
+        }, new FreeMarkerEngine());
+		before("/players", (req, res) -> {
+			Player authPlayer = getAuthenticatedPlayer(req);
+			if(authPlayer == null) {
+				res.redirect("/");
+				halt();
+			}
+		});
+
+
+
+		get("/player-detail", (req, res) -> {
+			Player player = getAuthenticatedPlayer(req);
+			Map<String, Object> map = new HashMap<>();
+			map.put("pageTitle", "Player Detail");
+			map.put("player", player);
+			return new ModelAndView(map, "player-detail.ftl");
+        }, new FreeMarkerEngine());
+		before("/player-detail", (req, res) -> {
+			Player authPlayer = getAuthenticatedPlayer(req);
+			if(authPlayer == null) {
+				res.redirect("/");
+				halt();
+			}
+		});
+	
+
+
+
+
+		get("/alerts", (req, res) -> {
+			Player player = getAuthenticatedPlayer(req);
+			Map<String, Object> map = new HashMap<>();
+			map.put("pageTitle", "Alerts");
+			map.put("player", player);
+			return new ModelAndView(map, "alerts.ftl");
+        }, new FreeMarkerEngine());
+		before("/alerts", (req, res) -> {
+			Player authPlayer = getAuthenticatedPlayer(req);
+			if(authPlayer == null) {
+				res.redirect("/");
+				halt();
+			}
+		});
+ 
+
+
+
+
 	}
 
 	private void addAuthenticatedPlayer(Request request, Player p) {
