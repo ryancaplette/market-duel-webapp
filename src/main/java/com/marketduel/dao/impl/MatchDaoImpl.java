@@ -119,6 +119,13 @@ public class MatchDaoImpl implements MatchDao {
         return (result == 1);
 	}
 	
+	
+	// Return a map of all the portfolios and players in the game
+	public Map<Integer, Integer> getPortfolioAndPlayerIDs(int matchID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	private RowMapper<Match> matchMapper = (rs, rowNum) -> {
 		Match m;
 		if (rs.getInt("MatchType") == 0)
