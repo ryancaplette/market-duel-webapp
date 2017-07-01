@@ -1,6 +1,7 @@
 package com.marketduel.dao;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.marketduel.game.Match;
 import com.marketduel.game.Portfolio;
@@ -17,4 +18,7 @@ public interface MatchDao {
 	Boolean updatePlayerIds(Match m, ArrayList<Integer> plList);
 
 	Boolean updatePortfolioIds(Match m, ArrayList<Integer> portList);
+	
+	// Return a map of all the portfolios and players in the game
+	Map<Integer, Integer> getPortfolioAndPlayerIDs(int matchId);
 }

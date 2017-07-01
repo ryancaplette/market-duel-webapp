@@ -121,9 +121,17 @@ public class MatchDaoImpl implements MatchDao {
 	
 	
 	// Return a map of all the portfolios and players in the game
-	public Map<Integer, Integer> getPortfolioAndPlayerIDs(int matchID) {
-		// TODO Auto-generated method stub
-		return null;
+	@Override
+	public Map<Integer, Integer> getPortfolioAndPlayerIDs(int matchId) {
+		String sql = "SELECT * FROM matches WHERE MatchId=:id";
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+        params.put("id", matchId);
+        
+        //List should be size 1 since MatchId are guaranteed unique in SQL table
+		List<Map<Integer, Integer>> list = template.query(sql, params, playerPorfolioMapper);
+		
+		return list.get(0);
 	}
 	
 	private RowMapper<Match> matchMapper = (rs, rowNum) -> {
@@ -150,6 +158,20 @@ public class MatchDaoImpl implements MatchDao {
         }
         
 		return m;
+	};
+	
+	private RowMapper<Map<Integer, Integer>> playerPorfolioMapper = (rs, rowNum) -> {
+		Map<Integer, Integer> playerPortfolioLink = new HashMap<Integer, Integer>();
+		for (int i = 1; i < (Match.MAX_NUM_PLAYERS + 1); i++)
+		{
+			//Only put valid pairs in the map
+			if (rs.getInt("Player" + i + "ID") != 0 && rs.getInt("Portfolio" + i + "ID") != 0)
+			{
+				playerPortfolioLink.put(rs.getInt("Player" + i + "ID"), rs.getInt("Portfolio" + i + "ID"));
+			}
+		}
+
+		return playerPortfolioLink;
 	};
 
 }
