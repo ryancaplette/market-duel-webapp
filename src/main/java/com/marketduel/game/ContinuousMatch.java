@@ -18,4 +18,10 @@ public class ContinuousMatch extends Match {
 
 	}
 
+	@Override
+	protected int determineWinner() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
