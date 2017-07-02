@@ -34,9 +34,11 @@
                 <form class="form-horizontal" action="/stock-order" role="form" method="post">
 
                     <div class="form-group">
-                        <label for="ticker" class="col-sm-2 control-label">Ticker Symbol: </label>
                         <div class="col-sm-10">
+                            <label for="ticker" class="control-label">Ticker Symbol: </label>
                             <input type="text" class="form-control" name="ticker" id="ticker" placeholder="Ticker Symbol" value="${ticker!}" />
+                            <label for="quantity" class="control-label">Quantity: </label>
+                            <input type="text" class="form-control" name="quantity" id="quantity" placeholder="Quantity" value="0" />
                             <input type="hidden" class="form-control" name="pfId" id="pfId" value="${pfId!}" />
                         </div>
                     </div>
