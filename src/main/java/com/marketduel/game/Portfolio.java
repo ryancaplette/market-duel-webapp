@@ -107,4 +107,8 @@ public class Portfolio {
 		return stockHoldings.size();
 		
 	}
+
+	public ArrayList<StockHolding> getStockHoldings() {
+		return stockHoldings;
+	}
 }

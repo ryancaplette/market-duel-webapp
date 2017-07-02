@@ -76,8 +76,8 @@ public class PortfolioDaoImpl implements PortfolioDao {
 		//Build string pointing to next empty StockHolding
 		for (int i = 0; i < shList.size() && result != 0 ; i++) {
 			String stockStr = "Stock" + (i + 1);
-			String sql = "UPDATE Portfolio " +
-			             "SET " + stockStr + "Symb = :symb, " + stockStr + "NumShares = :numShares, " + stockStr + "InitCost = :initCost" +
+			String sql = "UPDATE portfolio " +
+			             "SET " + stockStr + "Symb = :symb, " + stockStr + "NumShares = :numShares, " + stockStr + "InitCost = :initCost " +
 					     "WHERE  PortfolioID = " + pf.getPortfolioId();
 
 			Map<String, Object> params = new HashMap<String, Object>();
@@ -109,6 +109,9 @@ public class PortfolioDaoImpl implements PortfolioDao {
 		pf.setPortfolioId(rs.getInt("PortfolioId"));
 		for(int i = 1; i < Portfolio.MAX_NUM_HOLDINGS; i++){
 			String stockStr = "Stock" + (i);
+			if (rs.getString(stockStr + "Symb") == null) {
+				continue;
+			}
 			StockHolding sh = new StockHolding(rs.getString(stockStr + "Symb"), rs.getInt(stockStr + "NumShares"), rs.getFloat(stockStr + "InitCost"));
 			pf.addHolding(sh);
 		}

@@ -2,6 +2,9 @@ package com.marketduel.service.impl;
 
 import java.util.ArrayList;
 
+import com.marketduel.dao.PortfolioDao;
+import com.marketduel.game.Portfolio;
+import com.marketduel.game.StockHolding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,9 @@ public class MarketDuelService {
 	
 	@Autowired
 	private GameDao gamesDao;
+
+	@Autowired
+	private PortfolioDao portfolioDao;
 
 	public Player getPlayerbyUsername(String username) {
 		return playerDao.getPlayerbyUsername(username);
@@ -67,4 +73,11 @@ public class MarketDuelService {
 		this.gamesDao = gamesDao;
 	}
 
+	public Portfolio getPortfolioById (int pfId) {
+		return portfolioDao.getPortfolioById(pfId);
+	}
+
+	public Boolean storeStockHoldingsInPortfolio (Portfolio pf, ArrayList<StockHolding> shList) {
+		return portfolioDao.storeStockHoldingsInPortfolio(pf, shList);
+	}
 }

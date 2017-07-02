@@ -91,7 +91,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <a href="#">3</a>
+                            <a href="/portfolio-detail?id=3">3</a>
                         </td>
                         <td>
                             <a href="#">Game 8</a>

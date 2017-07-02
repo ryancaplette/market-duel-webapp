@@ -12,6 +12,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.marketduel.game.Game;
+import com.marketduel.game.Portfolio;
+import com.marketduel.game.StockHolding;
 import com.marketduel.util.stockdata.StockPriceData;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
@@ -334,9 +336,22 @@ public class WebConfig {
 			Map<String, Object> map = new HashMap<>();
 			map.put("pageTitle", "Portfolio Detail");
 			map.put("player", player);
+
+			//if id not given then this break need to handle..
+			int pfId = Integer.parseInt(req.queryParams("id"));
+
+			Portfolio portfolio = service.getPortfolioById(pfId);
+			map.put("pfId", portfolio.getPortfolioId());
+			map.put("stockHoldings", portfolio.getStockHoldings());
+
+			for (StockHolding stock : portfolio.getStockHoldings()) {
+				stock.getTicker();
+			}
+
 			return new ModelAndView(map, "portfolio-detail.ftl");
         }, new FreeMarkerEngine());
 		before("/portfolio-detail", (req, res) -> {
+
 			Player authPlayer = getAuthenticatedPlayer(req);
 			if(authPlayer == null) {
 				res.redirect("/");
@@ -344,9 +359,41 @@ public class WebConfig {
 			}
 		});
 
+		post("/stock-order", (req, res) -> {
+			Player player = getAuthenticatedPlayer(req);
+			Map<String, Object> map = new HashMap<>();
+			map.put("pageTitle", "Stock Order");
+			map.put("player", player);
 
+			int pfId = Integer.parseInt(req.queryParams("pfId"));
 
+			Portfolio portfolio = service.getPortfolioById(pfId);
+			ArrayList<StockHolding> stockHoldings = portfolio.getStockHoldings();
 
+			if (stockHoldings.size() >= Portfolio.MAX_NUM_HOLDINGS) {
+				//error cannot purchase more stock
+			}
+
+			String ticker = req.queryParams("ticker");
+
+			StockHolding sh = new StockHolding(ticker, 0f, 0.00f);
+			portfolio.addHolding(sh);
+
+			service.storeStockHoldingsInPortfolio(portfolio, portfolio.getStockHoldings());
+
+			res.redirect("/portfolio-detail?id=" + pfId);
+			halt();
+
+			return new ModelAndView(map, "portfolio-detail.ftl");
+		}, new FreeMarkerEngine());
+		before("/portfolio-detail", (req, res) -> {
+
+			Player authPlayer = getAuthenticatedPlayer(req);
+			if(authPlayer == null) {
+				res.redirect("/");
+				halt();
+			}
+		});
 
         get("/players", (req, res) -> {
 			Player player = getAuthenticatedPlayer(req);
