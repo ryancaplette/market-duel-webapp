@@ -21,6 +21,4 @@ public interface MatchDao {
 	
 	// Return a map of all the portfolios and players in the game
 	Map<Integer, Integer> getPortfolioAndPlayerIDs(int matchId);
-
-	Match getMatchByName(String matchName);
 }

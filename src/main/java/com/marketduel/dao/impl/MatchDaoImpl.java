@@ -17,7 +17,6 @@ import com.marketduel.dao.PlayerDao;
 import com.marketduel.game.ClosedMatch;
 import com.marketduel.game.ContinuousMatch;
 import com.marketduel.game.Match;
-import com.marketduel.game.Match.MatchType;
 import com.marketduel.game.Portfolio;
 import com.marketduel.model.Player;
 
@@ -40,7 +39,7 @@ public class MatchDaoImpl implements MatchDao {
 		params.put("start", m.getStartDate());
 		params.put("end", m.getEndDate());
 		params.put("budget", m.getInitialBalance());
-		params.put("type", m.getMatchType() == MatchType.Closed ? 0:1);
+		params.put("type", m.getMatchType());
 
 		int result = template.update(sql, params);
 
@@ -54,26 +53,6 @@ public class MatchDaoImpl implements MatchDao {
 		
 		Map<String, Object> params = new HashMap<String, Object>();
         params.put("id", matchId);
-		
-        List<Match> list = template.query(
-                    sql,
-                    params,
-                    matchMapper);
-        
-        Match result = null;
-        if(list != null && !list.isEmpty()) {
-        	result = list.get(0);
-        }
-        
-		return result;
-	}
-	
-	@Override
-	public Match getMatchByName(String matchName) {
-		String sql = "SELECT * FROM matches WHERE MatchName=:name";
-		
-		Map<String, Object> params = new HashMap<String, Object>();
-        params.put("name", matchName);
 		
         List<Match> list = template.query(
                     sql,

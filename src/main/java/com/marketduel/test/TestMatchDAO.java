@@ -1,6 +1,5 @@
 package com.marketduel.test;
 
-import java.util.Calendar;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -17,8 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.marketduel.App;
 import com.marketduel.dao.MatchDao;
 import com.marketduel.dao.impl.MatchDaoImpl;
-import com.marketduel.game.ClosedMatch;
-import com.marketduel.game.Match;
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 @ContextConfiguration(classes = App.class)
@@ -30,59 +27,17 @@ public class TestMatchDAO {
 	
 	@Test
 	@Transactional
-	public void testCreateReadDeleteMatch() {
-		matchDao = new MatchDaoImpl(dataSource());
-		
-		//Create Match
-		Match m = new ClosedMatch();
-		m.setMatchName("UTMatch");
-		m.setStartDate(Calendar.getInstance().getTime());
-		m.setEndDate(Calendar.getInstance().getTime());
-		m.setInitialBalance(1000);
-	    Boolean res = matchDao.createMatch(m);
-		
-		assert (res == true);
-		
-		//Read
-	    m = matchDao.getMatchByName("UTMatch");
-		
-		//Delete
-		matchDao.deleteMatchByID(m.getMatchID());
-	}
-	
-	
-	@Test
-	@Transactional
 	public void testGetPortfolioAndPlayerIDs() {
 		matchDao = new MatchDaoImpl(dataSource());
 		
-		//Create Match
-		Match m = new ClosedMatch();
-		m.setMatchName("UTMatch");
-		m.setStartDate(Calendar.getInstance().getTime());
-		m.setEndDate(Calendar.getInstance().getTime());
-		m.setInitialBalance(1000);
-		matchDao.createMatch(m);
-		
-		//Read
-	    m = matchDao.getMatchByName("UTMatch");
-		
-		//Update
-		m.addPlayer(1);
-		m.addPortfolio(1);
-		
-		matchDao.updatePlayerIds(m, m.getPlayerIds());
-		matchDao.updatePortfolioIds(m, m.getPortfolioIds());
-		
-		//Test
-		Map<Integer,Integer> playerPorfolioMap = matchDao.getPortfolioAndPlayerIDs(m.getMatchID());
+		//This is temporary unit test - need to make own match just for test with values
+		//and call on that rather than select second match as that is real data
+		Map<Integer,Integer> playerPorfolioMap = matchDao.getPortfolioAndPlayerIDs(2);
 		
 		System.out.println(playerPorfolioMap.get(1));
 		
 		assert (playerPorfolioMap.keySet() != null);
-		
-		//Delete
-		matchDao.deleteMatchByID(m.getMatchID());
+
 	}
 
 	

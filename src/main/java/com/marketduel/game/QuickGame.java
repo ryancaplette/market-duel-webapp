@@ -2,7 +2,6 @@ package com.marketduel.game;
 
 import java.util.Date;
 
-import com.marketduel.game.Match.MatchType;
 import com.marketduel.model.Player;
 
 public class QuickGame extends Game {

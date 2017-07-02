@@ -4,7 +4,9 @@ import java.util.Date;
 
 import com.marketduel.model.Player;
 
-
+enum MatchType {
+	Closed, Continuous
+}
 
 public abstract class Match {
 	abstract void startMatch();
@@ -12,10 +14,6 @@ public abstract class Match {
 	protected abstract int determineWinner();
 	
 	public static final int MAX_NUM_PLAYERS = 10;
-	
-	public enum MatchType {
-		Closed, Continuous
-	}
 
 	private int matchID;
 	private String matchName;
@@ -38,7 +36,6 @@ public abstract class Match {
 				return; //player has already been added
 			}
 			playerIds.add(playerId);
-			
 		}
 		else
 		{
@@ -132,13 +129,5 @@ public abstract class Match {
 	}
 	public void setMatchType(MatchType matchType) {
 		this.matchType = matchType;
-	}
-	public ArrayList<Integer> getPlayerIds()
-	{
-		return playerIds;
-	}
-	public ArrayList<Integer> getPortfolioIds()
-	{
-		return portfolioIds;
 	}
 }
