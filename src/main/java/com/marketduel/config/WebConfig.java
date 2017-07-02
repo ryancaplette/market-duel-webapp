@@ -366,6 +366,7 @@ public class WebConfig {
 			map.put("player", player);
 
 			int pfId = Integer.parseInt(req.queryParams("pfId"));
+			float quantity = Float.valueOf(req.queryParams("quantity"));
 
 			Portfolio portfolio = service.getPortfolioById(pfId);
 			ArrayList<StockHolding> stockHoldings = portfolio.getStockHoldings();
@@ -376,7 +377,7 @@ public class WebConfig {
 
 			String ticker = req.queryParams("ticker");
 
-			StockHolding sh = new StockHolding(ticker, 0f, 0.00f);
+			StockHolding sh = new StockHolding(ticker, quantity, 0.00f);
 			portfolio.addHolding(sh);
 
 			service.storeStockHoldingsInPortfolio(portfolio, portfolio.getStockHoldings());

@@ -9,6 +9,7 @@ import com.marketduel.model.Player;
 public abstract class Match {
 	abstract void startMatch();
 	abstract void endMatch();
+	protected abstract int determineWinner();
 	
 	public static final int MAX_NUM_PLAYERS = 10;
 	

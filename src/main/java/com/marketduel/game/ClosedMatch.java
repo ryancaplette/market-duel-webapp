@@ -44,7 +44,7 @@ public class ClosedMatch extends Match {
 	}
 
 	// Determine winner of a match. Winner's player ID is returned. Currently does not support ties.
-	private int determineWinner() {
+	protected int determineWinner() {
 		DatabaseConfig d = new DatabaseConfig();
 		MatchDaoImpl m = new MatchDaoImpl(d.dataSource());
 		PortfolioDaoImpl p = new PortfolioDaoImpl(d.dataSource());
