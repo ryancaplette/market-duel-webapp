@@ -107,7 +107,7 @@ public class PortfolioDaoImpl implements PortfolioDao {
 		Portfolio pf = new Portfolio();
 		
 		pf.setPortfolioId(rs.getInt("PortfolioId"));
-		for(int i = 1; i < Portfolio.MAX_NUM_HOLDINGS; i++){
+		for(int i = 1; i <= Portfolio.MAX_NUM_HOLDINGS; i++){
 			String stockStr = "Stock" + (i);
 			if (rs.getString(stockStr + "Symb") == null) {
 				continue;
