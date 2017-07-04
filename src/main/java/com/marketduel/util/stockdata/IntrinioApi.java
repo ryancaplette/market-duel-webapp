@@ -12,10 +12,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Created by ryan on 5/29/2017.
@@ -86,18 +83,52 @@ public class IntrinioApi {
         return null;
     }
 
-//    public StockPriceHistory getStockPriceHistory(String tickerSymbol, String startDate, String endDate, String frequency) {
-//
-//        try {
-//            String[] data = null;
-//            String stockPriceHistoryJsonResponse = this.requestStockPriceHistory(tickerSymbol, startDate, endDate, frequency);
-//            StockPriceHistory stockPriceHistory = this.parseStockPriceHistoryJsonResponse(stockPriceHistoryJsonResponse);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return stockPriceHistory;
-//    }
+    /**
+     * gets the most recent 100 market days worth of StockPriceData stored in a hashmap where key is formatted yyyy-mm-dd
+     *
+     * @param tickerSymbol
+     * @return
+     */
+    public HashMap<String, StockPriceData> getStockPriceData(String tickerSymbol) {
+
+        ArrayList<StockPriceData> StockPriceDataItems = new ArrayList<StockPriceData>();
+        try {
+
+            String stockPriceDataJsonResponse = this.requestStockPriceHistory(tickerSymbol,"daily");
+            HashMap<String, StockPriceData> stockPriceHashmap = this.parseStockPriceDataJsonResponse(tickerSymbol, stockPriceDataJsonResponse);
+
+            return stockPriceHashmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * gets the last stock price data
+     * @param tickerSymbol
+     * @return StockPriceData stockPriceData
+     */
+    public StockPriceData getStockPriceDataLast(String tickerSymbol) {
+
+        try {
+
+            String stockPriceDataJsonResponse = this.requestStockPriceHistory(tickerSymbol, "daily", 1);
+            HashMap<String, StockPriceData> stockPriceHashmap = this.parseStockPriceDataJsonResponse(tickerSymbol, stockPriceDataJsonResponse);
+
+            //since only 1 pageSize worth of data was requested we assume the first entry is the only entry and most recent stock price
+            for(Map.Entry<String, StockPriceData> entry : stockPriceHashmap.entrySet()) {
+                return entry.getValue();
+            }
+
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     /**
      * Requests data by company api endpoint
@@ -131,6 +162,25 @@ public class IntrinioApi {
                 + "&start_date=" + startDate
                 + "&end_date=" + endDate
                 + "&frequency=" + frequency;
+        String jsonResponse = requestApiCall(restfulCall);
+
+        return jsonResponse;
+    }
+
+    private String requestStockPriceHistory(String tickerSymbol, String frequency) throws IOException {
+        String restfulCall = "https://api.intrinio.com/prices?identifier="
+                + tickerSymbol
+                + "&frequency=" + frequency;
+        String jsonResponse = requestApiCall(restfulCall);
+
+        return jsonResponse;
+    }
+
+    private String requestStockPriceHistory(String tickerSymbol, String frequency, int pageSize) throws IOException {
+        String restfulCall = "https://api.intrinio.com/prices?identifier="
+                + tickerSymbol
+                + "&frequency=" + frequency
+                + "&page_size=" + Integer.toString(pageSize);
         String jsonResponse = requestApiCall(restfulCall);
 
         return jsonResponse;
@@ -269,31 +319,5 @@ public class IntrinioApi {
 
         return stockPriceDataItems;
     }
-
-//    private StockDataItem[] parseStockPriceHistoryJsonResponse(String stockPriceHistoryJsonResponse) {
-//        ArrayList<StockPrice> stockPrices = new ArrayList<StockDataItem>();
-//        JSONParser parser = new JSONParser();
-//        try {
-//            Object obj = parser.parse(stockPriceHistoryJsonResponse);
-//            JSONObject jsonObject = (JSONObject) obj;
-//
-//            JSONArray data = (JSONArray) jsonObject.get("data");
-//
-//            for (Object o: data) {
-//                JSONObject dataTag = (JSONObject) o;
-//
-//                String identifier = (String) dataTag.get("identifier").toString();
-//                String item = (String) dataTag.get("item").toString();
-//                String value = (String) dataTag.get("value").toString();
-//                stockDataItems.add(new StockDataItem(identifier, item, value));
-//            }
-//
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//
-//        StockDataItem[] stockDataItemArray = new StockDataItem[stockDataItems.size()];
-//        return stockDataItems.toArray(stockDataItemArray);
-//    }
 
 }

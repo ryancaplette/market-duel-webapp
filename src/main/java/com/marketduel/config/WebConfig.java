@@ -344,10 +344,6 @@ public class WebConfig {
 			map.put("pfId", portfolio.getPortfolioId());
 			map.put("stockHoldings", portfolio.getStockHoldings());
 
-			for (StockHolding stock : portfolio.getStockHoldings()) {
-				stock.getTicker();
-			}
-
 			return new ModelAndView(map, "portfolio-detail.ftl");
         }, new FreeMarkerEngine());
 		before("/portfolio-detail", (req, res) -> {
@@ -369,21 +365,33 @@ public class WebConfig {
 			float quantity = Float.valueOf(req.queryParams("quantity"));
 
 			Portfolio portfolio = service.getPortfolioById(pfId);
+			map.put("pfId", portfolio.getPortfolioId());
 			ArrayList<StockHolding> stockHoldings = portfolio.getStockHoldings();
-
-			if (stockHoldings.size() >= Portfolio.MAX_NUM_HOLDINGS) {
-				//error cannot purchase more stock
-			}
+			map.put("stockHoldings", stockHoldings);
 
 			String ticker = req.queryParams("ticker");
 
-			StockHolding sh = new StockHolding(ticker, quantity, 0.00f);
-			portfolio.addHolding(sh);
+			if (stockHoldings.size() >= Portfolio.MAX_NUM_HOLDINGS) {
+				map.put("error", "Your portfollio is currently full. Please sell some stock and try again if you would like to add " + ticker + " to your portfolio.");
+				return new ModelAndView(map, "portfolio-detail.ftl");
+			}
 
-			service.storeStockHoldingsInPortfolio(portfolio, portfolio.getStockHoldings());
+			MarketDataFeed df = new MarketDataFeed(); //initiate a data feed (this object is a facade for the intrinio api
+			StockPriceData stockPriceData = df.requestStockPriceDataLast(ticker);
 
-			res.redirect("/portfolio-detail?id=" + pfId);
-			halt();
+			//add stock to portfollio if stock price can be found
+			if (stockPriceData != null) {
+				float lastPrice = (float) stockPriceData.getClose();
+				if (lastPrice >= 0) {
+					map.put("message", ticker + " has been successfully added to your portfolio.");
+					StockHolding sh = new StockHolding(ticker, quantity, lastPrice);
+					portfolio.addHolding(sh);
+					service.storeStockHoldingsInPortfolio(portfolio, portfolio.getStockHoldings());
+					map.put("stockHoldings", portfolio.getStockHoldings()); //update since new holding was just added
+				}
+			} else {
+				map.put("error", "Stock price data could not be found for " + ticker + ". Please confirm your ticker symbol is correct and try again.");
+			}
 
 			return new ModelAndView(map, "portfolio-detail.ftl");
 		}, new FreeMarkerEngine());

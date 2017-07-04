@@ -1,5 +1,15 @@
 <#import "masterTemplate.ftl" as layout />
 <@layout.masterTemplate title="Portfolios">
+<#if message??>
+<div class="alert alert-success">
+    ${message}
+</div>
+</#if>
+<#if error??>
+<div class="alert alert-danger">
+    <strong>Error:</strong> ${error}
+</div>
+</#if>
 
 <div class="row">
     <div class="col-xs-11">
