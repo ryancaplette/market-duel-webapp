@@ -101,14 +101,15 @@ public class GameDaoImpl implements GameDao {
 		if (rs.getInt("GameType") == 0)
 		{
 			g = new QuickGame();
+			g.setType(Game.GameType.QUICK);
 		}
 		else
 		{
 			g = new LeagueGame();
+			g.setType(Game.GameType.LEAGUE);
 		}
 		
 		g.setGameId(rs.getInt("GameID"));
-		//g.setType(rs.getInt("GameType"));
 		g.setFirstMatchStart(rs.getDate("FirstMatchStart"));
 		g.setMatchDurationInDays(rs.getInt("MatchDurationDays"));
 		g.setContinuous(rs.getBoolean("IsContinuous"));
@@ -117,6 +118,7 @@ public class GameDaoImpl implements GameDao {
         {
         	g.addMatch(rs.getInt("Match"+i+"Id"));
         }
+
         System.out.println("MatchListSize: " + g.getMatchIds().size());
         
 		return g;
