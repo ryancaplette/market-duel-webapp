@@ -1,6 +1,7 @@
 package com.marketduel.game;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ListIterator;
 
 public class Portfolio {
@@ -110,5 +111,16 @@ public class Portfolio {
 
 	public ArrayList<StockHolding> getStockHoldings() {
 		return stockHoldings;
+	}
+
+	public float getValueAtDate(Date endDate) {
+		float totalValue = 0.0f;
+		ListIterator<StockHolding> itr = stockHoldings.listIterator();
+		
+		while(itr.hasNext()) {
+			totalValue += itr.next().getValueAtDate(endDate);
+		}
+	
+		return totalValue;
 	}
 }

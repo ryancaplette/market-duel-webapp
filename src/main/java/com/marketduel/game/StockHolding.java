@@ -1,5 +1,7 @@
 package com.marketduel.game;
 
+import java.util.Date;
+
 import com.marketduel.util.stockdata.IntrinioApi;
 
 public class StockHolding {
@@ -62,7 +64,18 @@ public class StockHolding {
 		float currentPrice = 0.0f;
 		
 		// Get currentPrice from API
-		currentPrice = (float)api.getStockPriceDataToday(getTicker()).getClose();
+		currentPrice = (float)api.getStockPriceDataLast(getTicker()).getClose();
+		
+		return shares*currentPrice;
+	}
+
+
+	public float getValueAtDate(Date endDate) {
+		IntrinioApi api = new IntrinioApi();
+		float currentPrice = 0.0f;
+		
+		// Get currentPrice from API
+		currentPrice = (float)api.getStockPriceDataForDate(getTicker(), endDate).getClose();
 		
 		return shares*currentPrice;
 	}
