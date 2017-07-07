@@ -75,7 +75,7 @@ public class StockHolding {
 		float currentPrice = 0.0f;
 		
 		// Get currentPrice from API
-		currentPrice = (float)api.getStockPriceDataForDate(getTicker(), endDate).getClose();
+		currentPrice = (float)api.getStockPriceDataForLastDate(getTicker(), endDate).getClose();
 		
 		return shares*currentPrice;
 	}
