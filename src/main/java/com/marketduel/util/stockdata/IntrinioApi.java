@@ -83,7 +83,7 @@ public class IntrinioApi {
         return null;
     }
 
-    /**
+	/**
      * gets the most recent 100 market days worth of StockPriceData stored in a hashmap where key is formatted yyyy-mm-dd
      *
      * @param tickerSymbol
@@ -130,6 +130,36 @@ public class IntrinioApi {
         return null;
     }
 
+    // This method is identical to getStockPriceDataForDate but returns the data from the last date with valid data
+    public StockPriceData getStockPriceDataForLastDate(String tickerSymbol, Date date) {
+
+        try {
+            //format date to what api accepts
+            DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+            String requestedDay = dateFormat.format(date);
+
+            String stockPriceDataJsonResponse = this.requestStockPriceHistory(tickerSymbol, requestedDay, "daily", 1);
+            HashMap<String, StockPriceData> stockPriceHashmap = this.parseStockPriceDataJsonResponse(tickerSymbol, stockPriceDataJsonResponse);
+
+            //format date to how api returns date format
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            requestedDay = dateFormat.format(date);
+
+            //since only 1 pageSize worth of data was requested we assume the first entry is the only entry and most recent stock price
+            for(Map.Entry<String, StockPriceData> entry : stockPriceHashmap.entrySet()) {
+            	StockPriceData stockPriceData = entry.getValue();
+            	return stockPriceData;
+            }
+            
+            return null;
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    
     /**
      * Requests data by company api endpoint
      *
@@ -155,7 +185,7 @@ public class IntrinioApi {
         String jsonResponse = requestApiCall(restfulCall);
         return jsonResponse;
     }
-
+    
     private String requestStockPriceHistory(String tickerSymbol, String startDate, String endDate, String frequency) throws IOException {
         String restfulCall = "https://api.intrinio.com/prices?identifier="
                 + tickerSymbol
@@ -181,6 +211,17 @@ public class IntrinioApi {
                 + tickerSymbol
                 + "&frequency=" + frequency
                 + "&page_size=" + Integer.toString(pageSize);
+        String jsonResponse = requestApiCall(restfulCall);
+
+        return jsonResponse;
+    }
+    
+    private String requestStockPriceHistory(String tickerSymbol, String endDate, String frequency, int pageSize) throws IOException {
+        String restfulCall = "https://api.intrinio.com/prices?identifier="
+                + tickerSymbol
+                + "&end_date=" + endDate
+                + "&frequency=" + frequency
+        		+ "&page_size=" + Integer.toString(pageSize);
         String jsonResponse = requestApiCall(restfulCall);
 
         return jsonResponse;
