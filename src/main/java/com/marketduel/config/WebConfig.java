@@ -252,7 +252,7 @@ public class WebConfig {
 
 			if(req.queryParams("join-game") != null) {
 				System.out.println(req.queryParams("join-game"));
-				service.addPlayerToGame(Integer.parseInt(req.queryParams("join-game")), player.getPlayerId());
+				service.addPlayerToQuickGame(Integer.parseInt(req.queryParams("join-game")), player.getPlayerId());
 			} else {
 				System.out.println("fail");
 			}

@@ -33,17 +33,39 @@ public class PortfolioDaoImpl implements PortfolioDao {
 	 * Creates an empty portfolio
 	 */
 	public Boolean createPortfolio(Portfolio pf) {
-		String sql = "INSERT INTO portfolio VALUES ()";
-		
+		String sql = "INSERT INTO portfolio (PortfolioID, MatchID, PlayerID) VALUES (:portfolioId, :matchId, :playerId)";
+
 		Map<String, Object> params = new HashMap<String, Object>();
-        params.put("initVal", pf.getInitialValue());
-		
+        params.put("portfolioId", pf.getPortfolioId());
+        params.put("matchId", pf.getMatchId());
+        params.put("playerId", pf.getPlayerId());
+
         int result = template.update(sql, params);
 	
         //A new add should modify 1 row
         return (result == 1);
 	}
-	
+
+	@Override
+	/**
+	 * Gets a portfolio from the database
+	 */
+	public Portfolio getNewestPortfolioId() {
+		String sql = "SELECT * FROM portfolio ORDER BY PortfolioId DESC LIMIT 1";
+
+
+		List<Portfolio> list = template.query(
+				sql,
+				portfolioMapper);
+
+		Portfolio result = null;
+		if(list != null && !list.isEmpty()) {
+			result = list.get(0);
+		}
+
+		return result;
+	}
+
 	@Override
 	/**
 	 * Gets a portfolio from the database

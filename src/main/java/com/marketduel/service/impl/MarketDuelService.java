@@ -65,9 +65,29 @@ public class MarketDuelService {
 		return (ArrayList<Game>) gamesDao.getAvailableGames();
 	}
 
-	public boolean addPlayerToGame(int gameId, int playerId)
+	public boolean addPlayerToQuickGame(int gameId, int playerId)
 	{
-		return gamesDao.addPlayerToQuickGame(gameId, playerId);
+		Portfolio p = new Portfolio();
+		Game game = gamesDao.getGameById(gameId);
+		ArrayList<Integer> gameMatchIds = game.getMatchIds();
+		p.setGameId(gameId);
+		p.setPlayerId(playerId);
+		p.setMatchId(gameMatchIds.get(0)); //quickgame only has one match so we know it is the first match id
+
+		//create a portfollio for the player to use in the quick game
+		if (portfolioDao.createPortfolio(p)) {
+			p = portfolioDao.getNewestPortfolioId();
+			if (p == null) {
+				return false;
+			}
+		}
+
+		if (gamesDao.addPlayerToQuickGame(gameId, playerId, p.getPortfolioId())) {
+			return true;
+		}
+
+
+		return false;
 	}
 
 	public boolean updateMatchsForGame(Game g, ArrayList<Integer> matchList)

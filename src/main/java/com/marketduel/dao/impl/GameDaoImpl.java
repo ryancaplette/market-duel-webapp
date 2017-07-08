@@ -181,7 +181,7 @@ public class GameDaoImpl implements GameDao {
 	}
 
 	@Override
-	public boolean addPlayerToQuickGame(int gameId, int playerId) {
+	public boolean addPlayerToQuickGame(int gameId, int playerId, int portfolioId) {
 		String sql ="SELECT DISTINCT * FROM game WHERE GameID = :gameId";
 		
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -205,12 +205,23 @@ public class GameDaoImpl implements GameDao {
 			    + "     Player4ID = CASE WHEN Player4ID IS NULL AND Player3ID IS NOT NULL THEN :playerId ELSE Player4ID END,"
 			    + "     Player3ID = CASE WHEN Player3ID IS NULL AND Player2ID IS NOT NULL THEN :playerId ELSE Player3ID END,"
 			    + "     Player2ID = CASE WHEN Player2ID IS NULL AND Player1ID IS NOT NULL THEN :playerId ELSE Player2ID END,"
-			    + "     Player1ID = CASE WHEN Player1ID IS NULL THEN :playerId ELSE Player1ID END "
+			    + "     Player1ID = CASE WHEN Player1ID IS NULL THEN :playerId ELSE Player1ID END,"
+				+ "     Portfolio10ID = CASE WHEN Portfolio10ID IS NULL AND Portfolio9ID IS NOT NULL THEN :portfolioId ELSE Portfolio10ID END,"
+				+ "     Portfolio9ID = CASE WHEN Portfolio9ID IS NULL AND Portfolio8ID IS NOT NULL THEN :portfolioId ELSE Portfolio9ID END,"
+				+ "     Portfolio8ID = CASE WHEN Portfolio8ID IS NULL AND Portfolio7ID IS NOT NULL THEN :portfolioId ELSE Portfolio8ID END,"
+				+ "     Portfolio7ID = CASE WHEN Portfolio7ID IS NULL AND Portfolio6ID IS NOT NULL THEN :portfolioId ELSE Portfolio7ID END,"
+				+ "     Portfolio6ID = CASE WHEN Portfolio6ID IS NULL AND Portfolio5ID IS NOT NULL THEN :portfolioId ELSE Portfolio6ID END,"
+				+ "     Portfolio5ID = CASE WHEN Portfolio5ID IS NULL AND Portfolio4ID IS NOT NULL THEN :portfolioId ELSE Portfolio5ID END,"
+				+ "     Portfolio4ID = CASE WHEN Portfolio4ID IS NULL AND Portfolio3ID IS NOT NULL THEN :portfolioId ELSE Portfolio4ID END,"
+				+ "     Portfolio3ID = CASE WHEN Portfolio3ID IS NULL AND Portfolio2ID IS NOT NULL THEN :portfolioId ELSE Portfolio3ID END,"
+				+ "     Portfolio2ID = CASE WHEN Portfolio2ID IS NULL AND Portfolio1ID IS NOT NULL THEN :portfolioId ELSE Portfolio2ID END,"
+				+ "     Portfolio1ID = CASE WHEN Portfolio1ID IS NULL THEN :portfolioId ELSE Portfolio1ID END "
 			    + "WHERE MatchID = :matchId";
 			params = new HashMap<String, Object>();
 	        params.put("matchId", curGame.get(0).getMatchIds().get(0));
 	        params.put("playerId", playerId);
-	        
+	        params.put("portfolioId", portfolioId);
+
 	        retVal = template.update(sql, params);
 	        
 	        System.out.println("Added player to game: " + retVal);

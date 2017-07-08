@@ -9,11 +9,38 @@ public class Portfolio {
 
 	private float initialValue;
 	private ArrayList<StockHolding> stockHoldings=new ArrayList<StockHolding>();
+	private int gameId;
+	private int matchId;
+	private int playerId;
 	
 	public static final int MAX_NUM_HOLDINGS = 10;
 	
 	public Portfolio() {
 
+	}
+
+	public int getGameId() {
+		return gameId;
+	}
+
+	public void setGameId(int gameId) {
+		this.gameId = gameId;
+	}
+
+	public int getMatchId() {
+		return matchId;
+	}
+
+	public void setMatchId(int matchId) {
+		this.matchId = matchId;
+	}
+
+	public int getPlayerId() {
+		return playerId;
+	}
+
+	public void setPlayerId(int playerId) {
+		this.playerId = playerId;
 	}
 
 	public void updateHoldingPrices()
