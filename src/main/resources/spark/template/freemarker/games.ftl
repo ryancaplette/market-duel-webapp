@@ -108,7 +108,14 @@
                                         ${game.type}
                                     </td>
                                     <td>
-                                        <button type="submit" class="btn btn-success">Join</button>
+                                        <form class="form-horizontal" action="/games" role="form" method="post">
+                                            <div class="form-group">
+                                                <div class="">
+                                                    <input type="hidden" class="form-control" name="join-game" id="join-game" value="${game.gameId!}" />
+                                                    <button type="submit" class="btn btn-default">Join Game</button>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </td>
                                 </tr>
                             </#list>
