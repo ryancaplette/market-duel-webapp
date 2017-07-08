@@ -102,8 +102,12 @@ public abstract class Game {
 	public void addMatch(int matchId){
 
 		// Adding Match to game object
-		System.out.println("adding matchId " + matchId);
-		matchIds.add(matchId);
+		if (matchIds.size() < MAX_MATCHES_PER_GAME) {
+			System.out.println("adding matchId " + matchId);
+			matchIds.add(matchId);
+		} else {
+			System.out.println("Error: matchId's are full, cannot add more.");
+		}
 
 	}
 	

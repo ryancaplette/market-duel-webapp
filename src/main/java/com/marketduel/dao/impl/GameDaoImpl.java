@@ -33,7 +33,7 @@ public class GameDaoImpl implements GameDao {
 		String sql = "INSERT INTO game (GameType, FirstMatchStart, MatchDurationDays, IsContinuous) values (:type, :start, :dur, :cont)";
 
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("type", g.getType());
+		params.put("type", g.getType() == Game.GameType.QUICK ? 0:1);
 		params.put("start", g.getFirstMatchStart());
 		params.put("dur", g.getMatchDurationInDays());
 		params.put("cont", g.getContinuous());
@@ -42,6 +42,23 @@ public class GameDaoImpl implements GameDao {
 
 		// A new add should modify 1 row
 		return (result == 1);
+	}
+
+	@Override
+	public Game getNewestGame() {
+		String sql = "SELECT * FROM game ORDER BY GameID DESC LIMIT 1";
+
+
+		List<Game> list = template.query(
+				sql,
+				gameMapper);
+
+		Game result = null;
+		if(list != null && !list.isEmpty()) {
+			result = list.get(0);
+		}
+
+		return result;
 	}
 
 	@Override
@@ -69,10 +86,10 @@ public class GameDaoImpl implements GameDao {
 		int result = -1;
 		//Build string pointing to next empty StockHolding
 		for (int i = 0; i < matchList.size() && result != 0 ; i++) {
-			String portStr = "Portfolio" + (i + 1) + "ID";
-			String sql = "UPDATE matches " +
-			             "SET " + portStr + " = :id " +
-					     "WHERE MatchID = " + g.getGameId();
+			String matchStr = "Match" + (i + 1) + "ID";
+			String sql = "UPDATE game " +
+			             "SET " + matchStr + " = :id " +
+					     "WHERE GameID = " + g.getGameId();
 
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("id", matchList.get(i));
@@ -116,7 +133,10 @@ public class GameDaoImpl implements GameDao {
 		
         for(int i = 1; i < (Game.MAX_MATCHES_PER_GAME+1); i++)
         {
-        	g.addMatch(rs.getInt("Match"+i+"Id"));
+        	int matchId = rs.getInt("Match"+i+"Id");
+        	if (matchId != 0) {
+				g.addMatch(rs.getInt("Match"+i+"Id"));
+			}
         }
 
         System.out.println("MatchListSize: " + g.getMatchIds().size());

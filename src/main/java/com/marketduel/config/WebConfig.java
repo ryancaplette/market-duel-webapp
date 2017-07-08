@@ -11,9 +11,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import com.marketduel.game.Game;
-import com.marketduel.game.Portfolio;
-import com.marketduel.game.StockHolding;
+import com.marketduel.game.*;
 import com.marketduel.util.stockdata.StockPriceData;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
@@ -240,7 +238,6 @@ public class WebConfig {
 			}
 
 			if (joinableGames.size() > 0) {
-				map.put("isJoinableGamesList", true);
 				map.put("joinableGamesList", joinableGames);
 			}
 
@@ -282,7 +279,6 @@ public class WebConfig {
 			}
 
 			if (joinableGames.size() > 0) {
-				map.put("isJoinableGamesList", true);
 				map.put("joinableGamesList", joinableGames);
 			}
 
@@ -313,6 +309,91 @@ public class WebConfig {
 			}
 		});
 
+		get("/game-create", (req, res) -> {
+			Player player = getAuthenticatedPlayer(req);
+			Map<String, Object> map = new HashMap<>();
+			map.put("pageTitle", "Create Quick Match");
+			map.put("player", player);
+			return new ModelAndView(map, "game-create.ftl");
+		}, new FreeMarkerEngine());
+		before("/game-detail", (req, res) -> {
+			Player authPlayer = getAuthenticatedPlayer(req);
+			if(authPlayer == null) {
+				res.redirect("/");
+				halt();
+			}
+		});
+
+		post("/game-create", (req, res) -> {
+			Player player = getAuthenticatedPlayer(req);
+			Map<String, Object> map = new HashMap<>();
+			map.put("pageTitle", "Create Quick Match");
+			map.put("player", player);
+
+			float budget = Float.parseFloat(req.queryParams("budget"));
+			//String draft = req.queryParams("draft"); //need start and end of draft have to impliment this
+			String start = req.queryParams("start");
+			String matchName = req.queryParams("matchName");
+			int duration = Integer.parseInt(req.queryParams("duration"));
+
+			int gameType = Integer.parseInt(req.queryParams("gameType"));
+			if (gameType == 0) { //quick game
+				SimpleDateFormat dateFormat  =new SimpleDateFormat("yyyy-MM-dd");
+
+				Date startDate = dateFormat.parse(start);
+
+				//use duration of days to get end date
+				Calendar c = Calendar.getInstance();
+				c.setTime(dateFormat.parse(start));
+				c.add(Calendar.DATE, duration);
+				String end = dateFormat.format(c.getTime());  // dt is now the new date
+				Date endDate = dateFormat.parse(end);
+
+				Match match = new ContinuousMatch();
+
+				match.setMatchName(matchName);
+				match.setStartDate(startDate);
+				match.setEndDate(endDate);
+				match.setDuration(duration);
+				match.setInitialBalance(budget);
+				match.setMatchType(Match.MatchType.Continuous);
+
+				match = service.createMatch(match);
+				if (match == null) {
+					map.put("error", "There was an error creating your game, please try again.");
+					return new ModelAndView(map, "game-create.ftl");
+				}
+
+				Game game = new QuickGame();
+
+				game.setContinuous(true);
+				game.setFirstMatchStart(match.getStartDate());
+				game.setMatchDurationInDays(duration);
+				game.setType(Game.GameType.QUICK);
+
+				game = service.createGame(game);
+				if (game == null) {
+					map.put("error", "There was an error creating your game, please try again.");
+					return new ModelAndView(map, "game-create.ftl");
+				}
+
+				if(!service.updateMatchsForGame(game, game.getMatchIds())) {
+					map.put("error", "There was an error creating your game, please try again.");
+					return new ModelAndView(map, "game-create.ftl");
+				}
+
+				map.put("message", "Congrats! Your new game has been created. Go to the games tab to view it.");
+			}
+
+			return new ModelAndView(map, "game-create.ftl");
+		}, new FreeMarkerEngine());
+		before("/game-detail", (req, res) -> {
+			Player authPlayer = getAuthenticatedPlayer(req);
+			if(authPlayer == null) {
+				res.redirect("/");
+				halt();
+			}
+		});
 
 		get("/portfolios", (req, res) -> {
 			Player player = getAuthenticatedPlayer(req);

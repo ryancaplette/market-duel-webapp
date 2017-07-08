@@ -49,6 +49,22 @@ public class MatchDaoImpl implements MatchDao {
 	}
 
 	@Override
+	public Match getNewestMatch() {
+		String sql = "SELECT * FROM matches ORDER BY MatchID DESC LIMIT 1";
+
+		List<Match> list = template.query(
+				sql,
+				matchMapper);
+
+		Match result = null;
+		if(list != null && !list.isEmpty()) {
+			result = list.get(0);
+		}
+
+		return result;
+	}
+
+	@Override
 	public Match getMatchById(int matchId) {
 		String sql = "SELECT * FROM matches WHERE MatchId=:id";
 		

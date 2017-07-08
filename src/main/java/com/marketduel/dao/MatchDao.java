@@ -12,7 +12,9 @@ public interface MatchDao {
 	Boolean createMatch(Match m);
 	
 	Match getMatchById(int matchId);
-	
+
+	Match getNewestMatch();
+
 	Boolean deleteMatchByID(int matchId);
 
 	Boolean updatePlayerIds(Match m, ArrayList<Integer> plList);

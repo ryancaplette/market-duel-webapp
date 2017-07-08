@@ -27,11 +27,9 @@
         </ul>
     </div>
 
-            <div class="form-group">
-                <div class="">
-                    <button type="submit" class="btn btn-default">Create Game</button>
-                </div>
-            </div>
+    <form class="form-horizontal" action="/game-create" role="form" method="get">
+        <button type="submit" class="btn btn-default">Create Game</button>
+    </form>
 
 <!-- todo: implement for each player, show each player in DB in row-->
  <div class="col-md-8">
@@ -81,33 +79,39 @@
                                         ${game.type}
                                     </td>
                                     <td>
+                                        <form class="form-horizontal" action="/game-detail" role="form" method="post">
+                                            <input type="hidden" class="form-control" name="game-id" id="game-id" value="${game.gameId!}" />
+                                            <button type="submit" class="btn btn-success">View</button>
+                                        </form>
                                         <button type="submit" class="btn btn-danger">Leave</button>
                                     </td>
                                 </tr>
                             </#list>
                         </#if>
 
-                        <#if isJoinableGamesList??>
-                            <tr>
-                                <td>
-                                    <a href="#">${game.gameId}</a>
-                                </td>
-                                <td>
-                                    ${game.firstMatchStart}
-                                </td>
-                                <td>
-                                    -
-                                </td>
-                                <td>
-                                    - <#--${game.playersInGame}-->
-                                </td>
-                                <td>
-                                    ${game.type}
-                                </td>
-                                <td>
-                                    <button type="submit" class="btn btn-success">Join</button>
-                                </td>
-                            </tr>
+                        <#if joinableGamesList??>
+                            <#list joinableGamesList as game>
+                                <tr>
+                                    <td>
+                                        <a href="#">${game.gameId}</a>
+                                    </td>
+                                    <td>
+                                        ${game.firstMatchStart}
+                                    </td>
+                                    <td>
+                                        -
+                                    </td>
+                                    <td>
+                                        - <#--${game.playersInGame}-->
+                                    </td>
+                                    <td>
+                                        ${game.type}
+                                    </td>
+                                    <td>
+                                        <button type="submit" class="btn btn-success">Join</button>
+                                    </td>
+                                </tr>
+                            </#list>
                         </#if>
                     </tbody>
                 </table>
