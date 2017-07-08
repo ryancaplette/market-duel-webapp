@@ -147,12 +147,12 @@ public class GameDaoImpl implements GameDao {
 	@Override
 	public List<Game> getPlayersGames(Player p) {
 		
-		String sql ="SELECT DISTINCT * FROM game "
-			+ "WHERE "
+		String sql ="SELECT DISTINCT * FROM game g "
+			+ "JOIN ("
 			+ "	 (SELECT MatchId FROM matches "
 			+ "	  WHERE :playerId "
 			+ "   IN (Player1ID, Player2ID, Player3ID, Player4ID, Player5ID, Player6ID, Player7ID, Player8ID, Player9ID, Player10ID))"
-			+ "IN (Match1Id,Match2Id,Match3Id,Match4Id,Match5Id,Match6Id,Match7Id,Match8Id,Match9Id,Match10Id)";
+			+ ") m ON m.MatchID IN (Match1Id,Match2Id,Match3Id,Match4Id,Match5Id,Match6Id,Match7Id,Match8Id,Match9Id,Match10Id)";
 		
 		Map<String, Object> params = new HashMap<String, Object>();
         params.put("playerId", p.getPlayerId());
