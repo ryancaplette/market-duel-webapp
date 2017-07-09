@@ -52,6 +52,9 @@
                         <th>
                             % Gain/Loss
                         </th>
+                        <th>
+                            Actions
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -72,6 +75,9 @@
                                 </td>
                                 <td>
                                     -3.53% (placeholder)
+                                </td>
+                                <td>
+                                    <a href="/portfolio-detail?id=${portfolio.portfolioId}"><button type="submit" class="btn btn-success">View</button></a>
                                 </td>
                             </tr>
                         </#list>
