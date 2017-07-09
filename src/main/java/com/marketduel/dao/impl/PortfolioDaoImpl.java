@@ -113,6 +113,28 @@ public class PortfolioDaoImpl implements PortfolioDao {
 
 	@Override
 	/**
+	 * Gets all portfolios related to a match id
+	 */
+	public List<Portfolio> getPortfoliosForMatchId(int matchId) {
+		String sql = "SELECT * FROM portfolio WHERE MatchID=:matchId";
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("matchId", matchId);
+
+		List<Portfolio> list = template.query(
+				sql,
+				params,
+				portfolioMapper);
+
+		if(list != null && !list.isEmpty()) {
+			return list;
+		}
+
+		return null;
+	}
+
+	@Override
+	/**
 	 * Will store the given stock holding list into the portfolio
 	 */
 	public Boolean storeStockHoldingsInPortfolio(Portfolio pf, ArrayList<StockHolding> shList) {

@@ -2,6 +2,7 @@ package com.marketduel.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.marketduel.dao.MatchDao;
 import com.marketduel.dao.PortfolioDao;
@@ -131,5 +132,17 @@ public class MarketDuelService {
 
 	public List<Portfolio> getPlayerPortfolios(int playerId) {
 		return portfolioDao.getPlayerPortfolios(playerId);
+	}
+
+	public Game getGameById(int gameId) {
+		return gamesDao.getGameById(gameId);
+	}
+
+	public Match getMatchById(int matchId) {
+		return matchDao.getMatchById(matchId);
+	}
+
+	public List<Portfolio> getPortfoliosForMatchId(int matchId) {
+		return portfolioDao.getPortfoliosForMatchId(matchId);
 	}
 }

@@ -209,6 +209,37 @@ public class WebConfig {
 			return new ModelAndView(map, "research.ftl");
 		}, new FreeMarkerEngine());
 
+		get("/match-detail", (req, res) -> {
+			Player player = getAuthenticatedPlayer(req);
+			Map<String, Object> map = new HashMap<>();
+			map.put("pageTitle", "Match Detail");
+			map.put("player", player);
+
+			int matchId = Integer.parseInt(req.queryParams("id"));
+			Match match = service.getMatchById(matchId);
+			if (match == null) {
+				map.put("pageTitle", "Games");
+				map.put("error", "Error: Match info not found");
+				return new ModelAndView(map, "games.ftl");
+			}
+
+			//display match info and all [players in the match portfolios
+			map.put("pageTitle", "Match Name: " + match.getMatchName());
+			map.put("matchStart", "Match Start Date: " + match.getStartDate());
+			map.put("matchEnd", "Match End Date: " + match.getEndDate());
+
+			List<Portfolio> portfolios = service.getPortfoliosForMatchId(match.getMatchID());
+			map.put("portfolios", portfolios);
+
+			return new ModelAndView(map, "match-detail.ftl");
+		}, new FreeMarkerEngine());
+		before("/game-detail", (req, res) -> {
+			Player authPlayer = getAuthenticatedPlayer(req);
+			if(authPlayer == null) {
+				res.redirect("/");
+				halt();
+			}
+		});
 
 		get("/games", (req, res) -> {
 			Player player = getAuthenticatedPlayer(req);
@@ -293,12 +324,34 @@ public class WebConfig {
 			}
 		});
 
-
 		get("/game-detail", (req, res) -> {
 			Player player = getAuthenticatedPlayer(req);
 			Map<String, Object> map = new HashMap<>();
 			map.put("pageTitle", "Game Detail");
 			map.put("player", player);
+
+			int gameId = Integer.parseInt(req.queryParams("id"));
+			Game game = service.getGameById(gameId);
+			if (game == null) {
+				map.put("pageTitle", "Games");
+				map.put("error", "Error: Game not found");
+				return new ModelAndView(map, "games.ftl");
+			}
+
+			if (game.getType() == Game.GameType.QUICK) { //if game is a quickmatch then we can just grab the first match id and redirect to the match view
+				if (game.getMatchIds().size() <= 0) {
+					map.put("pageTitle", "Games");
+					map.put("error", "Error: Game match not found");
+					return new ModelAndView(map, "games.ftl");
+				}
+
+				int matchId = game.getMatchIds().get(0);
+
+				//redirect to match
+				res.redirect("/match-detail?id=" + matchId);
+				halt();
+			}
+
 			return new ModelAndView(map, "game-detail.ftl");
         }, new FreeMarkerEngine());
 		before("/game-detail", (req, res) -> {

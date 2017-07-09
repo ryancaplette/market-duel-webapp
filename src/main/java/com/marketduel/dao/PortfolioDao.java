@@ -14,6 +14,8 @@ public interface PortfolioDao {
 
 	List<Portfolio> getPlayerPortfolios(int playerId);
 
+	List<Portfolio> getPortfoliosForMatchId(int matchId);
+
 	Portfolio getPortfolioById(int pfId);
 
 	Boolean storeStockHoldingsInPortfolio(Portfolio pf, ArrayList<StockHolding> shList); 

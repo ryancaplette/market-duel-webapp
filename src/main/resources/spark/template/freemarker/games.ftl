@@ -64,7 +64,7 @@
                             <#list playerGamesList as game>
                                 <tr class="active">
                                     <td>
-                                        <a href="#">${game.gameId}</a>
+                                        <a href="/game-detail?id=${game.gameId}">${game.gameId}</a>
                                     </td>
                                     <td>
                                         ${game.firstMatchStart}
@@ -79,10 +79,7 @@
                                         ${game.type}
                                     </td>
                                     <td>
-                                        <form class="form-horizontal" action="/game-detail" role="form" method="post">
-                                            <input type="hidden" class="form-control" name="game-id" id="game-id" value="${game.gameId!}" />
-                                            <button type="submit" class="btn btn-success">View</button>
-                                        </form>
+                                        <a href="/game-detail?id=${game.gameId}"><button type="submit" class="btn btn-success">View</button></a>
                                         <button type="submit" class="btn btn-danger">Leave</button>
                                     </td>
                                 </tr>
