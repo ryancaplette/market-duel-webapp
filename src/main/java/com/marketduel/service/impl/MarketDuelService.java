@@ -1,6 +1,7 @@
 package com.marketduel.service.impl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.marketduel.dao.MatchDao;
 import com.marketduel.dao.PortfolioDao;
@@ -126,5 +127,9 @@ public class MarketDuelService {
 		}
 
 		return null;
+	}
+
+	public List<Portfolio> getPlayerPortfolios(int playerId) {
+		return portfolioDao.getPlayerPortfolios(playerId);
 	}
 }

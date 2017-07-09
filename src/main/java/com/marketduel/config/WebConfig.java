@@ -400,6 +400,10 @@ public class WebConfig {
 			Map<String, Object> map = new HashMap<>();
 			map.put("pageTitle", "Portfolios");
 			map.put("player", player);
+
+			List<Portfolio> playerPortfolios = service.getPlayerPortfolios(player.getPlayerId());
+			map.put("portfolios", playerPortfolios);
+
 			return new ModelAndView(map, "portfolio.ftl");
         }, new FreeMarkerEngine());
 		before("/portfolios", (req, res) -> {

@@ -71,7 +71,7 @@ public class PortfolioDaoImpl implements PortfolioDao {
 	 * Gets a portfolio from the database
 	 */
 	public Portfolio getPortfolioById(int pfId) {
-		String sql = "SELECT * FROM portfolio WHERE PortfolioId=:pfid";
+		String sql = "SELECT * FROM portfolio WHERE PortfolioID=:pfid";
 		
 		Map<String, Object> params = new HashMap<String, Object>();
         params.put("pfid", pfId);
@@ -87,6 +87,28 @@ public class PortfolioDaoImpl implements PortfolioDao {
         }
         
 		return result;
+	}
+
+	@Override
+	/**
+	 * Gets all portfolios related to a player id
+	 */
+	public List<Portfolio> getPlayerPortfolios(int playerId) {
+		String sql = "SELECT * FROM portfolio WHERE PlayerID=:playerId";
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("playerId", playerId);
+
+		List<Portfolio> list = template.query(
+				sql,
+				params,
+				portfolioMapper);
+
+		if(list != null && !list.isEmpty()) {
+			return list;
+		}
+
+		return null;
 	}
 
 	@Override
@@ -128,7 +150,9 @@ public class PortfolioDaoImpl implements PortfolioDao {
 	private RowMapper<Portfolio> portfolioMapper = (rs, rowNum) -> {
 		Portfolio pf = new Portfolio();
 		
-		pf.setPortfolioId(rs.getInt("PortfolioId"));
+		pf.setPortfolioId(rs.getInt("PortfolioID"));
+		pf.setMatchId(rs.getInt("MatchID"));
+		pf.setPlayerId(rs.getInt("PlayerID"));
 		for(int i = 1; i <= Portfolio.MAX_NUM_HOLDINGS; i++){
 			String stockStr = "Stock" + (i);
 			if (rs.getString(stockStr + "Symb") == null) {
