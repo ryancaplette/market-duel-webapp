@@ -70,13 +70,13 @@
                                         ${portfolio.playerId}
                                     </td>
                                     <td>
-                                        $9374.34 (placeholder)
+                                        ${portfolio.getCurrentValue()}
                                     </td>
                                     <td>
-                                        -$346.23 (placeholder)
+                                        Placeholder
                                     </td>
                                     <td>
-                                        -3.53% (placeholder)
+                                        Placeholder
                                     </td>
                                     <td>
                                         <a href="/portfolio-detail?id=${portfolio.portfolioId}"><button type="submit" class="btn btn-success">View</button></a>

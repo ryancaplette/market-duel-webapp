@@ -106,13 +106,17 @@
                                             </#if>
                                         </td>
                                         <td>
-                                            $200.21 <- example
+                                            ${stock.getCurrentPrice()}
                                         </td>
                                         <td>
-                                            +$65.83 <- example
+                                            ${stock.getCurrentValue() - stock.getPurchaseValue()}
                                         </td>
                                         <td>
-                                            0.00% <- example
+                                        	<#if stock.getPurchaseValue()==0>
+                                        		INF
+                                        	<#else>
+                                            	${stock.getCurrentValue()*100/stock.getPurchaseValue() - 100}%
+                                        	</#if>
                                         </td>
                                     </tr>
                                 </#list>
