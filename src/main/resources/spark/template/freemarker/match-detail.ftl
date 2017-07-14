@@ -70,14 +70,20 @@
                                         ${portfolio.playerId}
                                     </td>
                                     <td>
-                                        ${portfolio.getCurrentValue()}
-                                    </td>
-                                    <td>
-                                        Placeholder
-                                    </td>
-                                    <td>
-                                        Placeholder
-                                    </td>
+	                                    <#assign currentValue = portfolio.getCurrentValue()>
+	                                    ${currentValue}
+	                                </td>
+	                                <td>
+	                                    <#assign initialValue = portfolio.getInitialValue()>
+	                                    ${currentValue - initialValue}
+	                                </td>
+	                                <td>
+	                                    <#if initialValue==0>
+	                                		INF
+	                                	<#else>
+	                                    	${currentValue*100/initialValue - 100}%
+	                                	</#if>
+	                                </td>
                                     <td>
                                         <a href="/portfolio-detail?id=${portfolio.portfolioId}"><button type="submit" class="btn btn-success">View</button></a>
                                     </td>

@@ -68,13 +68,19 @@
                                     <a href="#">${portfolio.matchId}</a>
                                 </td>
                                 <td>
-                                    ${portfolio.getCurrentValue()}
+                                    <#assign currentValue = portfolio.getCurrentValue()>
+                                    ${currentValue}
                                 </td>
                                 <td>
-                                    Placeholder
+                                    <#assign initialValue = portfolio.getInitialValue()>
+                                    ${currentValue - initialValue}
                                 </td>
                                 <td>
-                                    Placeholder
+                                    <#if initialValue==0>
+                                		INF
+                                	<#else>
+                                    	${currentValue*100/initialValue - 100}%
+                                	</#if>
                                 </td>
                                 <td>
                                     <a href="/portfolio-detail?id=${portfolio.portfolioId}"><button type="submit" class="btn btn-success">View</button></a>

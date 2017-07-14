@@ -106,16 +106,17 @@
                                             </#if>
                                         </td>
                                         <td>
-                                            ${stock.getCurrentPrice()}
+                                            <#assign currentPrice = stock.getCurrentPrice()>
+                                            ${currentPrice}
                                         </td>
                                         <td>
-                                            ${stock.getCurrentValue() - stock.getPurchaseValue()}
+                                            ${stock.shares*(currentPrice-stock.purchasePrice)}
                                         </td>
                                         <td>
                                         	<#if stock.getPurchaseValue()==0>
                                         		INF
                                         	<#else>
-                                            	${stock.getCurrentValue()*100/stock.getPurchaseValue() - 100}%
+                                            	${stock.shares*currentPrice*100/stock.getPurchaseValue() - 100}%
                                         	</#if>
                                         </td>
                                     </tr>

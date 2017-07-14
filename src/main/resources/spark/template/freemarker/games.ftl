@@ -70,10 +70,10 @@
                                         ${game.firstMatchStart}
                                     </td>
                                     <td>
-                                        -
+                                        ${game.getGameEndDate()?date}
                                     </td>
                                     <td>
-                                        - <#--${game.playersInGame}-->
+                                    	${game.getPlayersInGame()}
                                     </td>
                                     <td>
                                         ${game.type}
