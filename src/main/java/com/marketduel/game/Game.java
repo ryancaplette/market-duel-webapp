@@ -10,20 +10,21 @@ public abstract class Game {
 	abstract void endGame();
 	
 	public static final int MAX_MATCHES_PER_GAME = 10;
-	//Shouldnt be needed because these are all things associated with Matches
-	//abstract void addPlayer(int plyr);//See below
 	//private int initialBalance;
-	//protected int[] playerIds;  // A different type of container may make more sense. Made it an array for now.
+	
 	
 	private int gameId;
 	private GameType type;	
 	private boolean continuous;
-	private int maxPlayersInGame;
-	private int playersInGame;
 	private Date firstMatchStart;
 	private int matchDurationInDays;
 	
-	private ArrayList<Integer> matchIds;
+	protected int NumMatches;
+	protected ArrayList<Integer> matchIds;
+	
+	private int maxPlayersInGame;
+	private int curPlayersInGame;
+	protected ArrayList<Integer> playerIds;
 	
 	public ArrayList<Integer> getMatchIds() {
 		return matchIds;
@@ -62,11 +63,11 @@ public abstract class Game {
 	}
 	
 	public int getPlayersInGame() {
-		return playersInGame;
+		return curPlayersInGame;
 	}
 	
 	public void incrementPlayersInGame() {
-		this.playersInGame += 1;
+		this.curPlayersInGame += 1;
 	}
 	
 	public GameType getType() {
@@ -135,5 +136,20 @@ public abstract class Game {
 		cal.add(Calendar.DATE, days);
 				
 		return cal.getTime();
+	}
+	
+	public boolean addPlayer(int playerId) {
+		Date currentDate = new Date();
+		if (currentDate.before(firstMatchStart))
+		{
+			if (curPlayersInGame < maxPlayersInGame)
+			{
+				playerIds.add(playerId);
+				curPlayersInGame++;
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
