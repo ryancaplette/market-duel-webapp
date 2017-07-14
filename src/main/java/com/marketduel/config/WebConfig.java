@@ -390,7 +390,7 @@ public class WebConfig {
 			int duration = Integer.parseInt(req.queryParams("duration"));
 
 			int gameType = Integer.parseInt(req.queryParams("gameType"));
-			if (gameType == 0) { //quick game
+			if (gameType == 0) { //single match quick game
 				SimpleDateFormat dateFormat  =new SimpleDateFormat("yyyy-MM-dd");
 
 				Date startDate = dateFormat.parse(start);
@@ -402,14 +402,14 @@ public class WebConfig {
 				String end = dateFormat.format(c.getTime());  // dt is now the new date
 				Date endDate = dateFormat.parse(end);
 
-				Match match = new ContinuousMatch();
+				Match match = new ClosedMatch();
 
 				match.setMatchName(matchName);
 				match.setStartDate(startDate);
 				match.setEndDate(endDate);
 				match.setDuration(duration);
 				match.setInitialBalance(budget);
-				match.setMatchType(Match.MatchType.Continuous);
+				match.setMatchType(Match.MatchType.Closed);
 
 				match = service.createMatch(match);
 				if (match == null) {
@@ -419,10 +419,11 @@ public class WebConfig {
 
 				Game game = new QuickGame();
 
-				game.setContinuous(true);
+				game.setContinuous(false);
 				game.setFirstMatchStart(match.getStartDate());
 				game.setMatchDurationInDays(duration);
 				game.setType(Game.GameType.QUICK);
+				game.addMatch(match.getMatchID());
 
 				game = service.createGame(game);
 				if (game == null) {
@@ -430,7 +431,7 @@ public class WebConfig {
 					return new ModelAndView(map, "game-create.ftl");
 				}
 
-				if(!service.updateMatchsForGame(game, game.getMatchIds())) {
+				if(!service.updateMatchesForGame(game, game.getMatchIds())) {
 					map.put("error", "There was an error creating your game, please try again.");
 					return new ModelAndView(map, "game-create.ftl");
 				}
