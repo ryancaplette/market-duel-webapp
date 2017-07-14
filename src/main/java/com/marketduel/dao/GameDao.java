@@ -11,7 +11,9 @@ public interface GameDao {
 	Boolean createGame(Game g);
 	
 	Game getGameById(int gameId);
-	
+
+	Game getNewestGame();
+
 	Boolean deleteGameByID(int gameId);
 
 	Boolean updateMatchIds(Game g, ArrayList<Integer> matchList);
@@ -20,5 +22,5 @@ public interface GameDao {
 
 	List<Game> getAvailableGames();
 
-	boolean addPlayerToQuickGame(int gameId, int PlayerId);
+	boolean addPlayerToQuickGame(int gameId, int PlayerId, int portfolioId);
 }

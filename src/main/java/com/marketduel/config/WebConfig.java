@@ -11,9 +11,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import com.marketduel.game.Game;
-import com.marketduel.game.Portfolio;
-import com.marketduel.game.StockHolding;
+import com.marketduel.game.*;
 import com.marketduel.util.stockdata.StockPriceData;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
@@ -211,6 +209,37 @@ public class WebConfig {
 			return new ModelAndView(map, "research.ftl");
 		}, new FreeMarkerEngine());
 
+		get("/match-detail", (req, res) -> {
+			Player player = getAuthenticatedPlayer(req);
+			Map<String, Object> map = new HashMap<>();
+			map.put("pageTitle", "Match Detail");
+			map.put("player", player);
+
+			int matchId = Integer.parseInt(req.queryParams("id"));
+			Match match = service.getMatchById(matchId);
+			if (match == null) {
+				map.put("pageTitle", "Games");
+				map.put("error", "Error: Match info not found");
+				return new ModelAndView(map, "games.ftl");
+			}
+
+			//display match info and all [players in the match portfolios
+			map.put("pageTitle", "Match Name: " + match.getMatchName());
+			map.put("matchStart", "Match Start Date: " + match.getStartDate());
+			map.put("matchEnd", "Match End Date: " + match.getEndDate());
+
+			List<Portfolio> portfolios = service.getPortfoliosForMatchId(match.getMatchID());
+			map.put("portfolios", portfolios);
+
+			return new ModelAndView(map, "match-detail.ftl");
+		}, new FreeMarkerEngine());
+		before("/game-detail", (req, res) -> {
+			Player authPlayer = getAuthenticatedPlayer(req);
+			if(authPlayer == null) {
+				res.redirect("/");
+				halt();
+			}
+		});
 
 		get("/games", (req, res) -> {
 			Player player = getAuthenticatedPlayer(req);
@@ -240,7 +269,6 @@ public class WebConfig {
 			}
 
 			if (joinableGames.size() > 0) {
-				map.put("isJoinableGamesList", true);
 				map.put("joinableGamesList", joinableGames);
 			}
 
@@ -255,7 +283,7 @@ public class WebConfig {
 
 			if(req.queryParams("join-game") != null) {
 				System.out.println(req.queryParams("join-game"));
-				service.addPlayerToGame(Integer.parseInt(req.queryParams("join-game")), player.getPlayerId());
+				service.addPlayerToQuickGame(Integer.parseInt(req.queryParams("join-game")), player.getPlayerId());
 			} else {
 				System.out.println("fail");
 			}
@@ -282,7 +310,6 @@ public class WebConfig {
 			}
 
 			if (joinableGames.size() > 0) {
-				map.put("isJoinableGamesList", true);
 				map.put("joinableGamesList", joinableGames);
 			}
 
@@ -297,12 +324,34 @@ public class WebConfig {
 			}
 		});
 
-
 		get("/game-detail", (req, res) -> {
 			Player player = getAuthenticatedPlayer(req);
 			Map<String, Object> map = new HashMap<>();
 			map.put("pageTitle", "Game Detail");
 			map.put("player", player);
+
+			int gameId = Integer.parseInt(req.queryParams("id"));
+			Game game = service.getGameById(gameId);
+			if (game == null) {
+				map.put("pageTitle", "Games");
+				map.put("error", "Error: Game not found");
+				return new ModelAndView(map, "games.ftl");
+			}
+
+			if (game.getType() == Game.GameType.QUICK) { //if game is a quickmatch then we can just grab the first match id and redirect to the match view
+				if (game.getMatchIds().size() <= 0) {
+					map.put("pageTitle", "Games");
+					map.put("error", "Error: Game match not found");
+					return new ModelAndView(map, "games.ftl");
+				}
+
+				int matchId = game.getMatchIds().get(0);
+
+				//redirect to match
+				res.redirect("/match-detail?id=" + matchId);
+				halt();
+			}
+
 			return new ModelAndView(map, "game-detail.ftl");
         }, new FreeMarkerEngine());
 		before("/game-detail", (req, res) -> {
@@ -313,12 +362,101 @@ public class WebConfig {
 			}
 		});
 
+		get("/game-create", (req, res) -> {
+			Player player = getAuthenticatedPlayer(req);
+			Map<String, Object> map = new HashMap<>();
+			map.put("pageTitle", "Create Quick Match");
+			map.put("player", player);
+			return new ModelAndView(map, "game-create.ftl");
+		}, new FreeMarkerEngine());
+		before("/game-detail", (req, res) -> {
+			Player authPlayer = getAuthenticatedPlayer(req);
+			if(authPlayer == null) {
+				res.redirect("/");
+				halt();
+			}
+		});
+
+		post("/game-create", (req, res) -> {
+			Player player = getAuthenticatedPlayer(req);
+			Map<String, Object> map = new HashMap<>();
+			map.put("pageTitle", "Create Quick Match");
+			map.put("player", player);
+
+			float budget = Float.parseFloat(req.queryParams("budget"));
+			//String draft = req.queryParams("draft"); //need start and end of draft have to impliment this
+			String start = req.queryParams("start");
+			String matchName = req.queryParams("matchName");
+			int duration = Integer.parseInt(req.queryParams("duration"));
+
+			int gameType = Integer.parseInt(req.queryParams("gameType"));
+			if (gameType == 0) { //quick game
+				SimpleDateFormat dateFormat  =new SimpleDateFormat("yyyy-MM-dd");
+
+				Date startDate = dateFormat.parse(start);
+
+				//use duration of days to get end date
+				Calendar c = Calendar.getInstance();
+				c.setTime(dateFormat.parse(start));
+				c.add(Calendar.DATE, duration);
+				String end = dateFormat.format(c.getTime());  // dt is now the new date
+				Date endDate = dateFormat.parse(end);
+
+				Match match = new ContinuousMatch();
+
+				match.setMatchName(matchName);
+				match.setStartDate(startDate);
+				match.setEndDate(endDate);
+				match.setDuration(duration);
+				match.setInitialBalance(budget);
+				match.setMatchType(Match.MatchType.Continuous);
+
+				match = service.createMatch(match);
+				if (match == null) {
+					map.put("error", "There was an error creating your game, please try again.");
+					return new ModelAndView(map, "game-create.ftl");
+				}
+
+				Game game = new QuickGame();
+
+				game.setContinuous(true);
+				game.setFirstMatchStart(match.getStartDate());
+				game.setMatchDurationInDays(duration);
+				game.setType(Game.GameType.QUICK);
+
+				game = service.createGame(game);
+				if (game == null) {
+					map.put("error", "There was an error creating your game, please try again.");
+					return new ModelAndView(map, "game-create.ftl");
+				}
+
+				if(!service.updateMatchsForGame(game, game.getMatchIds())) {
+					map.put("error", "There was an error creating your game, please try again.");
+					return new ModelAndView(map, "game-create.ftl");
+				}
+
+				map.put("message", "Congrats! Your new game has been created. Go to the games tab to view it.");
+			}
+
+			return new ModelAndView(map, "game-create.ftl");
+		}, new FreeMarkerEngine());
+		before("/game-detail", (req, res) -> {
+			Player authPlayer = getAuthenticatedPlayer(req);
+			if(authPlayer == null) {
+				res.redirect("/");
+				halt();
+			}
+		});
 
 		get("/portfolios", (req, res) -> {
 			Player player = getAuthenticatedPlayer(req);
 			Map<String, Object> map = new HashMap<>();
 			map.put("pageTitle", "Portfolios");
 			map.put("player", player);
+
+			List<Portfolio> playerPortfolios = service.getPlayerPortfolios(player.getPlayerId());
+			map.put("portfolios", playerPortfolios);
+
 			return new ModelAndView(map, "portfolio.ftl");
         }, new FreeMarkerEngine());
 		before("/portfolios", (req, res) -> {
@@ -344,10 +482,6 @@ public class WebConfig {
 			map.put("pfId", portfolio.getPortfolioId());
 			map.put("stockHoldings", portfolio.getStockHoldings());
 
-			for (StockHolding stock : portfolio.getStockHoldings()) {
-				stock.getTicker();
-			}
-
 			return new ModelAndView(map, "portfolio-detail.ftl");
         }, new FreeMarkerEngine());
 		before("/portfolio-detail", (req, res) -> {
@@ -369,21 +503,33 @@ public class WebConfig {
 			float quantity = Float.valueOf(req.queryParams("quantity"));
 
 			Portfolio portfolio = service.getPortfolioById(pfId);
+			map.put("pfId", portfolio.getPortfolioId());
 			ArrayList<StockHolding> stockHoldings = portfolio.getStockHoldings();
-
-			if (stockHoldings.size() >= Portfolio.MAX_NUM_HOLDINGS) {
-				//error cannot purchase more stock
-			}
+			map.put("stockHoldings", stockHoldings);
 
 			String ticker = req.queryParams("ticker");
 
-			StockHolding sh = new StockHolding(ticker, quantity, 0.00f);
-			portfolio.addHolding(sh);
+			if (stockHoldings.size() >= Portfolio.MAX_NUM_HOLDINGS) {
+				map.put("error", "Your portfollio is currently full. Please sell some stock and try again if you would like to add " + ticker + " to your portfolio.");
+				return new ModelAndView(map, "portfolio-detail.ftl");
+			}
 
-			service.storeStockHoldingsInPortfolio(portfolio, portfolio.getStockHoldings());
+			MarketDataFeed df = new MarketDataFeed(); //initiate a data feed (this object is a facade for the intrinio api
+			StockPriceData stockPriceData = df.requestStockPriceDataLast(ticker);
 
-			res.redirect("/portfolio-detail?id=" + pfId);
-			halt();
+			//add stock to portfollio if stock price can be found
+			if (stockPriceData != null) {
+				float lastPrice = (float) stockPriceData.getClose();
+				if (lastPrice >= 0) {
+					map.put("message", ticker + " has been successfully added to your portfolio.");
+					StockHolding sh = new StockHolding(ticker, quantity, lastPrice);
+					portfolio.addHolding(sh);
+					service.storeStockHoldingsInPortfolio(portfolio, portfolio.getStockHoldings());
+					map.put("stockHoldings", portfolio.getStockHoldings()); //update since new holding was just added
+				}
+			} else {
+				map.put("error", "Stock price data could not be found for " + ticker + ". Please confirm your ticker symbol is correct and try again.");
+			}
 
 			return new ModelAndView(map, "portfolio-detail.ftl");
 		}, new FreeMarkerEngine());

@@ -1,5 +1,15 @@
 <#import "masterTemplate.ftl" as layout />
 <@layout.masterTemplate title="Portfolios">
+<#if message??>
+<div class="alert alert-success">
+    ${message}
+</div>
+</#if>
+<#if error??>
+<div class="alert alert-danger">
+    <strong>Error:</strong> ${error}
+</div>
+</#if>
 
 <div class="row">
     <div class="col-xs-11">
@@ -96,13 +106,18 @@
                                             </#if>
                                         </td>
                                         <td>
-                                            $200.21 <- example
+                                            <#assign currentPrice = stock.getCurrentPrice()>
+                                            ${currentPrice}
                                         </td>
                                         <td>
-                                            +$65.83 <- example
+                                            ${stock.shares*(currentPrice-stock.purchasePrice)}
                                         </td>
                                         <td>
-                                            0.00% <- example
+                                        	<#if stock.getPurchaseValue()==0>
+                                        		INF
+                                        	<#else>
+                                            	${stock.shares*currentPrice*100/stock.getPurchaseValue() - 100}%
+                                        	</#if>
                                         </td>
                                     </tr>
                                 </#list>

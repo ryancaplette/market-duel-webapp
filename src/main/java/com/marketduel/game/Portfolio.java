@@ -1,6 +1,7 @@
 package com.marketduel.game;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ListIterator;
 
 public class Portfolio {
@@ -8,11 +9,38 @@ public class Portfolio {
 
 	private float initialValue;
 	private ArrayList<StockHolding> stockHoldings=new ArrayList<StockHolding>();
+	private int gameId;
+	private int matchId;
+	private int playerId;
 	
 	public static final int MAX_NUM_HOLDINGS = 10;
 	
 	public Portfolio() {
 
+	}
+
+	public int getGameId() {
+		return gameId;
+	}
+
+	public void setGameId(int gameId) {
+		this.gameId = gameId;
+	}
+
+	public int getMatchId() {
+		return matchId;
+	}
+
+	public void setMatchId(int matchId) {
+		this.matchId = matchId;
+	}
+
+	public int getPlayerId() {
+		return playerId;
+	}
+
+	public void setPlayerId(int playerId) {
+		this.playerId = playerId;
 	}
 
 	public void updateHoldingPrices()
@@ -23,6 +51,7 @@ public class Portfolio {
 		}
 	}
 	
+	/*
 	public void setInitialValue() {
 		float totalValue = 0.0f;
 		ListIterator<StockHolding> itr = stockHoldings.listIterator();
@@ -33,9 +62,16 @@ public class Portfolio {
 	
 		initialValue = totalValue;
 	}
-	
+	*/
 	public float getInitialValue() {
-		return initialValue;
+		float totalValue = 0.0f;
+		ListIterator<StockHolding> itr = stockHoldings.listIterator();
+		
+		while(itr.hasNext()) {
+			totalValue += itr.next().getPurchaseValue();
+		}
+	
+		return totalValue;
 	}
 	
 	/* Since players may add and remove stocks between the game start and the match start, the value of each portfolio
@@ -110,5 +146,16 @@ public class Portfolio {
 
 	public ArrayList<StockHolding> getStockHoldings() {
 		return stockHoldings;
+	}
+
+	public float getValueAtDate(Date endDate) {
+		float totalValue = 0.0f;
+		ListIterator<StockHolding> itr = stockHoldings.listIterator();
+		
+		while(itr.hasNext()) {
+			totalValue += itr.next().getValueAtDate(endDate);
+		}
+	
+		return totalValue;
 	}
 }

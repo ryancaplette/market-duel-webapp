@@ -1,5 +1,8 @@
 package com.marketduel.game;
 
+import java.io.IOException;
+import java.util.Date;
+
 import com.marketduel.util.stockdata.IntrinioApi;
 
 public class StockHolding {
@@ -56,13 +59,45 @@ public class StockHolding {
 		return shares*purchasePrice;
 	}
 
+	public float getCurrentPrice() {
+		IntrinioApi api = new IntrinioApi();
+		float currentPrice = 0.0f;
+		
+		try {
+			// Get currentPrice from API
+			currentPrice = (float)api.getStockPriceDataLast(getTicker()).getClose();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+		
+		return currentPrice;
+	}
 
 	public float getCurrentValue() {
 		IntrinioApi api = new IntrinioApi();
 		float currentPrice = 0.0f;
 		
-		// Get currentPrice from API
-		currentPrice = (float)api.getStockPriceDataToday(getTicker()).getClose();
+		try {
+			// Get currentPrice from API
+			currentPrice = (float)api.getStockPriceDataLast(getTicker()).getClose();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+		
+		return shares*currentPrice;
+	}
+
+
+	public float getValueAtDate(Date endDate) {
+		IntrinioApi api = new IntrinioApi();
+		float currentPrice = 0.0f;
+		
+		try {        
+            // Get currentPrice from API
+            currentPrice = (float)api.getStockPriceDataForLastDate(getTicker(), endDate).getClose();
+		} catch (NullPointerException e) {
+            e.printStackTrace();
+        }
 		
 		return shares*currentPrice;
 	}

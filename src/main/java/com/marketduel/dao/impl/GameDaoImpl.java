@@ -33,7 +33,7 @@ public class GameDaoImpl implements GameDao {
 		String sql = "INSERT INTO game (GameType, FirstMatchStart, MatchDurationDays, IsContinuous) values (:type, :start, :dur, :cont)";
 
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("type", g.getType());
+		params.put("type", g.getType() == Game.GameType.QUICK ? 0:1);
 		params.put("start", g.getFirstMatchStart());
 		params.put("dur", g.getMatchDurationInDays());
 		params.put("cont", g.getContinuous());
@@ -42,6 +42,23 @@ public class GameDaoImpl implements GameDao {
 
 		// A new add should modify 1 row
 		return (result == 1);
+	}
+
+	@Override
+	public Game getNewestGame() {
+		String sql = "SELECT * FROM game ORDER BY GameID DESC LIMIT 1";
+
+
+		List<Game> list = template.query(
+				sql,
+				gameMapper);
+
+		Game result = null;
+		if(list != null && !list.isEmpty()) {
+			result = list.get(0);
+		}
+
+		return result;
 	}
 
 	@Override
@@ -69,10 +86,10 @@ public class GameDaoImpl implements GameDao {
 		int result = -1;
 		//Build string pointing to next empty StockHolding
 		for (int i = 0; i < matchList.size() && result != 0 ; i++) {
-			String portStr = "Portfolio" + (i + 1) + "ID";
-			String sql = "UPDATE matches " +
-			             "SET " + portStr + " = :id " +
-					     "WHERE MatchID = " + g.getGameId();
+			String matchStr = "Match" + (i + 1) + "ID";
+			String sql = "UPDATE game " +
+			             "SET " + matchStr + " = :id " +
+					     "WHERE GameID = " + g.getGameId();
 
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("id", matchList.get(i));
@@ -101,22 +118,27 @@ public class GameDaoImpl implements GameDao {
 		if (rs.getInt("GameType") == 0)
 		{
 			g = new QuickGame();
+			g.setType(Game.GameType.QUICK);
 		}
 		else
 		{
 			g = new LeagueGame();
+			g.setType(Game.GameType.LEAGUE);
 		}
 		
 		g.setGameId(rs.getInt("GameID"));
-		//g.setType(rs.getInt("GameType"));
 		g.setFirstMatchStart(rs.getDate("FirstMatchStart"));
 		g.setMatchDurationInDays(rs.getInt("MatchDurationDays"));
 		g.setContinuous(rs.getBoolean("IsContinuous"));
 		
         for(int i = 1; i < (Game.MAX_MATCHES_PER_GAME+1); i++)
         {
-        	g.addMatch(rs.getInt("Match"+i+"Id"));
+        	int matchId = rs.getInt("Match"+i+"Id");
+        	if (matchId != 0) {
+				g.addMatch(rs.getInt("Match"+i+"Id"));
+			}
         }
+
         System.out.println("MatchListSize: " + g.getMatchIds().size());
         
 		return g;
@@ -125,12 +147,12 @@ public class GameDaoImpl implements GameDao {
 	@Override
 	public List<Game> getPlayersGames(Player p) {
 		
-		String sql ="SELECT DISTINCT * FROM game "
-			+ "WHERE "
+		String sql ="SELECT DISTINCT * FROM game g "
+			+ "JOIN ("
 			+ "	 (SELECT MatchId FROM matches "
 			+ "	  WHERE :playerId "
 			+ "   IN (Player1ID, Player2ID, Player3ID, Player4ID, Player5ID, Player6ID, Player7ID, Player8ID, Player9ID, Player10ID))"
-			+ "IN (Match1Id,Match2Id,Match3Id,Match4Id,Match5Id,Match6Id,Match7Id,Match8Id,Match9Id,Match10Id)";
+			+ ") m ON m.MatchID IN (Match1Id,Match2Id,Match3Id,Match4Id,Match5Id,Match6Id,Match7Id,Match8Id,Match9Id,Match10Id)";
 		
 		Map<String, Object> params = new HashMap<String, Object>();
         params.put("playerId", p.getPlayerId());
@@ -159,7 +181,7 @@ public class GameDaoImpl implements GameDao {
 	}
 
 	@Override
-	public boolean addPlayerToQuickGame(int gameId, int playerId) {
+	public boolean addPlayerToQuickGame(int gameId, int playerId, int portfolioId) {
 		String sql ="SELECT DISTINCT * FROM game WHERE GameID = :gameId";
 		
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -183,12 +205,23 @@ public class GameDaoImpl implements GameDao {
 			    + "     Player4ID = CASE WHEN Player4ID IS NULL AND Player3ID IS NOT NULL THEN :playerId ELSE Player4ID END,"
 			    + "     Player3ID = CASE WHEN Player3ID IS NULL AND Player2ID IS NOT NULL THEN :playerId ELSE Player3ID END,"
 			    + "     Player2ID = CASE WHEN Player2ID IS NULL AND Player1ID IS NOT NULL THEN :playerId ELSE Player2ID END,"
-			    + "     Player1ID = CASE WHEN Player1ID IS NULL THEN :playerId ELSE Player1ID END "
+			    + "     Player1ID = CASE WHEN Player1ID IS NULL THEN :playerId ELSE Player1ID END,"
+				+ "     Portfolio10ID = CASE WHEN Portfolio10ID IS NULL AND Portfolio9ID IS NOT NULL THEN :portfolioId ELSE Portfolio10ID END,"
+				+ "     Portfolio9ID = CASE WHEN Portfolio9ID IS NULL AND Portfolio8ID IS NOT NULL THEN :portfolioId ELSE Portfolio9ID END,"
+				+ "     Portfolio8ID = CASE WHEN Portfolio8ID IS NULL AND Portfolio7ID IS NOT NULL THEN :portfolioId ELSE Portfolio8ID END,"
+				+ "     Portfolio7ID = CASE WHEN Portfolio7ID IS NULL AND Portfolio6ID IS NOT NULL THEN :portfolioId ELSE Portfolio7ID END,"
+				+ "     Portfolio6ID = CASE WHEN Portfolio6ID IS NULL AND Portfolio5ID IS NOT NULL THEN :portfolioId ELSE Portfolio6ID END,"
+				+ "     Portfolio5ID = CASE WHEN Portfolio5ID IS NULL AND Portfolio4ID IS NOT NULL THEN :portfolioId ELSE Portfolio5ID END,"
+				+ "     Portfolio4ID = CASE WHEN Portfolio4ID IS NULL AND Portfolio3ID IS NOT NULL THEN :portfolioId ELSE Portfolio4ID END,"
+				+ "     Portfolio3ID = CASE WHEN Portfolio3ID IS NULL AND Portfolio2ID IS NOT NULL THEN :portfolioId ELSE Portfolio3ID END,"
+				+ "     Portfolio2ID = CASE WHEN Portfolio2ID IS NULL AND Portfolio1ID IS NOT NULL THEN :portfolioId ELSE Portfolio2ID END,"
+				+ "     Portfolio1ID = CASE WHEN Portfolio1ID IS NULL THEN :portfolioId ELSE Portfolio1ID END "
 			    + "WHERE MatchID = :matchId";
 			params = new HashMap<String, Object>();
 	        params.put("matchId", curGame.get(0).getMatchIds().get(0));
 	        params.put("playerId", playerId);
-	        
+	        params.put("portfolioId", portfolioId);
+
 	        retVal = template.update(sql, params);
 	        
 	        System.out.println("Added player to game: " + retVal);

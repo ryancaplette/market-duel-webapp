@@ -59,7 +59,9 @@ public class ClosedMatch extends Match {
 		// Iterate over portfolio ID list
 		for (Integer key : portfolioPlayerMap.keySet()) {
 			// Get current value of portfolio
-		    portfolioValue = p.getPortfolioById(key).getCurrentValue();
+		    //portfolioValue = p.getPortfolioById(key).getCurrentValue();
+			// Get value of portfolio at end date
+			portfolioValue = p.getPortfolioById(key).getValueAtDate(getEndDate());
 		    if (portfolioValue > maxPortfolioValue)
 		    {
 		    	// Set new winner if portfolio value is greater than the others that have been iterated over

@@ -57,4 +57,27 @@ public class MarketDataFeed {
         tickerSymbol = tickerSymbol.toUpperCase();
         return api.getStockPriceDataForDate(tickerSymbol, date);
     }
+
+    /**
+     * gets the most recent 100 market days worth of StockPriceData stored in a hashmap where key is formatted yyyy-mm-dd
+     * @param tickerSymbol
+     * @return
+     */
+    public HashMap<String, StockPriceData> requestStockPriceData(String tickerSymbol) {
+
+        tickerSymbol = tickerSymbol.toUpperCase();
+        return api.getStockPriceData(tickerSymbol);
+    }
+
+    /**
+     * gets the last stock price data
+     * @param tickerSymbol
+     * @return
+     */
+    public StockPriceData requestStockPriceDataLast(String tickerSymbol) {
+
+        tickerSymbol = tickerSymbol.toUpperCase();
+        return api.getStockPriceDataLast(tickerSymbol);
+    }
+
 }

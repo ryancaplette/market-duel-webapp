@@ -1,7 +1,9 @@
 package com.marketduel.game;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;   // Didn't get much time to research date classes. May make more sense to use something else
+import java.util.GregorianCalendar;
 
 public abstract class Game {
 	abstract void startGame();
@@ -102,12 +104,36 @@ public abstract class Game {
 	public void addMatch(int matchId){
 
 		// Adding Match to game object
-		System.out.println("adding matchId " + matchId);
-		matchIds.add(matchId);
+		if (matchIds.size() < MAX_MATCHES_PER_GAME) {
+			System.out.println("adding matchId " + matchId);
+			matchIds.add(matchId);
+		} else {
+			System.out.println("Error: matchId's are full, cannot add more.");
+		}
 
+	}
+	
+	public Date getGameEndDate()
+	{
+		Date endDate;
+		int matches, gameDays;
+		
+		matches = matchIds.size();		
+		gameDays = matches*matchDurationInDays;		
+		endDate = addDays(firstMatchStart, gameDays);
+		
+		return endDate;
 	}
 	
 	public void removePortfolio(int portId)	{
 		matchIds.remove(portId);
+	}
+	
+	private static Date addDays(Date date, int days) {
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(date);
+		cal.add(Calendar.DATE, days);
+				
+		return cal.getTime();
 	}
 }

@@ -1,8 +1,12 @@
 package com.marketduel.service.impl;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
+import com.marketduel.dao.MatchDao;
 import com.marketduel.dao.PortfolioDao;
+import com.marketduel.game.Match;
 import com.marketduel.game.Portfolio;
 import com.marketduel.game.StockHolding;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,9 @@ public class MarketDuelService {
 
 	@Autowired
 	private PortfolioDao portfolioDao;
+
+	@Autowired
+	private MatchDao matchDao;
 
 	public Player getPlayerbyUsername(String username) {
 		return playerDao.getPlayerbyUsername(username);
@@ -60,9 +67,34 @@ public class MarketDuelService {
 		return (ArrayList<Game>) gamesDao.getAvailableGames();
 	}
 
-	public boolean addPlayerToGame(int gameId, int playerId)
+	public boolean addPlayerToQuickGame(int gameId, int playerId)
 	{
-		return gamesDao.addPlayerToQuickGame(gameId, playerId);
+		Portfolio p = new Portfolio();
+		Game game = gamesDao.getGameById(gameId);
+		ArrayList<Integer> gameMatchIds = game.getMatchIds();
+		p.setGameId(gameId);
+		p.setPlayerId(playerId);
+		p.setMatchId(gameMatchIds.get(0)); //quickgame only has one match so we know it is the first match id
+
+		//create a portfollio for the player to use in the quick game
+		if (portfolioDao.createPortfolio(p)) {
+			p = portfolioDao.getNewestPortfolioId();
+			if (p == null) {
+				return false;
+			}
+		}
+
+		if (gamesDao.addPlayerToQuickGame(gameId, playerId, p.getPortfolioId())) {
+			return true;
+		}
+
+
+		return false;
+	}
+
+	public boolean updateMatchsForGame(Game g, ArrayList<Integer> matchList)
+	{
+		return gamesDao.updateMatchIds(g, matchList);
 	}
 
 	public void setPlayerDao(PlayerDao playerDao) {
@@ -79,5 +111,38 @@ public class MarketDuelService {
 
 	public Boolean storeStockHoldingsInPortfolio (Portfolio pf, ArrayList<StockHolding> shList) {
 		return portfolioDao.storeStockHoldingsInPortfolio(pf, shList);
+	}
+
+	public Match createMatch(Match m) {
+
+		if (matchDao.createMatch(m)) {
+			return matchDao.getNewestMatch();
+		}
+
+		return null;
+	}
+
+	public Game createGame(Game g) {
+		if (gamesDao.createGame(g)) {
+			return gamesDao.getNewestGame();
+		}
+
+		return null;
+	}
+
+	public List<Portfolio> getPlayerPortfolios(int playerId) {
+		return portfolioDao.getPlayerPortfolios(playerId);
+	}
+
+	public Game getGameById(int gameId) {
+		return gamesDao.getGameById(gameId);
+	}
+
+	public Match getMatchById(int matchId) {
+		return matchDao.getMatchById(matchId);
+	}
+
+	public List<Portfolio> getPortfoliosForMatchId(int matchId) {
+		return portfolioDao.getPortfoliosForMatchId(matchId);
 	}
 }

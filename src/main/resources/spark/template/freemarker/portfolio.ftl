@@ -41,7 +41,7 @@
                             Portfolio ID
                         </th>
                         <th>
-                            Game
+                            Match ID
                         </th>
                         <th>
                             Current Value
@@ -52,60 +52,42 @@
                         <th>
                             % Gain/Loss
                         </th>
+                        <th>
+                            Actions
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="danger">
-                        <td>
-                            <a href="#">1</a>
-                        </td>
-                        <td>
-                            <a href="#">Game 3</a>
-                        </td>
-                        <td>
-                            $9374.34
-                        </td>
-                        <td>
-                            -$346.23
-                        </td>
-                        <td>
-                            -3.53%
-                        </td>
-                    </tr>
-                    <tr class="success">
-                        <td>
-                            <a href="#">2</a>
-                        </td>
-                        <td>
-                            <a href="#">Game 7</a>
-                        </td>
-                        <td>
-                            $2353.34
-                        </td>
-                        <td>
-                            +$854.44
-                        </td>
-                        <td>
-                            +34.45%
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="/portfolio-detail?id=3">3</a>
-                        </td>
-                        <td>
-                            <a href="#">Game 8</a>
-                        </td>
-                        <td>
-                            $10000.00
-                        </td>
-                        <td>
-                            $0.00
-                        </td>
-                        <td>
-                            0.00%
-                        </td>
-                    </tr>
+                    <#if portfolios??>
+                        <#list portfolios as portfolio>
+                            <tr>
+                                <td>
+                                    <a href="/portfolio-detail?id=${portfolio.portfolioId}">${portfolio.portfolioId}</a>
+                                </td>
+                                <td>
+                                    <a href="#">${portfolio.matchId}</a>
+                                </td>
+                                <td>
+                                    <#assign currentValue = portfolio.getCurrentValue()>
+                                    ${currentValue}
+                                </td>
+                                <td>
+                                    <#assign initialValue = portfolio.getInitialValue()>
+                                    ${currentValue - initialValue}
+                                </td>
+                                <td>
+                                    <#if initialValue==0>
+                                		INF
+                                	<#else>
+                                    	${currentValue*100/initialValue - 100}%
+                                	</#if>
+                                </td>
+                                <td>
+                                    <a href="/portfolio-detail?id=${portfolio.portfolioId}"><button type="submit" class="btn btn-success">View</button></a>
+                                </td>
+                            </tr>
+                        </#list>
+                    </#if>
                 </tbody>
             </table>
         </div>
