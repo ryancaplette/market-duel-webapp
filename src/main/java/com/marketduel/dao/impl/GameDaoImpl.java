@@ -37,7 +37,8 @@ public class GameDaoImpl implements GameDao {
 		params.put("start", g.getFirstMatchStart());
 		params.put("dur", g.getMatchDurationInDays());
 		params.put("cont", g.getContinuous());
-
+		updateMatchIds(g, g.getMatchIds());
+		
 		int result = template.update(sql, params);
 
 		// A new add should modify 1 row
