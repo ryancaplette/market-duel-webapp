@@ -51,6 +51,7 @@ public class Portfolio {
 		}
 	}
 	
+	/*
 	public void setInitialValue() {
 		float totalValue = 0.0f;
 		ListIterator<StockHolding> itr = stockHoldings.listIterator();
@@ -61,9 +62,16 @@ public class Portfolio {
 	
 		initialValue = totalValue;
 	}
-	
+	*/
 	public float getInitialValue() {
-		return initialValue;
+		float totalValue = 0.0f;
+		ListIterator<StockHolding> itr = stockHoldings.listIterator();
+		
+		while(itr.hasNext()) {
+			totalValue += itr.next().getPurchaseValue();
+		}
+	
+		return totalValue;
 	}
 	
 	/* Since players may add and remove stocks between the game start and the match start, the value of each portfolio
