@@ -30,14 +30,22 @@ public class GameDaoImpl implements GameDao {
 
 	@Override
 	public Boolean createGame(Game g) {
-		String sql = "INSERT INTO game (GameType, FirstMatchStart, MatchDurationDays, IsContinuous) values (:type, :start, :dur, :cont)";
-
+		String sql;
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("type", g.getType() == Game.GameType.QUICK ? 0:1);
 		params.put("start", g.getFirstMatchStart());
 		params.put("dur", g.getMatchDurationInDays());
 		params.put("cont", g.getContinuous());
-		updateMatchIds(g, g.getMatchIds());
+		
+		if(g.getType() == Game.GameType.QUICK)
+		{
+			sql = "INSERT INTO game (GameType, FirstMatchStart, MatchDurationDays, IsContinuous, Match1Id) values (:type, :start, :dur, :cont, :matchId)";
+			params.put("matchId", g.getMatchIds().get(0));
+		}
+		else
+		{
+			sql = "INSERT INTO game (GameType, FirstMatchStart, MatchDurationDays, IsContinuous) values (:type, :start, :dur, :cont)";
+		}
 		
 		int result = template.update(sql, params);
 
