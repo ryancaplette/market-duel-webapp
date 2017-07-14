@@ -92,7 +92,7 @@ public class MarketDuelService {
 		return false;
 	}
 
-	public boolean updateMatchsForGame(Game g, ArrayList<Integer> matchList)
+	public boolean updateMatchesForGame(Game g, ArrayList<Integer> matchList)
 	{
 		return gamesDao.updateMatchIds(g, matchList);
 	}
