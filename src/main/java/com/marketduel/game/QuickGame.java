@@ -17,7 +17,7 @@ public class QuickGame extends Game {
 		setMaxPlayersInGame(plyrs);
 		setFirstMatchStart(start);
 		setMatchDurationInDays(duration);
-		startGame();
+		startGame(balance);
 	}
 
 	public QuickGame() {
@@ -25,8 +25,8 @@ public class QuickGame extends Game {
 	}
 
 	@Override
-	void startGame() {
-		this.match = new ClosedMatch(getMaxPlayersInGame(), getFirstMatchStart(), getMatchDurationInDays(), MatchType.Closed);
+	void startGame(int balance) {
+		this.match = new ClosedMatch(getMaxPlayersInGame(), getFirstMatchStart(), getMatchDurationInDays(), MatchType.Closed, balance);
 	}
 
 	public Match getMatch() {

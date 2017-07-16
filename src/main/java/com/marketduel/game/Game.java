@@ -6,12 +6,11 @@ import java.util.Date;   // Didn't get much time to research date classes. May m
 import java.util.GregorianCalendar;
 
 public abstract class Game {
-	abstract void startGame();
+	abstract void startGame(int balance);
 	abstract void endGame();
 	
 	public static final int MAX_MATCHES_PER_GAME = 10;
 	//private int initialBalance;
-	
 	
 	private int gameId;
 	private GameType type;	
@@ -20,11 +19,11 @@ public abstract class Game {
 	private int matchDurationInDays;
 	
 	protected int NumMatches;
-	protected ArrayList<Integer> matchIds;
+	protected ArrayList<Integer> matchIds = new ArrayList<Integer>();
 	
 	private int maxPlayersInGame;
 	private int curPlayersInGame;
-	protected ArrayList<Integer> playerIds;
+	protected ArrayList<Integer> playerIds = new ArrayList<Integer>();
 	
 	public ArrayList<Integer> getMatchIds() {
 		return matchIds;
@@ -64,6 +63,10 @@ public abstract class Game {
 	
 	public int getPlayersInGame() {
 		return curPlayersInGame;
+	}
+	
+	public ArrayList<Integer> getPlayerIds() {
+		return playerIds;
 	}
 	
 	public void incrementPlayersInGame() {
@@ -152,4 +155,5 @@ public abstract class Game {
 
 		return false;
 	}
+
 }

@@ -7,7 +7,7 @@ public class LeagueGame extends Game {
 	}
 
 	@Override
-	void startGame() {
+	void startGame(int balance) {
 		// TODO Auto-generated method stub
 
 	}

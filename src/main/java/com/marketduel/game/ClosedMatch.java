@@ -19,6 +19,14 @@ public class ClosedMatch extends Match {
 		setDuration(duration);
 		setMatchType(matchType);
 	}
+	
+	public ClosedMatch(int plyrs, Date start, int duration, MatchType matchType, int balance) {
+		setMaxPlayersInMatch(plyrs);
+		setStartDate(start);
+		setDuration(duration);
+		setMatchType(matchType);
+		setInitialBalance(balance);
+	}
 
 	@Override
 	void startMatch() {
