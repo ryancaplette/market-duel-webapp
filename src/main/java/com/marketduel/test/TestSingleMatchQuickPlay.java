@@ -5,14 +5,55 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import com.marketduel.App;
+import com.marketduel.game.*;
 
 public class TestSingleMatchQuickPlay {
 	@Test
 	public void testCreateSingleMatchQuickPlayGame() {
-		//Creates game:  SingleMatchQuick testGame = new SingleMatchQuick();
-		//Check that all the required data for the game exists
-		assertTrue("New single match quick play game not created", false);
+		//Creates game and checks that all the required data for the game exists
+		
+		final int NUM_OF_PLAYERS = 8;
+		final int DURATION = 5;
+		final int BALANCE = 30000;
+		
+		// Make start date tomorrow
+		Date currentDate = Calendar.getInstance().getTime();
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(currentDate);
+		cal.add(Calendar.DATE, 1);
+		Date startDate = cal.getTime();
+		
+		// Create new game with NUM_OF_PLAYERS players, a start date of tomorrow, a duration of DURATION days, and a balance of BALANCE
+		QuickGame g = new QuickGame(NUM_OF_PLAYERS, startDate, DURATION, BALANCE);
+		
+		// Check player configured parameters
+		assertTrue("Checking allowed number of players", g.getMaxPlayersInGame() == NUM_OF_PLAYERS);
+		assertTrue("Checking start date", g.getFirstMatchStart() == startDate);
+		assertTrue("Checking duration", g.getMatchDurationInDays() == DURATION);
+		assertTrue("Checking initial balance", g.getMatch().getInitialBalance() == BALANCE);
+		
+		// Check single quick game definition
+		assertTrue("Checking that matches do not allow trading", g.getContinuous() == false);
+		assertTrue("Checking that game is quick type", g.getType() == Game.GameType.QUICK);
+		
+		// Check that NUM_OF_PLAYERS can be added
+		for(int i=1; i <= NUM_OF_PLAYERS; i++)
+		{
+			g.addPlayer(i);
+		}
+		
+		ArrayList<Integer> playerIds = g.getPlayerIds();
+		
+		for(int i=1; i <= NUM_OF_PLAYERS; i++)
+		{
+			assertTrue("Checking player ID", playerIds.get(i-1) == i);
+		}
 	}
 	
 	@Test
