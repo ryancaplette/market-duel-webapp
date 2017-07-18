@@ -13,7 +13,7 @@
     </#if>
 
     <div class="row">
-        <div class="col-xs-11">
+        <div class="col-xs-12">
             <h3>${pageTitle}</h3>
 
             <form class="form-horizontal" action="/research" role="form" method="post">
@@ -35,9 +35,9 @@
         </div>
         
 
-        <div class="col-xs-11">
+        <div class="col-xs-12">
                 <#if stockData??>
-                    <h4>Current Stock Information (as of ${.now?long?number_to_datetime})</h4><br/>
+                    <h4>Current Stock Information (as of ${.now?long?number_to_datetime})</h4>
                     <#if stockData.companyName??>
                     <b>Company Name:</b> ${stockData.companyName}<br/>
                     </#if>
@@ -51,7 +51,7 @@
                         <b>Country:</b> ${stockData.country}<br/>
                     </#if>
                     <#if stockData.companyUrl??>
-                        <b>Company Url:</b> ${stockData.companyUrl}<br/>
+                        <b>Company Website: </b><a href="http://${stockData.companyUrl}">${stockData.companyUrl}</a><br/>
                     </#if>
                     <#if stockData.businessAddress??>
                         <b>Business Address:</b> ${stockData.businessAddress}<br/>
@@ -66,16 +66,16 @@
                         <b>Number of Employees:</b> ${stockData.employees}<br/>
                     </#if>
                     <#if open??>
-                        <b>Open Price:</b> ${open}<br/>
+                        <b>Open Price:</b> $${open}<br/>
                     </#if>
                     <#if high??>
-                        <b>High Price:</b> ${high}<br/>
+                        <b>High Price:</b> $${high}<br/>
                     </#if>
                     <#if low??>
-                        <b>Low Price:</b> ${low}<br/>
+                        <b>Low Price:</b> $${low}<br/>
                     </#if>
                     <#if close??>
-                        <b>Close Price:</b> ${close}<br/>
+                        <b>Close Price:</b> $${close}<br/>
                     </#if>
                     <#if volume??>
                         <b>Volume:</b> ${volume}<br/>
@@ -115,7 +115,7 @@
                         </div>
                     </#if>
                 
-
+                    <h4>Chart:</h4>
                     <div style="height: 450px">
                     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
                     <script type="text/javascript">

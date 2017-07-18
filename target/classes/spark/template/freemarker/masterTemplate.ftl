@@ -27,7 +27,7 @@
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
-             <a class="navbar-left" href="/" style="font-size: x-large"><img src="images/logo.png" style="max-width:50px; max-height:50px; vertical-align: bottom;"><strong>Market Duel</strong></a>
+             <a class="navbar-left" href="/" style="font-size: x-large; padding-top: 5px; text-decoration: none;"><img src="images/logo.png" style="max-width:50px; max-height:50px; vertical-align: bottom;"><strong> Market Duel</strong></a>
         </div>
 
         <div class="collapse navbar-collapse" id="example-navbar-collapse">

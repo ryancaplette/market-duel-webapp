@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-xs-11">
-        <h3>${pageTitle}</h3>
+        <h3>Welcome to Market Duel! Please <a href="/login">login</a> or <a href="/register">register</a> to continue.</h3>
             <div class="basic-conent">
                 Market Duel is a fantasy stock analysis game.  It is meant for entertainment purposes only and no real
                 currency or stocks are exchanged.  In Market Duel, matches are set up between users where each user
