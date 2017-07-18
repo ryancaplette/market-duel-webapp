@@ -114,7 +114,32 @@
                             </div>
                         </div>
                     </#if>
-                </#if>
+                
+
+                    <div style="height: 450px">
+                    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+                    <script type="text/javascript">
+
+                    var ticker = "${stockData.ticker}";
+
+                    new TradingView.widget({
+                      
+                      "autosize": true,
+                      "symbol": ticker,
+                      "interval": "D",
+                      "timezone": "Etc/UTC",
+                      "theme": "White",
+                      "style": "1",
+                      "locale": "en",
+                      "toolbar_bg": "#f1f3f6",
+                      "enable_publishing": false,
+                      "allow_symbol_change": true,
+                      "hideideas": true
+                    });
+                    </script>
+                    </div>
+            </#if>
+     
         </div>
     </div>
 </@layout.masterTemplate>

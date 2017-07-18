@@ -35,6 +35,7 @@
 /Users/alexrizzuto/code/market-duel-webapp/src/main/java/com/marketduel/model/Player.java
 /Users/alexrizzuto/code/market-duel-webapp/src/main/java/com/marketduel/game/LeagueGame.java
 /Users/alexrizzuto/code/market-duel-webapp/src/main/java/com/marketduel/test/TestContinuousSingleMatchQuickPlay.java
+/Users/alexrizzuto/code/market-duel-webapp/src/main/java/com/marketduel/test/TestMatchDAO.java
 /Users/alexrizzuto/code/market-duel-webapp/src/main/java/com/marketduel/dao/impl/GameDaoImpl.java
 /Users/alexrizzuto/code/market-duel-webapp/src/main/java/com/marketduel/dao/impl/MatchDaoImpl.java
 /Users/alexrizzuto/code/market-duel-webapp/src/main/java/com/marketduel/game/Match.java

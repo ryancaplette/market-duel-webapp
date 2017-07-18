@@ -5,6 +5,7 @@ com/marketduel/dao/GameDao.class
 com/marketduel/model/Player.class
 com/marketduel/test/TestStockDataItem.class
 com/marketduel/game/QuickGame.class
+com/marketduel/game/Match$MatchType.class
 com/marketduel/test/TestPortfolio.class
 com/marketduel/App.class
 com/marketduel/dao/impl/PortfolioDaoImpl.class
@@ -23,6 +24,7 @@ com/marketduel/test/TestLeagueDAO.class
 com/marketduel/dao/PlayerDao.class
 com/marketduel/test/TestIntrinioApi.class
 com/marketduel/util/stockdata/IntrinioApi.class
+com/marketduel/test/TestMatchDAO.class
 com/marketduel/util/stockdata/MarketDataFeed.class
 com/marketduel/game/Game.class
 com/marketduel/game/Game$GameType.class
@@ -38,7 +40,6 @@ com/marketduel/game/LeagueGame.class
 com/marketduel/dao/PortfolioDao.class
 com/marketduel/game/ClosedMatch.class
 com/marketduel/test/TestMatchToMatchLeaguePlay.class
-com/marketduel/game/MatchType.class
 com/marketduel/dao/impl/GameDaoImpl.class
 com/marketduel/config/DatabaseConfig.class
 com/marketduel/test/TestContinuousLeaguePlay.class
