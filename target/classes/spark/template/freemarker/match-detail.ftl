@@ -30,13 +30,13 @@
         <h3>${pageTitle}</h3>
         <h6>${matchStart}</h6>
         <h6>${matchEnd}</h6>
-        <p>Portfolio comparison of players in this match</p>
+        <p>Portfolio comparison of players in this match: </p>
     </div>
     <div class="col-md-8">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table">
+                    <table class="table table-striped">
                         <thead>
                         <tr>
                             <th>

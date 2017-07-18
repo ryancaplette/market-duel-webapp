@@ -42,7 +42,6 @@
         <div class="container-fluid">
             <div class="row">
                 <form class="form-horizontal" action="/stock-order" role="form" method="post">
-
                     <div class="form-group">
                         <div class="col-sm-10">
                             <label for="ticker" class="control-label">Ticker Symbol: </label>
@@ -54,15 +53,15 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
+                        <div class="col-sm-10">
                             <button type="submit" class="btn btn-default">Buy Stock</button>
                         </div>
                     </div>
-
                 </form>
 
+
                 <div class="col-md-12">
-                    <table class="table">
+                    <table class="table table-striped">
                         <thead>
                         <tr>
                             <th>
@@ -87,7 +86,7 @@
                         </thead>
                         <tbody>
                             <#if stockHoldings??>
-                            <b>Portfolio for match: </b><br/>
+                            <b>Detailed portfolio holdings: </b><br/><br/>
                                 <#list stockHoldings as stock>
                                     <tr>
                                         <td>
