@@ -1,6 +1,10 @@
 package com.marketduel.dao.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,12 +37,13 @@ public class MatchDaoImpl implements MatchDao {
 
 	@Override
 	public Boolean createMatch(Match m) {
-		String sql = "INSERT INTO matches (MatchName, StartDate, EndDate, InitialBudget, MatchType) values (:name, :start, :end, :budget, :type)";
+		String sql = "INSERT INTO matches (MatchName, StartDate, EndDate, DraftTime, InitialBudget, MatchType) values (:name, :start, :end, :draft, :budget, :type)";
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("name", m.getMatchName());
 		params.put("start", m.getStartDate());
 		params.put("end", m.getEndDate());
+		params.put("draft", m.getDraftStartDate());
 		params.put("budget", m.getInitialBalance());
 		params.put("type", m.getMatchType() == MatchType.Closed ? 0:1);
 
@@ -187,6 +192,15 @@ public class MatchDaoImpl implements MatchDao {
         m.setStartDate(rs.getDate("StartDate"));
         m.setEndDate(rs.getDate("EndDate"));
         m.setInitialBalance(rs.getFloat("InitialBudget"));
+        // Had trouble getting both the date and time to read in from the database. Code below should be updated to get both date and time. Currently it gets the date then sets a time of 1pm so I could test the functionality
+        try {
+        	SimpleDateFormat draftDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			m.setDraftStartDate(draftDateFormat.parse(rs.getString("DraftTime")));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
         
         for(int i = 1; i < (Match.MAX_NUM_PLAYERS+1); i++)
         {

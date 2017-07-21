@@ -388,12 +388,20 @@ public class WebConfig {
 			String start = req.queryParams("start");
 			String matchName = req.queryParams("matchName");
 			int duration = Integer.parseInt(req.queryParams("duration"));
+			String draft = req.queryParams("draft");
 
 			int gameType = Integer.parseInt(req.queryParams("gameType"));
 			if (gameType == 0) { //single match quick game
 				SimpleDateFormat dateFormat  =new SimpleDateFormat("yyyy-MM-dd");
 
 				Date startDate = dateFormat.parse(start);
+				
+				SimpleDateFormat draftDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				Date draftStartDate = draftDateFormat.parse(draft);
+				Date draftStartDateEST = new Date(draftStartDate.getTime() + TimeZone.getTimeZone("America/New_York").getRawOffset() + TimeZone.getTimeZone("America/New_York").getDSTSavings());
+				TimeZone zone = TimeZone.getTimeZone("America/New_York");
+				DateFormat format = DateFormat.getDateTimeInstance();
+				format.setTimeZone(zone);
 
 				//use duration of days to get end date
 				Calendar c = Calendar.getInstance();
@@ -407,6 +415,9 @@ public class WebConfig {
 				match.setMatchName(matchName);
 				match.setStartDate(startDate);
 				match.setEndDate(endDate);
+				match.setDraftStartDate(draftStartDateEST);
+				System.out.println("draftStartDate" + draftStartDate);
+				System.out.println("draftStartDateEST" + draftStartDateEST);
 				match.setDuration(duration);
 				match.setInitialBalance(budget);
 				match.setMatchType(Match.MatchType.Closed);
@@ -504,14 +515,21 @@ public class WebConfig {
 			float quantity = Float.valueOf(req.queryParams("quantity"));
 
 			Portfolio portfolio = service.getPortfolioById(pfId);
+			Match match = service.getMatchById(portfolio.getMatchId());
 			map.put("pfId", portfolio.getPortfolioId());
 			ArrayList<StockHolding> stockHoldings = portfolio.getStockHoldings();
 			map.put("stockHoldings", stockHoldings);
 
-			String ticker = req.queryParams("ticker");
+			String ticker = req.queryParams("ticker").toUpperCase();
 
 			if (stockHoldings.size() >= Portfolio.MAX_NUM_HOLDINGS) {
-				map.put("error", "Your portfollio is currently full. Please sell some stock and try again if you would like to add " + ticker + " to your portfolio.");
+				map.put("error", "Your portfolio is currently full. Please sell some stock and try again if you would like to add " + ticker + " to your portfolio.");
+				return new ModelAndView(map, "portfolio-detail.ftl");
+			}
+			
+			if (!match.isTradingActive())
+			{
+				map.put("error", "Trading is not currently active for the match that this portfolio belongs to.");
 				return new ModelAndView(map, "portfolio-detail.ftl");
 			}
 

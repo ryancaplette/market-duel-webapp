@@ -24,4 +24,16 @@ public class ContinuousMatch extends Match {
 		return 0;
 	}
 
+	@Override
+	public boolean isTradingActive() {
+		// During a continuous match, trading is open during the draft period and between the match start and end times
+
+		if(this.isDraftActive() || this.isMatchActive())
+		{
+			return true;
+		}
+		
+		return false;
+	}
+
 }

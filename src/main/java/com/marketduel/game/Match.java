@@ -1,6 +1,8 @@
 package com.marketduel.game;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import com.marketduel.model.Player;
 
@@ -9,6 +11,7 @@ import com.marketduel.model.Player;
 public abstract class Match {
 	abstract void startMatch();
 	abstract void endMatch();
+	public abstract boolean isTradingActive();
 	protected abstract int determineWinner();
 	
 	public static final int MAX_NUM_PLAYERS = 10;
@@ -21,6 +24,8 @@ public abstract class Match {
 	private String matchName;
 	private Date startDate;
 	private Date endDate;
+	private Date draftStartDate;
+	private Date draftEndDate;
 	private int duration;
 	private int maxPlayersInMatch;
 	private float initialBalance;
@@ -141,4 +146,51 @@ public abstract class Match {
 	{
 		return portfolioIds;
 	}
+	protected boolean isDraftActive() {
+		Date currentDate = new Date();
+		
+		if(currentDate.after(getDraftStartDate()) && currentDate.before(getDraftEndDate()))
+		{
+			return true;
+		}
+		
+		return false;
+	}
+
+	protected boolean isMatchActive() {
+		Date currentDate = new Date();
+		
+		if(currentDate.after(getStartDate()) && currentDate.before(getEndDate()))
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public Date getDraftStartDate() {
+		return draftStartDate;
+	}
+	public void setDraftStartDate(Date draftStartDate) {
+		this.draftStartDate = draftStartDate;
+		//Added this to account for lack of end time or duration in database
+		this.setDraftEndDate(draftStartDate);
+	}
+	public Date getDraftEndDate() {
+		return draftEndDate;
+	}
+	public void setDraftEndDate(Date draftEndDate) {
+		//Database doesn't currently store draft end time or duration, so default to 3 hours		
+		//this.draftEndDate = draftEndDate;
+		this.draftEndDate = addHours(draftEndDate, 3);
+	}
+	
+	private static Date addHours(Date date, int hours) {
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(date);
+		cal.add(Calendar.HOUR, hours);
+				
+		return cal.getTime();
+	}
+	
 }

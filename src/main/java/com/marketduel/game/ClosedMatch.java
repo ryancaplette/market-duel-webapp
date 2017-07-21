@@ -81,6 +81,15 @@ public class ClosedMatch extends Match {
 		// Return the ID of the winner
 		return winnerID;
 	}
+
+	@Override
+	public boolean isTradingActive() {
+		// In a closed match, trading is only active during the draft period
+		
+		return this.isDraftActive();
+	}
+
+
 	
 //	private void determineWinner(float[] gains) {
 //		float max = gains[0];

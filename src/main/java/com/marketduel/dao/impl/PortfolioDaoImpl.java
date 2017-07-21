@@ -147,7 +147,7 @@ public class PortfolioDaoImpl implements PortfolioDao {
 					     "WHERE  PortfolioID = " + pf.getPortfolioId();
 
 			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("symb", shList.get(i).getTicker());
+			params.put("symb", shList.get(i).getTicker().toUpperCase());
 			params.put("numShares", shList.get(i).getShares());
 			params.put("initCost", shList.get(i).getPurchasePrice());
 
