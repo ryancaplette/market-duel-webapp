@@ -41,7 +41,7 @@
     <div class="col-md-8">
         <div class="container-fluid">
             <div class="row">
-                <#if isPlayersPortfollio??>
+                <#if isTradingActive??>
                     <form class="form-horizontal" action="/stock-order" role="form" method="post">
                         <div class="form-group">
                             <div class="col-sm-10">

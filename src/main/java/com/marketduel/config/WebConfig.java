@@ -493,8 +493,15 @@ public class WebConfig {
 			Portfolio portfolio = service.getPortfolioById(pfId);
 			map.put("pfId", portfolio.getPortfolioId());
 			map.put("stockHoldings", portfolio.getStockHoldings());
+
 			if (portfolio.getPlayerId() == player.getPlayerId()) {
-				map.put("isPlayersPortfollio", true);
+
+				Match match = service.getMatchById(portfolio.getMatchId());
+
+				if (match.isTradingActive()) {
+					map.put("isTradingActive", true);
+				}
+
 				map.put("name", player.getFirstName() + " " + player.getLastName());
 			} else {
 				Player opponent = service.getPlayerById(portfolio.getPlayerId());
@@ -526,6 +533,13 @@ public class WebConfig {
 			float quantity = Float.valueOf(req.queryParams("quantity"));
 
 			Portfolio portfolio = service.getPortfolioById(pfId);
+
+			if (portfolio.getPlayerId() != player.getPlayerId()) {
+				//only the owner of a portfolio should be allowed to make changes
+				map.put("error", "You are not the owner of this portfolio.");
+				return new ModelAndView(map, "portfolio-detail.ftl");
+			}
+
 			Match match = service.getMatchById(portfolio.getMatchId());
 			map.put("pfId", portfolio.getPortfolioId());
 			ArrayList<StockHolding> stockHoldings = portfolio.getStockHoldings();
@@ -537,11 +551,13 @@ public class WebConfig {
 				map.put("error", "Your portfolio is currently full. Please sell some stock and try again if you would like to add " + ticker + " to your portfolio.");
 				return new ModelAndView(map, "portfolio-detail.ftl");
 			}
-			
+
 			if (!match.isTradingActive())
 			{
 				map.put("error", "Trading is not currently active for the match that this portfolio belongs to.");
 				return new ModelAndView(map, "portfolio-detail.ftl");
+			} else {
+				map.put("isTradingActive", true);
 			}
 
 			MarketDataFeed df = new MarketDataFeed(); //initiate a data feed (this object is a facade for the intrinio api
@@ -560,6 +576,8 @@ public class WebConfig {
 			} else {
 				map.put("error", "Stock price data could not be found for " + ticker + ". Please confirm your ticker symbol is correct and try again.");
 			}
+
+			map.put("name", player.getFirstName() + " " + player.getLastName());
 
 			return new ModelAndView(map, "portfolio-detail.ftl");
 		}, new FreeMarkerEngine());
