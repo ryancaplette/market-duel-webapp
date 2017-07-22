@@ -27,20 +27,40 @@ public class PlayerDaoImpl implements PlayerDao {
 	@Override
 	public Player getPlayerbyUsername(String username) {
 		Map<String, Object> params = new HashMap<String, Object>();
-        params.put("name", username);
-        
+		params.put("name", username);
+
 		String sql = "SELECT * FROM player WHERE username=:name";
-		
-        List<Player> list = template.query(
-                    sql,
-                    params,
-                    userMapper);
-        
-        Player result = null;
-        if(list != null && !list.isEmpty()) {
-        	result = list.get(0);
-        }
-        
+
+		List<Player> list = template.query(
+				sql,
+				params,
+				userMapper);
+
+		Player result = null;
+		if(list != null && !list.isEmpty()) {
+			result = list.get(0);
+		}
+
+		return result;
+	}
+
+	@Override
+	public Player getPlayerById(int id) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+
+		String sql = "SELECT * FROM player WHERE PlayerID=:id";
+
+		List<Player> list = template.query(
+				sql,
+				params,
+				userMapper);
+
+		Player result = null;
+		if(list != null && !list.isEmpty()) {
+			result = list.get(0);
+		}
+
 		return result;
 	}
 	
@@ -76,6 +96,8 @@ public class PlayerDaoImpl implements PlayerDao {
 		Player p = new Player();
 		
 		p.setPlayerId(rs.getInt("PlayerID"));
+		p.setFirstName(rs.getString("FirstName"));
+		p.setLastName(rs.getString("LastName"));
 		p.setEmail(rs.getString("Email"));
 		p.setUsername(rs.getString("Username"));
 		p.setPassword(rs.getString("UserPwd"));

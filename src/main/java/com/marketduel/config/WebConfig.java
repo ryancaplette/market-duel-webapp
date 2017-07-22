@@ -493,6 +493,17 @@ public class WebConfig {
 			Portfolio portfolio = service.getPortfolioById(pfId);
 			map.put("pfId", portfolio.getPortfolioId());
 			map.put("stockHoldings", portfolio.getStockHoldings());
+			if (portfolio.getPlayerId() == player.getPlayerId()) {
+				map.put("isPlayersPortfollio", true);
+				map.put("name", player.getFirstName() + " " + player.getLastName());
+			} else {
+				Player opponent = service.getPlayerById(portfolio.getPlayerId());
+				if (opponent != null) {
+					String firstName = (opponent.getFirstName() != null) ? opponent.getFirstName() : "";
+					String lastName = (opponent.getLastName() != null) ? opponent.getLastName() : "";
+					map.put("name", firstName + " " + lastName);
+				}
+			}
 
 			return new ModelAndView(map, "portfolio-detail.ftl");
         }, new FreeMarkerEngine());

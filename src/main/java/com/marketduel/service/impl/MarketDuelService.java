@@ -109,6 +109,10 @@ public class MarketDuelService {
 		return portfolioDao.getPortfolioById(pfId);
 	}
 
+	public Player getPlayerById (int id) {
+		return playerDao.getPlayerById(id);
+	}
+
 	public Boolean storeStockHoldingsInPortfolio (Portfolio pf, ArrayList<StockHolding> shList) {
 		return portfolioDao.storeStockHoldingsInPortfolio(pf, shList);
 	}
