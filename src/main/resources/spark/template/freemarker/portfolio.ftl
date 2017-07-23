@@ -41,7 +41,7 @@
                             Portfolio ID
                         </th>
                         <th>
-                            Match ID
+                            Match Name
                         </th>
                         <th>
                             Current Value
@@ -65,7 +65,7 @@
                                     <a href="/portfolio-detail?id=${portfolio.portfolioId}">${portfolio.portfolioId}</a>
                                 </td>
                                 <td>
-                                    <a href="#">${portfolio.matchId}</a>
+                                    ${matchNames["" + portfolio.matchId]}
                                 </td>
                                 <td>
                                     <#assign currentValue = portfolio.getCurrentValue()>

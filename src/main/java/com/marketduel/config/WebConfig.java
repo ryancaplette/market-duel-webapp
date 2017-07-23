@@ -470,6 +470,15 @@ public class WebConfig {
 			List<Portfolio> playerPortfolios = service.getPlayerPortfolios(player.getPlayerId());
 			map.put("portfolios", playerPortfolios);
 
+			Map<String, String> matchNames = new HashMap<>();
+			for (Portfolio p : playerPortfolios) {
+				String matchName = service.getMatchById(p.getMatchId()).getMatchName();
+				matchName = (matchName == null) ? "" : matchName;
+				matchNames.put(Integer.toString(p.getMatchId()), matchName);
+			}
+
+			map.put("matchNames", matchNames);
+
 			return new ModelAndView(map, "portfolio.ftl");
         }, new FreeMarkerEngine());
 		before("/portfolios", (req, res) -> {

@@ -195,7 +195,9 @@ public class MatchDaoImpl implements MatchDao {
         // Had trouble getting both the date and time to read in from the database. Code below should be updated to get both date and time. Currently it gets the date then sets a time of 1pm so I could test the functionality
         try {
         	SimpleDateFormat draftDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-			m.setDraftStartDate(draftDateFormat.parse(rs.getString("DraftTime")));
+        	if (rs.getString("DraftTime") != null) {
+				m.setDraftStartDate(draftDateFormat.parse(rs.getString("DraftTime")));
+			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
