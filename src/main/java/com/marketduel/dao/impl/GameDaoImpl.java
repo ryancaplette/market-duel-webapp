@@ -36,10 +36,11 @@ public class GameDaoImpl implements GameDao {
 		params.put("start", g.getFirstMatchStart());
 		params.put("dur", g.getMatchDurationInDays());
 		params.put("cont", g.getContinuous());
-		
+		params.put("name", g.getGameName());
+
 		if(g.getType() == Game.GameType.QUICK)
 		{
-			sql = "INSERT INTO game (GameType, FirstMatchStart, MatchDurationDays, IsContinuous, Match1Id) values (:type, :start, :dur, :cont, :matchId)";
+			sql = "INSERT INTO game (GameType, FirstMatchStart, MatchDurationDays, IsContinuous, Match1Id, GameName) values (:type, :start, :dur, :cont, :matchId, :name)";
 			params.put("matchId", g.getMatchIds().get(0));
 		}
 		else
@@ -139,7 +140,8 @@ public class GameDaoImpl implements GameDao {
 		g.setFirstMatchStart(rs.getDate("FirstMatchStart"));
 		g.setMatchDurationInDays(rs.getInt("MatchDurationDays"));
 		g.setContinuous(rs.getBoolean("IsContinuous"));
-		
+		g.setGameName(rs.getString("GameName"));
+
         for(int i = 1; i < (Game.MAX_MATCHES_PER_GAME+1); i++)
         {
         	int matchId = rs.getInt("Match"+i+"Id");

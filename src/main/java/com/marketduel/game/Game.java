@@ -24,6 +24,8 @@ public abstract class Game {
 	private int maxPlayersInGame;
 	private int curPlayersInGame;
 	protected ArrayList<Integer> playerIds = new ArrayList<Integer>();
+
+	protected String gameName;
 	
 	public ArrayList<Integer> getMatchIds() {
 		return matchIds;
@@ -156,4 +158,11 @@ public abstract class Game {
 		return false;
 	}
 
+    public String getGameName() {
+        return gameName;
+    }
+
+    public void setGameName(String gameName) {
+        this.gameName = gameName;
+    }
 }

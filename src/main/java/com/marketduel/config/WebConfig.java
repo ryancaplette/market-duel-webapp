@@ -435,6 +435,7 @@ public class WebConfig {
 				game.setMatchDurationInDays(duration);
 				game.setType(Game.GameType.QUICK);
 				game.addMatch(match.getMatchID());
+				game.setGameName(matchName);
 
 				game = service.createGame(game);
 				if (game == null) {

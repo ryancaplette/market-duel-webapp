@@ -43,6 +43,9 @@
                                 Game ID
                             </th>
                             <th>
+                                Game Name
+                            </th>
+                            <th>
                                 Start Date
                             </th>
                             <th>
@@ -65,6 +68,11 @@
                                 <tr class="active">
                                     <td>
                                         <a href="/game-detail?id=${game.gameId}">${game.gameId}</a>
+                                    </td>
+                                    <td>
+                                        <#if game.gameName??>
+                                            ${game.gameName}
+                                        </#if>
                                     </td>
                                     <td>
                                         ${game.firstMatchStart}
