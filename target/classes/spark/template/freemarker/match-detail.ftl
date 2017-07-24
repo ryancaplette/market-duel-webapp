@@ -4,25 +4,16 @@
 <div class="row">
 </div>
 <div class="row">
-    <div class="col-md-3">
-        <ul class="nav nav-stacked nav-pills">
-            <li>
-                <a href="/account">Account Dashboard</a>
-            </li>
-            <li>
-                <a href="/games">Games</a>
-            </li>
-            <li>
-                <a href="/portfolios">Portfolios</a>
-            </li>
-            <li>
-                <a href="/players">Players</a>
-            </li>
-            <li>
-                <a href="/alerts">Alerts</a>
-            </li>
-        </ul>
-    </div>
+        <div class="col-md-3">
+            <ul class="nav nav-stacked nav-pills">
+                <li><a href="/account">Account Dashboard</a></li>
+                <li class="active"><a href="/games">Games</a></li>
+                <li><a href="/history">History</a></li>
+                <li><a href="/portfolios">Portfolios</a></li>
+                <li><a href="/players">Players</a></li>
+                <li><a href="/alerts">Alerts</a></li>
+            </ul>
+        </div>
 
 
     <!-- todo: implement for each portfolio wil display a row for each portfolio that the user (or all?)-->

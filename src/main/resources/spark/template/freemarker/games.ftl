@@ -7,25 +7,16 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-3">
-        <ul class="nav nav-stacked nav-pills">
-            <li>
-                <a href="/account">Account Dashboard</a>
-            </li>
-            <li class="active">
-                <a href="/games">Games</a>
-            </li>
-            <li>
-                <a href="/portfolios">Portfolios</a>
-            </li>
-            <li>
-                <a href="/players">Players</a>
-            </li>
-            <li>
-                <a href="/alerts">Alerts</a>
-            </li>
-        </ul>
-    </div>
+        <div class="col-md-3">
+            <ul class="nav nav-stacked nav-pills">
+                <li><a href="/account">Account Dashboard</a></li>
+                <li class="active"><a href="/games">Games</a></li>
+                <li><a href="/history">History</a></li>
+                <li><a href="/portfolios">Portfolios</a></li>
+                <li><a href="/players">Players</a></li>
+                <li><a href="/alerts">Alerts</a></li>
+            </ul>
+        </div>
 
     <form class="form-horizontal" action="/game-create" role="form" method="get">
         <button type="submit" class="btn btn-default">Create Game</button>
@@ -46,13 +37,16 @@
                                 Game Name
                             </th>
                             <th>
+                                Draft Time
+                            </th>
+                            <th>
                                 Start Date
                             </th>
                             <th>
                                 End Date
                             </th>
                             <th>
-                                Current Players
+                                Players
                             </th>
                             <th>
                                 Type
@@ -75,13 +69,18 @@
                                         </#if>
                                     </td>
                                     <td>
+                                        <#if game.draftTime??>
+                                        ${game.draftTime}
+                                        </#if>
+                                    </td>
+                                    <td>
                                         ${game.firstMatchStart}
                                     </td>
                                     <td>
                                         ${game.getGameEndDate()?date}
                                     </td>
                                     <td>
-                                    	${game.getPlayersInGame()}
+                                    	${game.getPlayersInGame()}/10
                                     </td>
                                     <td>
                                         ${game.type}
@@ -110,13 +109,18 @@
                                         </#if>
                                     </td>
                                     <td>
+                                        <#if game.draftTime??>
+                                        ${game.draftTime}
+                                        </#if>
+                                    </td>
+                                    <td>
                                         ${game.firstMatchStart}
                                     </td>
                                     <td>
                                         ${game.getGameEndDate()?date}
                                     </td>
                                     <td>
-                                        ${game.getPlayersInGame()}
+                                        ${game.getPlayersInGame()}/10
                                     </td>
                                     <td>
                                         ${game.type}

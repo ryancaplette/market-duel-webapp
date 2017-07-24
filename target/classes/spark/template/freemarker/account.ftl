@@ -2,8 +2,7 @@
 
 <@layout.masterTemplate title="Account Dashboard">
 
-<script src="//widgetcdn.chartiq.com/js/iframeResizer.min.js"></script> <!-- Only Include Once on a page -->
-
+<script src="//widgetcdn.chartiq.com/js/iframeResizer.min.js"></script>
 
 
 <div class="row">
@@ -20,25 +19,12 @@
 	<div class="row">
 		<div class="col-md-3">
 			<ul class="nav nav-stacked nav-pills">
-				<li class="active">
-					<a href="/account">Account Dashboard</a>
-				</li>
-				<li>
-					<a href="/games">Active Games</a>
-				</li>
-				<li>
-					<a href="/history">History</a>
-				</li>
-				<li>
-					<a href="/portfolios">Portfolios</a>
-				</li>
-				<li>
-					<a href="/players">Players</a>
-				</li>
-				<li>
-					<a href="/alerts">Alerts</a>
-				</li>
-
+				<li class="active"><a href="/account">Account Dashboard</a></li>
+				<li><a href="/games">Games</a></li>
+				<li><a href="/history">History</a></li>
+				<li><a href="/portfolios">Portfolios</a></li>
+				<li><a href="/players">Players</a></li>
+				<li><a href="/alerts">Alerts</a></li>
 			</ul>
 		</div>
 		<div class="col-md-8">
@@ -57,22 +43,5 @@
 	</div>
 	<script>iFrameResize({heightCalculationMethod: 'taggedElement'});</script>
 </br></br>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </@layout.masterTemplate>

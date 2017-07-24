@@ -21,7 +21,7 @@
                 <div class="form-group">
                     <label for="ticker" class="col-sm-2 control-label">Ticker Symbol: </label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="ticker" id="ticker" placeholder="Ticker Symbol" value="${ticker!}" />
+                        <input type="text" class="form-control" name="ticker" id="ticker" placeholder="Ticker Symbol" value="${ticker!}" required>
                     </div>
                 </div>
 

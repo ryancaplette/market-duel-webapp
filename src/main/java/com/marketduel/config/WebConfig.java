@@ -369,7 +369,7 @@ public class WebConfig {
 			map.put("player", player);
 			return new ModelAndView(map, "game-create.ftl");
 		}, new FreeMarkerEngine());
-		before("/game-detail", (req, res) -> {
+		before("/game-create", (req, res) -> {
 			Player authPlayer = getAuthenticatedPlayer(req);
 			if(authPlayer == null) {
 				res.redirect("/");
@@ -644,6 +644,24 @@ public class WebConfig {
 			return new ModelAndView(map, "alerts.ftl");
         }, new FreeMarkerEngine());
 		before("/alerts", (req, res) -> {
+			Player authPlayer = getAuthenticatedPlayer(req);
+			if(authPlayer == null) {
+				res.redirect("/");
+				halt();
+			}
+		});
+
+
+
+
+		get("/history", (req, res) -> {
+			Player player = getAuthenticatedPlayer(req);
+			Map<String, Object> map = new HashMap<>();
+			map.put("pageTitle", "History");
+			map.put("player", player);
+			return new ModelAndView(map, "history.ftl");
+        }, new FreeMarkerEngine());
+		before("/history", (req, res) -> {
 			Player authPlayer = getAuthenticatedPlayer(req);
 			if(authPlayer == null) {
 				res.redirect("/");
