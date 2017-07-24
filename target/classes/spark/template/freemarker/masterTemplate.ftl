@@ -26,8 +26,20 @@
 
     
     <link rel="stylesheet" type="text/css" href="/css/style.css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(window).load(function() {
+        $(".loader").fadeOut("slow");
+    })
+    </script>
+
+
 </head>
 <body style="padding-top: 70px; background-color: #e3e7ed;">
+
+<div class="loader"></div>
+
 <div class="container">
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">

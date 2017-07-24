@@ -45,23 +45,23 @@ ${message}
                     <div class="col-sm-10">
                         
                         <label class="control-label">Match Name: </label>
-                        <input type="text" class="form-control" name="matchName" id="matchName" placeholder="Enter match name" />
+                        <input type="text" class="form-control" name="matchName" id="matchName" placeholder="Enter match name" required>
                         <label class="control-label">Initial Funds ($): </label>
-                        <input type="text" class="form-control" name="budget" id="budget" placeholder="10000" />
+                        <input type="text" class="form-control" name="budget" id="budget" placeholder="10000" required>
                         <label class="control-label">Draft Date: </label>
-                        <input type="text" name="draft" id="draft" data-date-format="yyyy-mm-dd hh:ii:ss" placeholder="yyyy-mm-dd hh:mm:ss">
+                        <input type="text" name="draft" id="draft" data-date-format="yyyy-mm-dd hh:ii:ss" placeholder="yyyy-mm-dd hh:mm:ss" required>
                             <script>
                             $('#draft').datetimepicker();
                             </script>
 
                         <label class="control-label">Start Date: </label>
-                        <input type="text" name="start" id="start" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd">
+                        <input type="text" name="start" id="start" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" required>
                             <script>
                             $('#start').datetimepicker();
                             </script>
 
                         <label class="control-label">Duration of Match (Days): </label>
-                        <input type="text" class="form-control" name="duration" id="duration" placeholder="7" />
+                        <input type="text" class="form-control" name="duration" id="duration" placeholder="7" required>
                         <input type="hidden" class="form-control" name="gameType" id="gameType" value="0" />
                     </div>
                 </div>

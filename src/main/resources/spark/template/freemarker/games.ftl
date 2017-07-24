@@ -71,7 +71,7 @@
                                     </td>
                                     <td>
                                         <#if game.gameName??>
-                                            ${game.gameName}
+                                            <a href="/game-detail?id=${game.gameId}">${game.gameName}</a>
                                         </#if>
                                     </td>
                                     <td>
@@ -106,7 +106,7 @@
                                     </td>
                                     <td>
                                         <#if game.gameName??>
-                                            ${game.gameName}
+                                            <a href="/game-detail?id=${game.gameId}">${game.gameName}</a>
                                         </#if>
                                     </td>
                                     <td>
