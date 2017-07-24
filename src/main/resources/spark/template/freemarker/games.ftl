@@ -87,8 +87,12 @@
                                         ${game.type}
                                     </td>
                                     <td>
-                                        <a href="/game-detail?id=${game.gameId}"><button type="submit" class="btn btn-success">View</button></a>
-                                        <button type="submit" class="btn btn-danger">Leave</button>
+                                        <form class="form-horizontal" action="/games" role="form" method="post">
+                                            <div class="form-group">
+                                                    <input type="hidden" class="form-control" name="leave-game" id="leave-game" value="${game.gameId!}" />
+                                                    <button type="submit" class="btn btn-danger">Leave</button>
+                                            </div>
+                                        </form>
                                     </td>
                                 </tr>
                             </#list>
@@ -98,7 +102,12 @@
                             <#list joinableGamesList as game>
                                 <tr>
                                     <td>
-                                        <a href="#">${game.gameId}</a>
+                                        <a href="/game-detail?id=${game.gameId}">${game.gameId}</a>
+                                    </td>
+                                    <td>
+                                        <#if game.gameName??>
+                                            ${game.gameName}
+                                        </#if>
                                     </td>
                                     <td>
                                         ${game.firstMatchStart}
@@ -115,10 +124,8 @@
                                     <td>
                                         <form class="form-horizontal" action="/games" role="form" method="post">
                                             <div class="form-group">
-                                                <div class="">
                                                     <input type="hidden" class="form-control" name="join-game" id="join-game" value="${game.gameId!}" />
-                                                    <button type="submit" class="btn btn-default">Join Game</button>
-                                                </div>
+                                                    <button type="submit" class="btn btn-success">Join</button>
                                             </div>
                                         </form>
                                     </td>
