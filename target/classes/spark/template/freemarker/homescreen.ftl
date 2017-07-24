@@ -28,4 +28,12 @@
     </div>
 </div>
 
+<input type="text" value="2012-05-15 21:05" id="datetimepicker" data-date-format="yyyy-mm-dd hh:ii">
+
+<script>
+$('#datetimepicker').datetimepicker();
+</script>
+
+
+
 </@layout.masterTemplate>

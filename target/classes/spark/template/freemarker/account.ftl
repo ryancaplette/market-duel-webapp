@@ -27,7 +27,7 @@
 					<a href="/games">Active Games</a>
 				</li>
 				<li>
-					<a href="/completed-games">Completed Games</a>
+					<a href="/history">History</a>
 				</li>
 				<li>
 					<a href="/portfolios">Portfolios</a>
@@ -41,7 +41,6 @@
 
 			</ul>
 		</div>
-		
 		<div class="col-md-8">
 			<iframe src="https://globalwidgets.xignite.com/ChartIQ/Widgets2Test/widget.html?widget=marketsnews" frameborder="0" scrolling="no" style="width:100%"></iframe>
 		</div>

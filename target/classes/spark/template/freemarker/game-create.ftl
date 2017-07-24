@@ -43,23 +43,31 @@ ${message}
 
                 <div class="form-group">
                     <div class="col-sm-10">
-                        <p>this only works for quick game / quick match right now</p>
-                        <label for="ticker" class="control-label">Match Name: </label>
-                        <input type="text" class="form-control" name="matchName" id="matchName" value="" />
-                        <label for="ticker" class="control-label">Start Budget: </label>
-                        <input type="text" class="form-control" name="budget" id="budget" value="0" />
-                        <label for="ticker" class="control-label">Draft Date: (expects format yyyy-mm-dd hh:mm:ss)</label>
-                        <input type="text" class="form-control" name="draft" id="draft" value="" />
-                        <label for="ticker" class="control-label">Start Date: (expects format yyyy-mm-dd)</label>
-                        <input type="text" class="form-control" name="start" id="start" value="" />
-                        <label for="ticker" class="control-label">Duration of Match (Number of Days): </label>
-                        <input type="text" class="form-control" name="duration" id="duration" value="0" />
+                        
+                        <label class="control-label">Match Name: </label>
+                        <input type="text" class="form-control" name="matchName" id="matchName" placeholder="Enter match name" />
+                        <label class="control-label">Initial Funds ($): </label>
+                        <input type="text" class="form-control" name="budget" id="budget" placeholder="10000" />
+                        <label class="control-label">Draft Date: </label>
+                        <input type="text" name="draft" id="draft" data-date-format="yyyy-mm-dd hh:ii:ss" placeholder="yyyy-mm-dd hh:mm:ss">
+                            <script>
+                            $('#draft').datetimepicker();
+                            </script>
+
+                        <label class="control-label">Start Date: </label>
+                        <input type="text" name="start" id="start" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd">
+                            <script>
+                            $('#start').datetimepicker();
+                            </script>
+
+                        <label class="control-label">Duration of Match (Days): </label>
+                        <input type="text" class="form-control" name="duration" id="duration" placeholder="7" />
                         <input type="hidden" class="form-control" name="gameType" id="gameType" value="0" />
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
+                    <div class="col-sm col-sm-10">
                         <button type="submit" class="btn btn-default">Create Quick Game</button>
                     </div>
                 </div>

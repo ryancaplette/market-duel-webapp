@@ -41,7 +41,6 @@
 
 			</ul>
 		</div>
-		
 		<div class="col-md-8">
 			<iframe src="https://globalwidgets.xignite.com/ChartIQ/Widgets2Test/widget.html?widget=marketsnews" frameborder="0" scrolling="no" style="width:100%"></iframe>
 		</div>
