@@ -106,14 +106,6 @@
                     </#if>
 
                     <br/><br/>
-                    <#if player??>
-                        <div class="form-group">
-                            <div class="">
-                                <button type="submit" class="btn btn-default">Buy Stock</button>
-                                <button type="submit" class="btn btn-default">Sell Stock</button>
-                            </div>
-                        </div>
-                    </#if>
                 
                     <h4>Chart:</h4>
                     <div style="height: 450px">

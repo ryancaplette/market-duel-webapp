@@ -2,6 +2,10 @@
 
 <@layout.masterTemplate title="Account Dashboard">
 
+<script src="//widgetcdn.chartiq.com/js/iframeResizer.min.js"></script> <!-- Only Include Once on a page -->
+
+
+
 <div class="row">
     <div class="col-xs-11">
         <h3>${pageTitle}</h3>
@@ -20,7 +24,10 @@
 					<a href="/account">Account Dashboard</a>
 				</li>
 				<li>
-					<a href="/games">Games</a>
+					<a href="/games">Active Games</a>
+				</li>
+				<li>
+					<a href="/history">History</a>
 				</li>
 				<li>
 					<a href="/portfolios">Portfolios</a>
@@ -34,28 +41,25 @@
 
 			</ul>
 		</div>
-		<div class="col-md-4">
-			<h4>Market News</h4>
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-		</div>
-		<div class="col-md-4">
-			<h4>Movers and Shakers</h4>
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		
+		<div class="col-md-8">
+			<iframe src="https://globalwidgets.xignite.com/ChartIQ/Widgets2Test/widget.html?widget=marketsnews" frameborder="0" scrolling="no" style="width:100%"></iframe>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-3">
 		</div>
 		<div class="col-md-4">
-			<h4>Top Players</h4>
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+			<iframe src="https://globalwidgets.xignite.com/ChartIQ/Widgets2Test/widget.html?widget=topmovers" frameborder="0" scrolling="no" style="width:100%"></iframe>
 		</div>
 		<div class="col-md-4">
-			<h4>Top Portfolios</h4>
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+			<iframe src="https://globalwidgets.xignite.com/ChartIQ/Widgets2Test/widget.html?widget=sectorperformance" frameborder="0" scrolling="no" style="width:100%"></iframe>
 		</div>
 	</div>
+	<script>iFrameResize({heightCalculationMethod: 'taggedElement'});</script>
 </br></br>
+
+
 
 
 

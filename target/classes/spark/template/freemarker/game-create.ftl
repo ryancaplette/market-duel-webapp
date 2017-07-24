@@ -48,7 +48,7 @@ ${message}
                         <input type="text" class="form-control" name="matchName" id="matchName" value="" />
                         <label for="ticker" class="control-label">Start Budget: </label>
                         <input type="text" class="form-control" name="budget" id="budget" value="0" />
-                        <label for="ticker" class="control-label">Draft Date: </label>
+                        <label for="ticker" class="control-label">Draft Date: (expects format yyyy-mm-dd hh:mm:ss)</label>
                         <input type="text" class="form-control" name="draft" id="draft" value="" />
                         <label for="ticker" class="control-label">Start Date: (expects format yyyy-mm-dd)</label>
                         <input type="text" class="form-control" name="start" id="start" value="" />

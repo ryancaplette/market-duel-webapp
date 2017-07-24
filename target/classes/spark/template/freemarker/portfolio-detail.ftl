@@ -41,23 +41,25 @@
     <div class="col-md-8">
         <div class="container-fluid">
             <div class="row">
-                <form class="form-horizontal" action="/stock-order" role="form" method="post">
-                    <div class="form-group">
-                        <div class="col-sm-10">
-                            <label for="ticker" class="control-label">Ticker Symbol: </label>
-                            <input type="text" class="form-control" name="ticker" id="ticker" placeholder="Ticker Symbol" value="${ticker!}" />
-                            <label for="quantity" class="control-label">Quantity: </label>
-                            <input type="text" class="form-control" name="quantity" id="quantity" placeholder="Quantity" value="0" />
-                            <input type="hidden" class="form-control" name="pfId" id="pfId" value="${pfId!}" />
+                <#if isTradingActive??>
+                    <form class="form-horizontal" action="/stock-order" role="form" method="post">
+                        <div class="form-group">
+                            <div class="col-sm-10">
+                                <label for="ticker" class="control-label">Ticker Symbol: </label>
+                                <input type="text" class="form-control" name="ticker" id="ticker" placeholder="Ticker Symbol" value="${ticker!}" />
+                                <label for="quantity" class="control-label">Quantity: </label>
+                                <input type="text" class="form-control" name="quantity" id="quantity" placeholder="Quantity" value="0" />
+                                <input type="hidden" class="form-control" name="pfId" id="pfId" value="${pfId!}" />
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <div class="col-sm-10">
-                            <button type="submit" class="btn btn-default">Buy Stock</button>
+                        <div class="form-group">
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-default">Buy Stock</button>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </#if>
 
 
                 <div class="col-md-12">
@@ -86,7 +88,11 @@
                         </thead>
                         <tbody>
                             <#if stockHoldings??>
-                            <b>Detailed portfolio holdings: </b><br/><br/>
+                            <b>Detailed portfolio holdings for: </b>
+                            <#if name??>
+                                ${name}
+                            </#if>
+                            <br/><br/>
                                 <#list stockHoldings as stock>
                                     <tr>
                                         <td>
