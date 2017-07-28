@@ -48,14 +48,4 @@ public class QuickGame extends Game {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	@Override
-	public int getPlayersInGame() {
-		return this.getFirstMatch().getPlayersInMatch();
-	}
-	
-	@Override
-	public int getMaxPlayersInGame() {
-		return this.getFirstMatch().getMaxPlayersInMatch();
-	}
 }

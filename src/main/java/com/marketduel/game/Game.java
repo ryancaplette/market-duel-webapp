@@ -66,7 +66,9 @@ public abstract class Game {
 		this.maxPlayersInGame = maxPlayersInGame;
 	}
 	
-	abstract int getPlayersInGame();
+	public int getPlayersInGame() {
+		return curPlayersInGame;
+	}
 	
 	public ArrayList<Integer> getPlayerIds() {
 		return playerIds;
@@ -180,8 +182,5 @@ public abstract class Game {
 		MatchDaoImpl m = new MatchDaoImpl(d.dataSource());
 
     	return m.getMatchById(matchIds.get(0));
-	}
-	public void setNumPlayers(int numOfPlayers) {
-		curPlayersInGame = numOfPlayers;
 	}
 }

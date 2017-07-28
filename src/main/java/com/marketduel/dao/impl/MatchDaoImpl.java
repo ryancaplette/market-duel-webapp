@@ -37,7 +37,7 @@ public class MatchDaoImpl implements MatchDao {
 
 	@Override
 	public Boolean createMatch(Match m) {
-		String sql = "INSERT INTO matches (MatchName, StartDate, EndDate, DraftTime, InitialBudget, MatchType, NumPlayers) values (:name, :start, :end, :draft, :budget, :type, :players)";
+		String sql = "INSERT INTO matches (MatchName, StartDate, EndDate, DraftTime, InitialBudget, MatchType) values (:name, :start, :end, :draft, :budget, :type)";
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("name", m.getMatchName());
@@ -46,7 +46,6 @@ public class MatchDaoImpl implements MatchDao {
 		params.put("draft", m.getDraftStartDate());
 		params.put("budget", m.getInitialBalance());
 		params.put("type", m.getMatchType() == MatchType.Closed ? 0:1);
-		params.put("players", m.getPlayersInMatch());
 
 		int result = template.update(sql, params);
 

@@ -80,7 +80,7 @@
                                         ${game.getGameEndDate()?date}
                                     </td>
                                     <td>
-                                    	<!-- ${game.getPlayersInGame()} -->
+                                    	${game.getPlayersInGame()}/10
                                     </td>
                                     <td>
                                         ${game.type}
@@ -120,7 +120,7 @@
                                         ${game.getGameEndDate()?date}
                                     </td>
                                     <td>
-                                        <!-- ${game.getPlayersInGame()}/10 -->
+                                        ${game.getPlayersInGame()}/10
                                     </td>
                                     <td>
                                         ${game.type}
