@@ -39,6 +39,7 @@ public class PortfolioDaoImpl implements PortfolioDao {
         params.put("portfolioId", pf.getPortfolioId());
         params.put("matchId", pf.getMatchId());
         params.put("playerId", pf.getPlayerId());
+        params.put("balance", pf.getBalance());
 
         int result = template.update(sql, params);
 	
@@ -169,12 +170,33 @@ public class PortfolioDaoImpl implements PortfolioDao {
         return (result == 1);
 	}
 	
+	@Override
+	/**
+	 * Updates the portfolio balance
+	 */
+	public Boolean updateBalance(Portfolio pf) {
+		int result = -1;
+		
+		String sql = "UPDATE portfolio " +
+	             "SET Balance = :bal " +
+			     "WHERE  PortfolioID = " + pf.getPortfolioId();
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("bal", pf.getBalance());
+
+		result = template.update(sql, params);
+
+        //Modifies one portfolio
+        return (result != 0);
+	}
+	
 	private RowMapper<Portfolio> portfolioMapper = (rs, rowNum) -> {
 		Portfolio pf = new Portfolio();
 		
 		pf.setPortfolioId(rs.getInt("PortfolioID"));
 		pf.setMatchId(rs.getInt("MatchID"));
 		pf.setPlayerId(rs.getInt("PlayerID"));
+		pf.setBalance(rs.getFloat("Balance"));
 		for(int i = 1; i <= Portfolio.MAX_NUM_HOLDINGS; i++){
 			String stockStr = "Stock" + (i);
 			if (rs.getString(stockStr + "Symb") == null) {

@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.ListIterator;
 
+import com.marketduel.config.DatabaseConfig;
+import com.marketduel.dao.impl.MatchDaoImpl;
+import com.marketduel.dao.impl.PlayerDaoImpl;
+import com.marketduel.dao.impl.PortfolioDaoImpl;
+import com.marketduel.model.Player;
+
 public class Portfolio {
 	private int portfolioId;
 
@@ -12,6 +18,7 @@ public class Portfolio {
 	private int gameId;
 	private int matchId;
 	private int playerId;
+	private float balance;
 	
 	public static final int MAX_NUM_HOLDINGS = 10;
 	
@@ -111,11 +118,21 @@ public class Portfolio {
 		}
 	}
 
+	// This method is used by the DAO to populate the portfolio from the database
 	public void addHolding(StockHolding sh) {
 		stockHoldings.add(sh);
 	}
 	
-	public void removeHolding(int holdingIndex) {
+	
+	// This method is used to add new stocks to the portfolio
+	public void addHoldingToPortfolio(StockHolding sh) {
+		stockHoldings.add(sh);
+		balance -= sh.getPurchaseValue();
+	}
+	
+	// This method is used to remove stocks to the portfolio
+	public void removeHoldingFromPortfolio(int holdingIndex) {
+		balance += stockHoldings.get(holdingIndex).getCurrentValue();
 		stockHoldings.remove(holdingIndex);
 	}
 
@@ -157,5 +174,31 @@ public class Portfolio {
 		}
 	
 		return totalValue;
+	}
+	
+	public String getPlayerUsername() {
+		DatabaseConfig d = new DatabaseConfig();
+		PlayerDaoImpl p = new PlayerDaoImpl(d.dataSource());
+
+    	Player player = p.getPlayerById(playerId);
+    	
+    	return player.getUsername();
+	}
+
+	public void setBalance(float initialBalance) {
+		balance = initialBalance;
+	}
+	
+	public float getBalance()
+	{
+		return balance;
+	}
+	
+	public void updateBalance()
+	{
+		DatabaseConfig d = new DatabaseConfig();
+		PortfolioDaoImpl p = new PortfolioDaoImpl(d.dataSource());
+
+    	p.updateBalance(this);
 	}
 }

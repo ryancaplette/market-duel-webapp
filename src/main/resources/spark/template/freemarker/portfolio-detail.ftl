@@ -84,6 +84,8 @@
                                 ${name}
                             </#if>
                             <br/><br/>
+                            <b>Available balance: </b>$${balance}
+                            <br/><br/>
                                 <#list stockHoldings as stock>
                                     <tr>
                                         <td>

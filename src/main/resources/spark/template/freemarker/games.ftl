@@ -37,7 +37,7 @@
                                 Game Name
                             </th>
                             <th>
-                                Draft Time
+                                Draft Date/Time
                             </th>
                             <th>
                                 Start Date
@@ -69,8 +69,8 @@
                                         </#if>
                                     </td>
                                     <td>
-                                        <#if game.draftTime??>
-                                        ${game.draftTime}
+                                        <#if game.getFirstMatch().getDraftStartDate()??>
+                                        	${game.getFirstMatch().getDraftStartDate()?datetime}
                                         </#if>
                                     </td>
                                     <td>
@@ -109,8 +109,8 @@
                                         </#if>
                                     </td>
                                     <td>
-                                        <#if game.draftTime??>
-                                        ${game.draftTime}
+                                        <#if game.getFirstMatch().getDraftStartDate()??>
+                                        	${game.getFirstMatch().getDraftStartDate()?datetime}
                                         </#if>
                                     </td>
                                     <td>

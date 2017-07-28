@@ -75,6 +75,7 @@ public class MarketDuelService {
 		p.setGameId(gameId);
 		p.setPlayerId(playerId);
 		p.setMatchId(gameMatchIds.get(0)); //quickgame only has one match so we know it is the first match id
+		p.setBalance(game.getFirstMatch().getInitialBalance());
 
 		//create a portfollio for the player to use in the quick game
 		if (portfolioDao.createPortfolio(p)) {

@@ -34,7 +34,7 @@
                                 Portfolio ID
                             </th>
                             <th>
-                                Player ID
+                                Player
                             </th>
                             <th>
                                 Current Value
@@ -58,7 +58,7 @@
                                         <a href="/portfolio-detail?id=${portfolio.portfolioId}">${portfolio.portfolioId}</a>
                                     </td>
                                     <td>
-                                        ${portfolio.playerId}
+                                        ${portfolio.getPlayerUsername()}
                                     </td>
                                     <td>
 	                                    <#assign currentValue = portfolio.getCurrentValue()>

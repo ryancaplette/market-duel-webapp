@@ -503,6 +503,7 @@ public class WebConfig {
 			Portfolio portfolio = service.getPortfolioById(pfId);
 			map.put("pfId", portfolio.getPortfolioId());
 			map.put("stockHoldings", portfolio.getStockHoldings());
+			map.put("balance", portfolio.getBalance());
 
 			if (portfolio.getPlayerId() == player.getPlayerId()) {
 
@@ -538,9 +539,11 @@ public class WebConfig {
 			Map<String, Object> map = new HashMap<>();
 			map.put("pageTitle", "Stock Order");
 			map.put("player", player);
+			
 
 			int pfId = Integer.parseInt(req.queryParams("pfId"));
 			float quantity = Float.valueOf(req.queryParams("quantity"));
+			
 
 			Portfolio portfolio = service.getPortfolioById(pfId);
 
@@ -554,6 +557,7 @@ public class WebConfig {
 			map.put("pfId", portfolio.getPortfolioId());
 			ArrayList<StockHolding> stockHoldings = portfolio.getStockHoldings();
 			map.put("stockHoldings", stockHoldings);
+			map.put("balance", portfolio.getBalance());
 
 			String ticker = req.queryParams("ticker").toUpperCase();
 
@@ -573,15 +577,22 @@ public class WebConfig {
 			MarketDataFeed df = new MarketDataFeed(); //initiate a data feed (this object is a facade for the intrinio api
 			StockPriceData stockPriceData = df.requestStockPriceDataLast(ticker);
 
-			//add stock to portfollio if stock price can be found
+			//add stock to portfolio if stock price can be found
 			if (stockPriceData != null) {
 				float lastPrice = (float) stockPriceData.getClose();
 				if (lastPrice >= 0) {
-					map.put("message", ticker + " has been successfully added to your portfolio.");
-					StockHolding sh = new StockHolding(ticker, quantity, lastPrice);
-					portfolio.addHolding(sh);
-					service.storeStockHoldingsInPortfolio(portfolio, portfolio.getStockHoldings());
-					map.put("stockHoldings", portfolio.getStockHoldings()); //update since new holding was just added
+					if (quantity*lastPrice > portfolio.getBalance()) {
+						map.put("error", "Value of that many shares of " + ticker + " ($" + quantity*lastPrice + ") exceeds available portfolio balance ($" + portfolio.getBalance() + ").");
+					}
+					else {
+						map.put("message", ticker + " has been successfully added to your portfolio.");
+						StockHolding sh = new StockHolding(ticker, quantity, lastPrice);
+						portfolio.addHoldingToPortfolio(sh);
+						service.storeStockHoldingsInPortfolio(portfolio, portfolio.getStockHoldings());
+						map.put("stockHoldings", portfolio.getStockHoldings()); //update since new holding was just added
+						portfolio.updateBalance();
+						map.put("balance", portfolio.getBalance());  //update since new holding was just added
+					}
 				}
 			} else {
 				map.put("error", "Stock price data could not be found for " + ticker + ". Please confirm your ticker symbol is correct and try again.");

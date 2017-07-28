@@ -39,7 +39,7 @@ ${message}
                         <input type="text" class="form-control" name="matchName" id="matchName" placeholder="Enter match name" required>
                         <label class="control-label">Initial Funds ($): </label>
                         <input type="text" class="form-control" name="budget" id="budget" placeholder="10000" required>
-                        <label class="control-label">Draft Date: </label>
+                        <label class="control-label">Draft Date/Time: </label>
                         <input type="text" name="draft" id="draft" data-date-format="yyyy-mm-dd hh:ii:ss" placeholder="yyyy-mm-dd hh:mm:ss" required>
                             <script>
                             $('#draft').datetimepicker();

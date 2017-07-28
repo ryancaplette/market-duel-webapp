@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;   // Didn't get much time to research date classes. May make more sense to use something else
 import java.util.GregorianCalendar;
+import com.marketduel.dao.impl.MatchDaoImpl;
+import com.marketduel.dao.impl.PortfolioDaoImpl;
+import com.marketduel.config.DatabaseConfig;
 
 public abstract class Game {
 	abstract void startGame(int balance);
@@ -165,4 +168,19 @@ public abstract class Game {
     public void setGameName(String gameName) {
         this.gameName = gameName;
     }
+    /*
+    public Date getFirstMatchDraftDate() {
+    	DatabaseConfig d = new DatabaseConfig();
+		MatchDaoImpl m = new MatchDaoImpl(d.dataSource());
+
+    	Match firstMatch = m.getMatchById(matchIds.get(0));
+    	return firstMatch.getDraftStartDate();
+    }
+    */
+	public Match getFirstMatch() {
+		DatabaseConfig d = new DatabaseConfig();
+		MatchDaoImpl m = new MatchDaoImpl(d.dataSource());
+
+    	return m.getMatchById(matchIds.get(0));
+	}
 }

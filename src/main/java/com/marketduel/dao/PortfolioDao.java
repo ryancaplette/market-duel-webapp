@@ -21,4 +21,6 @@ public interface PortfolioDao {
 	Boolean storeStockHoldingsInPortfolio(Portfolio pf, ArrayList<StockHolding> shList); 
 	
 	Boolean deletePortfolioByID(int pfId);
+
+	Boolean updateBalance(Portfolio pf);
 }
