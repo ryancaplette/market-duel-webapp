@@ -18,4 +18,10 @@ public class LeagueGame extends Game {
 
 	}
 
+	@Override
+	int getPlayersInGame() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

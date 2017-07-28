@@ -33,7 +33,7 @@ public class PortfolioDaoImpl implements PortfolioDao {
 	 * Creates an empty portfolio
 	 */
 	public Boolean createPortfolio(Portfolio pf) {
-		String sql = "INSERT INTO portfolio (PortfolioID, MatchID, PlayerID) VALUES (:portfolioId, :matchId, :playerId)";
+		String sql = "INSERT INTO portfolio (PortfolioID, MatchID, PlayerID, Balance) VALUES (:portfolioId, :matchId, :playerId, :balance)";
 
 		Map<String, Object> params = new HashMap<String, Object>();
         params.put("portfolioId", pf.getPortfolioId());

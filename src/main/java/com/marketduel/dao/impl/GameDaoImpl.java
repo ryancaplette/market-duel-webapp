@@ -141,6 +141,7 @@ public class GameDaoImpl implements GameDao {
 		g.setMatchDurationInDays(rs.getInt("MatchDurationDays"));
 		g.setContinuous(rs.getBoolean("IsContinuous"));
 		g.setGameName(rs.getString("GameName"));
+		g.setNumPlayers(rs.getInt("NumPlayersJoined"));
 
         for(int i = 1; i < (Game.MAX_MATCHES_PER_GAME+1); i++)
         {
@@ -226,12 +227,14 @@ public class GameDaoImpl implements GameDao {
 				+ "     Portfolio4ID = CASE WHEN Portfolio4ID IS NULL AND Portfolio3ID IS NOT NULL THEN :portfolioId ELSE Portfolio4ID END,"
 				+ "     Portfolio3ID = CASE WHEN Portfolio3ID IS NULL AND Portfolio2ID IS NOT NULL THEN :portfolioId ELSE Portfolio3ID END,"
 				+ "     Portfolio2ID = CASE WHEN Portfolio2ID IS NULL AND Portfolio1ID IS NOT NULL THEN :portfolioId ELSE Portfolio2ID END,"
-				+ "     Portfolio1ID = CASE WHEN Portfolio1ID IS NULL THEN :portfolioId ELSE Portfolio1ID END "
+				+ "     Portfolio1ID = CASE WHEN Portfolio1ID IS NULL THEN :portfolioId ELSE Portfolio1ID END,"
+				+ "		NumPlayers = :numOfPlayers "
 			    + "WHERE MatchID = :matchId";
 			params = new HashMap<String, Object>();
 	        params.put("matchId", curGame.get(0).getMatchIds().get(0));
 	        params.put("playerId", playerId);
 	        params.put("portfolioId", portfolioId);
+	        params.put("numOfPlayers", curGame.get(0).getFirstMatch().getPlayersInMatch());
 
 	        retVal = template.update(sql, params);
 	        
