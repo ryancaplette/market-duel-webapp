@@ -58,7 +58,8 @@
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Account <strong>(${player.username})</strong> <span class="caret"></span></a>
                       <ul class="dropdown-menu">
                         <li><a href="/account">Account Dashboard</a></li>
-                        <li><a href="/games">Games</a></li>
+                          <li><a href="/your-games">Your Games</a></li>
+                          <li><a href="/available-games">Available Games</a></li>
                         <li><a href="/portfolios">Portfolios</a></li>
                         <li><a href="/players">Players</a></li>
                         <li role="separator" class="divider"></li>

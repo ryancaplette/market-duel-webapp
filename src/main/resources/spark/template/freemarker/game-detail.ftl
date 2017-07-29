@@ -33,7 +33,7 @@ ${message}
         <form class="form-horizontal" action="/games" role="form" method="post">
 
             <div class="form-group">
-                <label for="joinable-games" class="col-sm-2 control-label">Joinable Games: </label>
+                <label for="available-games" class="col-sm-2 control-label">Available Games: </label>
                 <select name="join-game">
                     <#list joinableGamesList as game>
                         <option value="${game.gameId}">Game ID: ${game.gameId}  Game Start: ${game.firstMatchStart}</option>
@@ -50,7 +50,7 @@ ${message}
             
         </form>
     <#else>
-        <b>There are no joinable games at this time.</b><br/>
+        <b>There are no Available Games at this time.</b><br/>
         <div class="form-group">
             <div class="">
                 <button type="submit" class="btn btn-default">Create Game</button>

@@ -19,7 +19,8 @@ ${message}
         <div class="col-md-3">
             <ul class="nav nav-stacked nav-pills">
                 <li><a href="/account">Account Dashboard</a></li>
-                <li class="active"><a href="/games">Games</a></li>
+                <li><a href="/your-games">Your Games</a></li>
+                <li><a href="/available-games">Available Games</a></li>
                 <li><a href="/history">History</a></li>
                 <li><a href="/portfolios">Portfolios</a></li>
                 <li><a href="/players">Players</a></li>

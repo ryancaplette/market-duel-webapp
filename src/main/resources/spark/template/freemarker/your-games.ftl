@@ -1,16 +1,26 @@
 <#import "masterTemplate.ftl" as layout />
 <@layout.masterTemplate title="Games">
-
+<#if message??>
+<div class="alert alert-success">
+${message}
+</div>
+</#if>
+<#if error??>
+<div class="alert alert-danger">
+    <strong>Error:</strong> ${error}
+</div>
+</#if>
 <div class="row">
-    <div class="col-xs-11">
-        <h3>${pageTitle}</h3>
-    </div>
+<div class="col-xs-11">
+    <h3>${pageTitle}</h3>
+</div>
 </div>
 <div class="row">
         <div class="col-md-3">
             <ul class="nav nav-stacked nav-pills">
                 <li><a href="/account">Account Dashboard</a></li>
-                <li class="active"><a href="/games">Games</a></li>
+                <li class="active"><a href="/your-games">Your Games</a></li>
+                <li><a href="/available-games">Available Games</a></li>
                 <li><a href="/history">History</a></li>
                 <li><a href="/portfolios">Portfolios</a></li>
                 <li><a href="/players">Players</a></li>
