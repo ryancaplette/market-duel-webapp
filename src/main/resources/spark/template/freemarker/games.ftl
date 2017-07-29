@@ -86,12 +86,14 @@
                                         ${game.type}
                                     </td>
                                     <td>
-                                        <form class="form-horizontal" action="/games" role="form" method="post">
-                                            <div class="form-group">
-                                                    <input type="hidden" class="form-control" name="leave-game" id="leave-game" value="${game.gameId!}" />
-                                                    <button type="submit" class="btn btn-danger">Leave</button>
-                                            </div>
-                                        </form>
+                                        <a href="/game-detail?id=${game.gameId}"><button type="submit" class="btn btn-success">View</button></a>
+
+                                        <#--<form class="form-horizontal" action="/games" role="form" method="post">-->
+                                            <#--<div class="form-group">-->
+                                                    <#--<input type="hidden" class="form-control" name="leave-game" id="leave-game" value="${game.gameId!}" />-->
+                                                    <#--<button type="submit" class="btn btn-danger">Leave</button>-->
+                                            <#--</div>-->
+                                        <#--</form>-->
                                     </td>
                                 </tr>
                             </#list>
