@@ -79,9 +79,9 @@
                         </thead>
                         <tbody>
                             <#if stockHoldings??>
-                            <b>Detailed portfolio holdings for: </b>
-                            <#if name??>
-                                ${name}
+                            <b>Detailed portfolio holdings for username: </b>
+                            <#if username??>
+                                ${username}
                             </#if>
                             <br/><br/>
                             <b>Available balance: </b>$${balance}

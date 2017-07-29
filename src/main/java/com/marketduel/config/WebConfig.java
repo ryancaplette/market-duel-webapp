@@ -516,13 +516,12 @@ public class WebConfig {
 					map.put("isTradingActive", true);
 				}
 
-				map.put("name", player.getFirstName() + " " + player.getLastName());
+				map.put("username", player.getUsername());
+
 			} else {
 				Player opponent = service.getPlayerById(portfolio.getPlayerId());
 				if (opponent != null) {
-					String firstName = (opponent.getFirstName() != null) ? opponent.getFirstName() : "";
-					String lastName = (opponent.getLastName() != null) ? opponent.getLastName() : "";
-					map.put("name", firstName + " " + lastName);
+					map.put("username", opponent.getUsername());
 				}
 			}
 
