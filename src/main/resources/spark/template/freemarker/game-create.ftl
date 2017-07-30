@@ -54,6 +54,11 @@ ${message}
 
                         <label class="control-label">Duration of Match (Days): </label>
                         <input type="text" class="form-control" name="duration" id="duration" placeholder="7" required>
+                        <label class="control-label">Match Type: </label>
+                        <select name="match-type">
+                            <option value="closed">Draft</option>
+                            <option value="continuous">Continuous</option>
+                        </select>
                         <input type="hidden" class="form-control" name="gameType" id="gameType" value="0" />
                     </div>
                 </div>

@@ -93,7 +93,11 @@ ${message}
                                     	${game.getPlayersInGame()}/10
                                     </td>
                                     <td>
-                                        ${game.type}
+                                        <#if (game.continuous?? && game.continuous)>
+                                            Continuous
+                                        <#else>
+                                            Draft
+                                        </#if>
                                     </td>
                                     <td>
                                         <a href="/game-detail?id=${game.gameId}"><button type="submit" class="btn btn-success">View</button></a>

@@ -388,6 +388,7 @@ public class WebConfig {
 			String matchName = req.queryParams("matchName");
 			int duration = Integer.parseInt(req.queryParams("duration"));
 			String draft = req.queryParams("draft");
+			String matchType = req.queryParams("match-type");
 
 			int gameType = Integer.parseInt(req.queryParams("gameType"));
 			if (gameType == 0) { //single match quick game
@@ -409,7 +410,14 @@ public class WebConfig {
 				String end = dateFormat.format(c.getTime());  // dt is now the new date
 				Date endDate = dateFormat.parse(end);
 
-				Match match = new ClosedMatch();
+				Match match = null;
+				if (matchType.equals("continuous")) {
+					match = new ContinuousMatch();
+					match.setMatchType(Match.MatchType.Continuous);
+				} else {
+					match = new ClosedMatch();
+					match.setMatchType(Match.MatchType.Closed);
+				}
 
 				match.setMatchName(matchName);
 				match.setStartDate(startDate);
@@ -419,7 +427,6 @@ public class WebConfig {
 				System.out.println("draftStartDateEST" + draftStartDateEST);
 				match.setDuration(duration);
 				match.setInitialBalance(budget);
-				match.setMatchType(Match.MatchType.Closed);
 
 				match = service.createMatch(match);
 				if (match == null) {
@@ -429,7 +436,11 @@ public class WebConfig {
 
 				Game game = new QuickGame();
 
-				game.setContinuous(false);
+				if (matchType.equals("continuous")) {
+					game.setContinuous(true);
+				} else {
+					game.setContinuous(false);
+				}
 				game.setFirstMatchStart(match.getStartDate());
 				game.setMatchDurationInDays(duration);
 				game.setType(Game.GameType.QUICK);
@@ -599,7 +610,7 @@ public class WebConfig {
 				map.put("error", "Stock price data could not be found for " + ticker + ". Please confirm your ticker symbol is correct and try again.");
 			}
 
-			map.put("name", player.getFirstName() + " " + player.getLastName());
+			map.put("username", player.getUsername());
 
 			return new ModelAndView(map, "portfolio-detail.ftl");
 		}, new FreeMarkerEngine());

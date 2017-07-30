@@ -79,7 +79,11 @@
                                     	${game.getPlayersInGame()}/10
                                     </td>
                                     <td>
-                                        ${game.type}
+                                        <#if (game.continuous?? && game.continuous)>
+                                            Continuous
+                                        <#else>
+                                            Draft
+                                        </#if>
                                     </td>
                                     <td>
                                         <form class="form-horizontal" action="/games" role="form" method="post">

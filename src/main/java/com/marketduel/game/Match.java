@@ -1,4 +1,5 @@
 package com.marketduel.game;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -159,12 +160,22 @@ public abstract class Match {
 
 	protected boolean isMatchActive() {
 		Date currentDate = new Date();
-		
-		if(currentDate.after(getStartDate()) && currentDate.before(getEndDate()))
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String currentDateStr = sdf.format(currentDate);
+		String matchStartDate = sdf.format(getStartDate());
+
+		if(
+				(
+					currentDateStr.equals(matchStartDate) ||
+					currentDate.after(getStartDate())
+				) &&
+					currentDate.before(getEndDate())
+		)
 		{
 			return true;
 		}
-		
+
 		return false;
 	}
 	

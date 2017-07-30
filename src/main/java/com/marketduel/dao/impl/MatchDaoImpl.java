@@ -185,6 +185,7 @@ public class MatchDaoImpl implements MatchDao {
 		else
 		{
 			m = new ContinuousMatch();
+			m.setMatchType(MatchType.Continuous);
 		}
 		
 		m.setMatchID(rs.getInt("MatchID"));
