@@ -38,13 +38,17 @@ public abstract class Match {
 	
 	public void addPlayer(int playerId)
 	{
+		if (playerId == 0) {
+			return;
+		}
+
 		if (playerIds.size() < maxPlayersInMatch)
 		{
 			if (playerIds.contains(playerId)) {
 				return; //player has already been added
 			}
 			playerIds.add(playerId);
-			
+
 		}
 		else
 		{

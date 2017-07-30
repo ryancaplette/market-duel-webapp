@@ -1,9 +1,7 @@
 package com.marketduel.game;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;   // Didn't get much time to research date classes. May make more sense to use something else
-import java.util.GregorianCalendar;
+import java.util.*;
+
 import com.marketduel.dao.impl.MatchDaoImpl;
 import com.marketduel.dao.impl.PortfolioDaoImpl;
 import com.marketduel.config.DatabaseConfig;
@@ -65,7 +63,11 @@ public abstract class Game {
 	public void setMaxPlayersInGame(int maxPlayersInGame) {
 		this.maxPlayersInGame = maxPlayersInGame;
 	}
-	
+
+	public void setCurPlayersInGame(int curPlayersInGame) {
+		this.curPlayersInGame = curPlayersInGame;
+	}
+
 	public int getPlayersInGame() {
 		return curPlayersInGame;
 	}

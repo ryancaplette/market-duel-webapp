@@ -204,13 +204,13 @@ public class MatchDaoImpl implements MatchDao {
 			e.printStackTrace();
 		}
         
-        
+        m.setMaxPlayersInMatch(10);
         for(int i = 1; i < (Match.MAX_NUM_PLAYERS+1); i++)
         {
-        	m.addPlayer(rs.getInt("Player"+i+"ID"));
-        	m.addPortfolio(rs.getInt("Portfolio"+i+"ID"));
+			m.addPlayer(rs.getInt("Player"+i+"ID"));
+			m.addPortfolio(rs.getInt("Portfolio"+i+"ID"));
         }
-        
+
 		return m;
 	};
 	

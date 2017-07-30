@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import com.marketduel.game.Match;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -150,8 +151,17 @@ public class GameDaoImpl implements GameDao {
 			}
         }
 
+		Match m = g.getFirstMatch();
+        System.out.println("First Match is: " + m.getMatchID());
+        System.out.println("Players in match is: " + m.getPlayersInMatch());
+
+		int playersInGame = 0;
+		if (m != null) {
+			g.setCurPlayersInGame(m.getPlayersInMatch());
+		}
+
         System.out.println("MatchListSize: " + g.getMatchIds().size());
-        
+
 		return g;
 	};
 
