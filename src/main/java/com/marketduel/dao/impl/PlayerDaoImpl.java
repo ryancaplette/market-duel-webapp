@@ -91,6 +91,8 @@ public class PlayerDaoImpl implements PlayerDao {
         //A new add should modify 1 row
         return (result == 1);
 	}
+	
+	
 
 	private RowMapper<Player> userMapper = (rs, rowNum) -> {
 		Player p = new Player();
@@ -101,7 +103,75 @@ public class PlayerDaoImpl implements PlayerDao {
 		p.setEmail(rs.getString("Email"));
 		p.setUsername(rs.getString("Username"));
 		p.setPassword(rs.getString("UserPwd"));
+		p.setTotalProfit(rs.getFloat("TotalProfit"));
+		p.setNumGamesPlayed(rs.getInt("GamesPlayed"));
+		p.setNumWins(rs.getInt("NumWins"));
 		
 		return p;
 	};
+	
+	@Override
+	public Boolean updatePlayerWins(Player player)
+	{
+		player.incrementNumWins();
+		
+		String sql = "UPDATE player "
+				+ "SET NumWins= :numWins"
+				+ "WHERE PlayerID = :playerID";
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+        params.put("numWins", player.getNumWins());
+        params.put("playerID", player.getPlayerId());
+		
+        int result = template.update(sql, params);
+        
+		return (result == 1);
+	}
+
+	@Override
+	public List<Player> getMostWinsLeaderboard()
+	{
+		String sql = "SELECT * FROM player ORDER BY NumWins DESC LIMIT 10 ";
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+        
+        List<Player> list = template.query(
+				sql,
+				params,
+				userMapper);
+        
+		return list;
+	}
+
+	@Override
+	public List<Player> getHighestProfitLeaderboard()
+	{
+		String sql = "SELECT * FROM player ORDER BY TotalProfit DESC LIMIT 10 ";
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+        
+        List<Player> list = template.query(
+				sql,
+				params,
+				userMapper);
+        
+		return list;
+	}
+
+	public Boolean updateTotalPlayerProfits(Player player, float gameProfit)
+	{
+		String sql = "UPDATE player "
+				+ "SET TotalProfit= :totalProfit"
+				+ "WHERE PlayerID = :playerID";
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+        params.put("totalProfit", player.getTotalProfit()+gameProfit);
+        params.put("playerID", player.getPlayerId());
+		
+        int result = template.update(sql, params);
+        
+		return (result == 1);
+		
+	}
+
 }

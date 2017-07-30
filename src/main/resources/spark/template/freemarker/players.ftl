@@ -28,17 +28,12 @@
         <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-        
-        <b>Most Wins Leaderboard: </b>
-        
-            <table class="table">
+        <h4> My Stats: </h4>
+        <table class="table">
                 <thead>
                     <tr>
                         <th>
-                            Player
-                        </th>
-                        <th>
-                            Gain/Loss Lifetime
+                            Profit Margin
                         </th>
                         <th>
                             Wins
@@ -52,16 +47,10 @@
                     </tr>
                 </thead>
 	            <tbody>
-	                <#list overallLeaders as player>
                         <tr>
                             <td>
-                                <#if player.username??>
-                                    ${player.username}
-                                </#if>
-                            </td>
-                            <td>
                                 <#if player.totalProfit??>
-                                    ${player.totalProfit}
+                                    $${player.totalProfit}
                                 </#if>
                             </td>
                             <td>
@@ -80,9 +69,123 @@
                             	</#if>
                             </td>
                         </tr>
+                </tbody>
+            </table>
+            <br/>
+        
+        <b>Most Wins Leaderboard: </b>
+        
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Player
+                        </th>
+                        <th>
+                            Profit Margin
+                        </th>
+                        <th>
+                            Wins
+                        </th>
+                        <th>
+                            Losses
+                        </th>
+                        <th>
+                            % Win
+                        </th>
+                    </tr>
+                </thead>
+	            <tbody>
+	                <#list overallLeaders as pl>
+                        <tr>
+                            <td>
+                                <#if pl.username??>
+                                    ${pl.username}
+                                </#if>
+                            </td>
+                            <td>
+                                <#if pl.totalProfit??>
+                                    $${pl.totalProfit}
+                                </#if>
+                            </td>
+                            <td>
+                                <#if pl.numWins??>
+                                    ${pl.numWins}
+                                </#if>
+                            </td>
+                            <td>
+                                ${pl.numGamesPlayed-pl.numWins}
+                            </td>
+                            <td>
+                            	<#if (pl.numGamesPlayed gt 0)>
+                            		${pl.numWins / pl.numGamesPlayed}%
+                            	<#else>
+                                	0.0%
+                            	</#if>
+                            </td>
+                        </tr>
                     </#list>
                 </tbody>
             </table>
+            
+            <br/><br/>
+            
+            <b>Highest Profit Leaderboard: </b>
+        
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Player
+                        </th>
+                        <th>
+                            Profit Margin
+                        </th>
+                        <th>
+                            Wins
+                        </th>
+                        <th>
+                            Losses
+                        </th>
+                        <th>
+                            % Win
+                        </th>
+                    </tr>
+                </thead>
+	            <tbody>
+	                <#list highestProfit as pl>
+                        <tr>
+                            <td>
+                                <#if pl.username??>
+                                    ${pl.username}
+                                </#if>
+                            </td>
+                            <td>
+                                <#if pl.totalProfit??>
+                                    $${pl.totalProfit}
+                                </#if>
+                            </td>
+                            <td>
+                                <#if pl.numWins??>
+                                    ${pl.numWins}
+                                </#if>
+                            </td>
+                            <td>
+                                ${pl.numGamesPlayed-pl.numWins}
+                            </td>
+                            <td>
+                            	<#if (pl.numGamesPlayed gt 0)>
+                            		${pl.numWins / pl.numGamesPlayed}%
+                            	<#else>
+                                	0.0%
+                            	</#if>
+                            </td>
+                        </tr>
+                    </#list>
+                </tbody>
+            </table>
+            
+            
         </div>
     </div>
 </div>           

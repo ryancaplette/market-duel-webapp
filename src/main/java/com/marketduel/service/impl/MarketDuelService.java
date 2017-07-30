@@ -161,6 +161,11 @@ public class MarketDuelService {
 			plList = playerDao.getMostWinsLeaderboard();
 			break;
 		}
+		case "highestprofit":
+		{
+			plList = playerDao.getHighestProfitLeaderboard();
+			break;
+		}
 		default:
 		{
 			System.out.println("Defaulted Leaderboard to most wins");
