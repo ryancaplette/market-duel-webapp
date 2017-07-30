@@ -29,7 +29,7 @@
             </ul>
         </div>
 
-    <!-- todo: implement for each portfolio wil display a row for each portfolio that the user (or all?)-->
+    <!-- todo: implement for each portfolio will display a row for each portfolio that the user (or all?)-->
     <div class="col-md-8">
         <div class="container-fluid">
             <div class="row">
@@ -71,6 +71,9 @@
                                 Current Share Price
                             </th>
                             <th>
+                                Value
+                            </th>
+                            <th>
                                 Gain/Loss
                             </th>
                             <th>
@@ -79,14 +82,15 @@
                         </tr>
                         </thead>
                         <tbody>
+                        	<#assign portfolioValue = balance>
                             <#if stockHoldings??>
                             <b>Detailed portfolio holdings for username: </b>
                             <#if username??>
                                 ${username}
                             </#if>
-                            <br/><br/>
+                            <br/>
                             <b>Available balance: </b>$${balance}
-                            <br/><br/>
+                            <br/>
                                 <#list stockHoldings as stock>
                                     <tr>
                                         <td>
@@ -109,6 +113,10 @@
                                             ${currentPrice}
                                         </td>
                                         <td>
+                                            ${stock.shares*currentPrice}
+                                            <#assign portfolioValue = stock.shares*currentPrice+portfolioValue>
+                                        </td>
+                                        <td>
                                             ${stock.shares*(currentPrice-stock.purchasePrice)}
                                         </td>
                                         <td>
@@ -120,8 +128,9 @@
                                         </td>
                                     </tr>
                                 </#list>
+								<b>Total Portfolio Value: </b>$${portfolioValue}
+								<br/><br/>
                             </#if>
-
                         </tbody>
                     </table>
                 </div>
