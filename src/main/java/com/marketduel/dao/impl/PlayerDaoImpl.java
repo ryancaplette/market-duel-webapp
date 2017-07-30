@@ -116,7 +116,7 @@ public class PlayerDaoImpl implements PlayerDao {
 		player.incrementNumWins();
 		
 		String sql = "UPDATE player "
-				+ "SET NumWins= :numWins"
+				+ "SET NumWins= :numWins "
 				+ "WHERE PlayerID = :playerID";
 		
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -161,7 +161,7 @@ public class PlayerDaoImpl implements PlayerDao {
 	public Boolean updateTotalPlayerProfits(Player player, float gameProfit)
 	{
 		String sql = "UPDATE player "
-				+ "SET TotalProfit= :totalProfit"
+				+ "SET TotalProfit= :totalProfit "
 				+ "WHERE PlayerID = :playerID";
 		
 		Map<String, Object> params = new HashMap<String, Object>();

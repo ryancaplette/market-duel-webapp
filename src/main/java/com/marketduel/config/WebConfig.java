@@ -164,6 +164,9 @@ public class WebConfig {
 				res.redirect("/");
 				halt();
 			}
+			
+			//Determine if we need to end any matches
+			service.completeFinishedMatches();
 		});
 
 		get("/research", (req, res) -> {

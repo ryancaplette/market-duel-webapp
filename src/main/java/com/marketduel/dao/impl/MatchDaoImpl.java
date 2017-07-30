@@ -176,6 +176,39 @@ public class MatchDaoImpl implements MatchDao {
 		return list.get(0);
 	}
 	
+	@Override
+	public List<Match> getClosedMatches()
+	{
+		String sql = "SELECT * FROM matches WHERE EndDate < :endDate";
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("endDate", new Date());
+		
+		List<Match> list = template.query(
+				sql,
+				params,
+				matchMapper);
+
+		return list;
+	}
+	
+	@Override
+	public Boolean updateWinner(Match m, int winnerID)
+	{
+		String sql = "UPDATE matches " +
+				"SET WinnerID  = :winid " +
+				"WHERE MatchID = " + m.getMatchID();
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("winid", winnerID);
+
+
+		int result = template.update(sql, params);
+		
+		return (result == 1);
+
+	}
+	
 	private RowMapper<Match> matchMapper = (rs, rowNum) -> {
 		Match m;
 		if (rs.getInt("MatchType") == 0)
@@ -193,6 +226,7 @@ public class MatchDaoImpl implements MatchDao {
         m.setStartDate(rs.getDate("StartDate"));
         m.setEndDate(rs.getDate("EndDate"));
         m.setInitialBalance(rs.getFloat("InitialBudget"));
+        m.setWinnerId(rs.getInt("WinnerID"));
         // Had trouble getting both the date and time to read in from the database. Code below should be updated to get both date and time. Currently it gets the date then sets a time of 1pm so I could test the functionality
         try {
         	SimpleDateFormat draftDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -227,5 +261,4 @@ public class MatchDaoImpl implements MatchDao {
 
 		return playerPortfolioLink;
 	};
-
 }

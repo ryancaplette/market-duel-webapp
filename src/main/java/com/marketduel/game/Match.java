@@ -10,8 +10,8 @@ import com.marketduel.model.Player;
 
 
 public abstract class Match {
-	abstract void startMatch();
-	abstract void endMatch();
+	public abstract void startMatch();
+	public abstract void endMatch();
 	public abstract boolean isTradingActive();
 	protected abstract int determineWinner();
 	

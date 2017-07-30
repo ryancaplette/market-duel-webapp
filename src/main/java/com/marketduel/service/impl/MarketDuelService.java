@@ -175,4 +175,15 @@ public class MarketDuelService {
 		}
 		return plList;
 	}
+	
+	//Iterates through closed matches and determines winners
+	public void completeFinishedMatches()
+	{
+		List<Match> closedMatches = matchDao.getClosedMatches();
+		
+		for (Match m : closedMatches)
+		{
+			m.endMatch();
+		}
+	}
 }
