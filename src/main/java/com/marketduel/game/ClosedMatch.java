@@ -1,13 +1,15 @@
 package com.marketduel.game;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.Map;
 import com.marketduel.dao.impl.MatchDaoImpl;
+import com.marketduel.dao.impl.PlayerDaoImpl;
 import com.marketduel.dao.impl.PortfolioDaoImpl;
+import com.marketduel.game.Portfolio;
+import com.marketduel.model.Player;
 import com.marketduel.config.DatabaseConfig;
-
-import com.mysql.cj.api.mysqla.result.Resultset.Type;
 
 public class ClosedMatch extends Match {
 
@@ -39,16 +41,13 @@ public class ClosedMatch extends Match {
 
 	@Override
 	void endMatch() {
-		determineWinner();
-		// Log values and determine winner
-//		float[] gains = new float[portfolios.size()];
-//		
-//		for (int i=0; i < portfolios.size(); i++)
-//		{
-//			gains[0] = portfolios.get(i).getCurrentValue() - portfolios.get(i).getInitialValue();
-//		}
-//		
-//		determineWinner(gains);
+		DatabaseConfig d = new DatabaseConfig();
+		PlayerDaoImpl pd = new PlayerDaoImpl(d.dataSource());
+		
+		//Get and update winning player stats
+		int winningPlayerId = determineWinner();
+		Player winningPlayer = pd.getPlayerById(winningPlayerId);
+		pd.updatePlayerWins(winningPlayer);
 	}
 
 	// Determine winner of a match. Winner's player ID is returned. Currently does not support ties.
@@ -56,6 +55,7 @@ public class ClosedMatch extends Match {
 		DatabaseConfig d = new DatabaseConfig();
 		MatchDaoImpl m = new MatchDaoImpl(d.dataSource());
 		PortfolioDaoImpl p = new PortfolioDaoImpl(d.dataSource());
+		PlayerDaoImpl pldao = new PlayerDaoImpl(d.dataSource());
 		
 		float portfolioValue = 0.0f;
 		float maxPortfolioValue = Float.NEGATIVE_INFINITY;
@@ -66,10 +66,15 @@ public class ClosedMatch extends Match {
 		
 		// Iterate over portfolio ID list
 		for (Integer key : portfolioPlayerMap.keySet()) {
-			// Get current value of portfolio
-		    //portfolioValue = p.getPortfolioById(key).getCurrentValue();
 			// Get value of portfolio at end date
-			portfolioValue = p.getPortfolioById(key).getValueAtDate(getEndDate());
+			Portfolio pfl = p.getPortfolioById(key);
+		    portfolioValue = pfl.getValueAtDate(getEndDate());
+			
+			//Update Player overall profits
+			Player player = pldao.getPlayerById(portfolioPlayerMap.get(key));
+			pldao.updateTotalPlayerProfits(player, (portfolioValue - pfl.getInitialValue()));
+			
+			//Determine if portfolio is max for match
 		    if (portfolioValue > maxPortfolioValue)
 		    {
 		    	// Set new winner if portfolio value is greater than the others that have been iterated over
@@ -88,28 +93,5 @@ public class ClosedMatch extends Match {
 		
 		return this.isDraftActive();
 	}
-
-
-	
-//	private void determineWinner(float[] gains) {
-//		float max = gains[0];
-//		int index = 0;
-//		int winningPortfolioId = 0;
-//		
-//		for (int i=1; i < portfolios.size(); i++)
-//		{
-//			if(gains[i] > max)
-//			{
-//				max = gains[i];
-//				index = i;
-//			}
-//		}
-//		
-//		winningPortfolioId = portfolios.get(index).getPortfolioId();
-//		
-//		// DATABASE LOOKUP: find winner name from portfolioId
-//		// winner = winnerName;
-//	}
-
 	
 }

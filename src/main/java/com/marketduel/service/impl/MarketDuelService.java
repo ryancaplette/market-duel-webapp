@@ -150,4 +150,24 @@ public class MarketDuelService {
 	public List<Portfolio> getPortfoliosForMatchId(int matchId) {
 		return portfolioDao.getPortfoliosForMatchId(matchId);
 	}
+	
+	public List<Player> getLeaderboard(String leaderboardType)
+	{
+		List<Player> plList = new ArrayList<Player>();
+		switch(leaderboardType)
+		{
+		case "mostwins":
+		{
+			plList = playerDao.getMostWinsLeaderboard();
+			break;
+		}
+		default:
+		{
+			System.out.println("Defaulted Leaderboard to most wins");
+			plList = playerDao.getMostWinsLeaderboard();
+			break;
+		}
+		}
+		return plList;
+	}
 }

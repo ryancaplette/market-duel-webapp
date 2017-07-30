@@ -28,6 +28,9 @@
         <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
+        
+        <b>Most Wins Leaderboard: </b>
+        
             <table class="table">
                 <thead>
                     <tr>
@@ -48,58 +51,36 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <a href="#">Boyd Mitchell</a>
-                        </td>
-                        <td>
-                            +$34838.45
-                        </td>
-                        <td>
-                            345
-                        </td>
-                        <td>
-                            12
-                        </td>
-                        <td>
-                            76.54%
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#">Lesley Kenzie</a>
-                        </td>
-                        <td>
-                            +$2353.34
-                        </td>
-                        <td>
-                            45
-                        </td>
-                        <td>
-                            23
-                        </td>
-                        <td>
-                            50.34%
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#">Woody Johnie</a>
-                        </td>
-                        <td>
-                            -$3334.34
-                        </td>
-                        <td>
-                            6
-                        </td>
-                        <td>
-                            343
-                        </td>
-                        <td>
-                            2.45%
-                        </td>
-                    </tr>
+	            <tbody>
+	                <#list overallLeaders as player>
+                        <tr>
+                            <td>
+                                <#if player.username??>
+                                    ${player.username}
+                                </#if>
+                            </td>
+                            <td>
+                                <#if player.totalProfit??>
+                                    ${player.totalProfit}
+                                </#if>
+                            </td>
+                            <td>
+                                <#if player.numWins??>
+                                    ${player.numWins}
+                                </#if>
+                            </td>
+                            <td>
+                                ${player.numGamesPlayed-player.numWins}
+                            </td>
+                            <td>
+                            	<#if (player.numGamesPlayed gt 0)>
+                            		${player.numWins / player.numGamesPlayed}%
+                            	<#else>
+                                	0.0%
+                            	</#if>
+                            </td>
+                        </tr>
+                    </#list>
                 </tbody>
             </table>
         </div>

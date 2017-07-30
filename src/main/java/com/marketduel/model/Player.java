@@ -22,7 +22,10 @@ public class Player {
 	private String email;
 	private String password;
 	private String passwordVerify;
-
+	private int numWins;
+	private int numGamesPlayed;
+	private float totalProfit;
+	
 	public Player(){}
 	
 	public int getPlayerId() {
@@ -80,6 +83,42 @@ public class Player {
 	public void setPasswordVerify(String passwordVerify) {
 		this.passwordVerify = passwordVerify;
 	}
+	
+	public int getNumWins()
+	{
+		return numWins;
+	}
+
+	public void setNumWins(int numWins)
+	{
+		this.numWins = numWins;
+	}
+	
+	public void incrementNumWins()
+	{
+		this.numWins++;
+	}
+
+	public int getNumGamesPlayed()
+	{
+		return numGamesPlayed;
+	}
+
+	public void setNumGamesPlayed(int numGamesPlayed)
+	{
+		this.numGamesPlayed = numGamesPlayed;
+	}
+
+	public float getTotalProfit()
+	{
+		return totalProfit;
+	}
+
+	public void setTotalProfit(float totalProfit)
+	{
+		this.totalProfit = totalProfit;
+	}
+
 
 	public String validate() {
 		String error = null;

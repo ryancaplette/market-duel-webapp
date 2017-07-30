@@ -614,9 +614,12 @@ public class WebConfig {
 
         get("/players", (req, res) -> {
 			Player player = getAuthenticatedPlayer(req);
+			
 			Map<String, Object> map = new HashMap<>();
 			map.put("pageTitle", "Players");
 			map.put("player", player);
+			//Get and send various leaderboards
+			map.put("overallLeaders", service.getLeaderboard("mostwins"));
 			return new ModelAndView(map, "players.ftl");
         }, new FreeMarkerEngine());
 		before("/players", (req, res) -> {
