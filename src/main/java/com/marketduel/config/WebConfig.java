@@ -248,12 +248,16 @@ public class WebConfig {
 			map.put("player", player);
 
 			List<Game> playersGames = service.getGamesForPlayer(player);
-			map.put("playerGamesList", playersGames);
 
-			HashMap<Integer, Boolean> playerGameIdsDict = new HashMap<Integer, Boolean>();
+			ArrayList<Game> activePlayerGames = new ArrayList<Game>();
 			for(Game game : playersGames) {
-				playerGameIdsDict.put(game.getGameId(), true);
+				Date currentDate = new Date();
+				if (currentDate.before(game.getGameEndDate())) {
+					activePlayerGames.add(game);
+				}
 			}
+
+			map.put("playerGamesList", activePlayerGames);
 
 			return new ModelAndView(map, "your-games.ftl");
 		}, new FreeMarkerEngine());
@@ -687,6 +691,19 @@ public class WebConfig {
 			Map<String, Object> map = new HashMap<>();
 			map.put("pageTitle", "History");
 			map.put("player", player);
+
+			List<Game> playersGames = service.getGamesForPlayer(player);
+
+			ArrayList<Game> historicalPlayerGames = new ArrayList<Game>();
+			for(Game game : playersGames) {
+				Date currentDate = new Date();
+				if (currentDate.after(game.getGameEndDate())) {
+					historicalPlayerGames.add(game);
+				}
+			}
+
+			map.put("playerGamesList", historicalPlayerGames);
+
 			return new ModelAndView(map, "history.ftl");
         }, new FreeMarkerEngine());
 		before("/history", (req, res) -> {

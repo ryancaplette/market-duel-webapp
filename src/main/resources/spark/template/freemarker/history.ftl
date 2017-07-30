@@ -47,9 +47,6 @@
                             <th>
                                 Type
                             </th>
-                            <th>
-                                Actions
-                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -84,14 +81,6 @@
                                         <#else>
                                             Draft
                                         </#if>
-                                    </td>
-                                    <td>
-                                        <form class="form-horizontal" action="/games" role="form" method="post">
-                                            <div class="form-group">
-                                                    <input type="hidden" class="form-control" name="leave-game" id="leave-game" value="${game.gameId!}" />
-                                                    <button type="submit" class="btn btn-danger">Leave</button>
-                                            </div>
-                                        </form>
                                     </td>
                                 </tr>
                             </#list>
