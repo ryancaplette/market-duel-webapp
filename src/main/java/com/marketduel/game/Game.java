@@ -150,6 +150,10 @@ public abstract class Game {
 	
 	public boolean addPlayer(int playerId) {
 		Date currentDate = new Date();
+		
+		//If Draft Game and date is after draft end then dont let a player join
+		if (getContinuous() == false && currentDate.after(getFirstMatchDraftDate())) return false;
+		
 		if (currentDate.before(firstMatchStart))
 		{
 			if (curPlayersInGame < maxPlayersInGame)
@@ -170,7 +174,7 @@ public abstract class Game {
     public void setGameName(String gameName) {
         this.gameName = gameName;
     }
-    /*
+    
     public Date getFirstMatchDraftDate() {
     	DatabaseConfig d = new DatabaseConfig();
 		MatchDaoImpl m = new MatchDaoImpl(d.dataSource());
@@ -178,7 +182,7 @@ public abstract class Game {
     	Match firstMatch = m.getMatchById(matchIds.get(0));
     	return firstMatch.getDraftStartDate();
     }
-    */
+    
 	public Match getFirstMatch() {
 		DatabaseConfig d = new DatabaseConfig();
 		MatchDaoImpl m = new MatchDaoImpl(d.dataSource());

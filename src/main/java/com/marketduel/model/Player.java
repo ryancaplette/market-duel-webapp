@@ -108,6 +108,11 @@ public class Player {
 	{
 		this.numGamesPlayed = numGamesPlayed;
 	}
+	
+	public void incrementNumGamesPlayed()
+	{
+		this.numGamesPlayed++;
+	}
 
 	public float getTotalProfit()
 	{

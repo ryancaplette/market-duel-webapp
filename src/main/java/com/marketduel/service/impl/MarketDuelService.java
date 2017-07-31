@@ -1,6 +1,7 @@
 package com.marketduel.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +65,19 @@ public class MarketDuelService {
 
 	public ArrayList<Game> getAvailableGames()
 	{
-		return (ArrayList<Game>) gamesDao.getAvailableGames();
+		List<Game> gamesList = gamesDao.getAvailableGames();
+		
+		//Remove any Draft games that are post draft time
+		for (int i = 0; i < gamesList.size(); i++)
+		{
+			Game g = gamesList.get(i);
+			if (g.getContinuous() == false && (new Date()).after(g.getFirstMatchDraftDate()))
+			{
+				gamesList.remove(i);
+			}
+		}
+		
+		return (ArrayList<Game>) gamesList;
 	}
 
 	public boolean addPlayerToQuickGame(int gameId, int playerId)
@@ -76,8 +89,11 @@ public class MarketDuelService {
 		p.setPlayerId(playerId);
 		p.setMatchId(gameMatchIds.get(0)); //quickgame only has one match so we know it is the first match id
 		p.setBalance(game.getFirstMatch().getInitialBalance());
+		
+		//If Draft Game and date is after draft end then dont let a player join
+		if (game.getContinuous() == false && (new Date()).after(game.getFirstMatchDraftDate())) return false;
 
-		//create a portfollio for the player to use in the quick game
+		//create a portfolio for the player to use in the quick game
 		if (portfolioDao.createPortfolio(p)) {
 			p = portfolioDao.getNewestPortfolioId();
 			if (p == null) {

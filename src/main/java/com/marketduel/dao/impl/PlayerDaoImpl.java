@@ -160,12 +160,15 @@ public class PlayerDaoImpl implements PlayerDao {
 
 	public Boolean updateTotalPlayerProfits(Player player, float gameProfit)
 	{
+		player.incrementNumGamesPlayed();
+		
 		String sql = "UPDATE player "
-				+ "SET TotalProfit= :totalProfit "
+				+ "SET TotalProfit= :totalProfit , GamesPlayed = :gamesPlayed "
 				+ "WHERE PlayerID = :playerID";
 		
 		Map<String, Object> params = new HashMap<String, Object>();
         params.put("totalProfit", player.getTotalProfit()+gameProfit);
+        params.put("gamesPlayed", player.getNumGamesPlayed());
         params.put("playerID", player.getPlayerId());
 		
         int result = template.update(sql, params);
