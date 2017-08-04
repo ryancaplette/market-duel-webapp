@@ -567,11 +567,17 @@ public class WebConfig {
 			Map<String, Object> map = new HashMap<>();
 			map.put("pageTitle", "Stock Order");
 			map.put("player", player);
-			
+			map.put("username", player.getUsername());
 
+			String orderType = String.valueOf(req.queryParams("orderType"));
 			int pfId = Integer.parseInt(req.queryParams("pfId"));
 			float quantity = Float.valueOf(req.queryParams("quantity"));
-			
+
+			if (quantity <= 0)
+			{
+				map.put("error", "Please enter a value greater than 0 to place an order.");
+				return new ModelAndView(map, "portfolio-detail.ftl");
+			}
 
 			Portfolio portfolio = service.getPortfolioById(pfId);
 
@@ -609,24 +615,55 @@ public class WebConfig {
 			if (stockPriceData != null) {
 				float lastPrice = (float) stockPriceData.getClose();
 				if (lastPrice >= 0) {
-					if (quantity*lastPrice > portfolio.getBalance()) {
-						map.put("error", "Value of that many shares of " + ticker + " ($" + quantity*lastPrice + ") exceeds available portfolio balance ($" + portfolio.getBalance() + ").");
-					}
-					else {
-						map.put("message", ticker + " has been successfully added to your portfolio.");
-						StockHolding sh = new StockHolding(ticker, quantity, lastPrice);
-						portfolio.addHoldingToPortfolio(sh);
-						service.storeStockHoldingsInPortfolio(portfolio, portfolio.getStockHoldings());
-						map.put("stockHoldings", portfolio.getStockHoldings()); //update since new holding was just added
-						portfolio.updateBalance();
-						map.put("balance", portfolio.getBalance());  //update since new holding was just added
+					if (orderType.equals("buy")) {
+						if (quantity * lastPrice > portfolio.getBalance()) {
+							map.put("error", "Value of that many shares of " + ticker + " ($" + quantity * lastPrice + ") exceeds available portfolio balance ($" + portfolio.getBalance() + ").");
+						} else {
+							map.put("message", ticker + " has been successfully added to your portfolio.");
+							StockHolding sh = new StockHolding(ticker, quantity, lastPrice);
+							portfolio.addHoldingToPortfolio(sh);
+							service.storeStockHoldingsInPortfolio(portfolio, portfolio.getStockHoldings());
+							map.put("stockHoldings", portfolio.getStockHoldings()); //update since new holding was just added
+							portfolio.updateBalance();
+							map.put("balance", portfolio.getBalance());  //update since new holding was just added
+						}
+					} else if (orderType.equals("sell")) {
+						boolean validTrade = false;
+						int index = 0;
+						for (StockHolding stock: stockHoldings) {
+							if (stock.getTicker().toLowerCase().equals(ticker.toLowerCase())) {
+								if (quantity > stock.getShares()) {
+									map.put("error", "You cannot sell more stock then you own, shorting stocks is not allowed.");
+									return new ModelAndView(map, "portfolio-detail.ftl");
+								} else {
+									if (stock.getShares() == quantity) {
+										portfolio.removeHoldingFromPortfolio(index);
+									} else {
+										stock.setShares(stock.getShares() - quantity);
+										portfolio.setBalance(portfolio.getBalance() + (quantity * lastPrice));
+									}
+									validTrade = true;
+									break;
+								}
+							}
+							index++;
+						 }
+
+						 if (validTrade) {
+							 service.storeStockHoldingsInPortfolio(portfolio, portfolio.getStockHoldings());
+							 map.put("stockHoldings", portfolio.getStockHoldings()); //update since new holding was just adjusted
+							 portfolio.updateBalance();
+							 map.put("balance", portfolio.getBalance());  //update since new holding was just adjusted
+						 } else {
+							 //if we ended up here then the stock must not be in the portfolio
+							 map.put("error", "You cannot sell stocks that you do not own, shorting stocks is not allowed.");
+							 return new ModelAndView(map, "portfolio-detail.ftl");
+						 }
 					}
 				}
 			} else {
 				map.put("error", "Stock price data could not be found for " + ticker + ". Please confirm your ticker symbol is correct and try again.");
 			}
-
-			map.put("username", player.getUsername());
 
 			return new ModelAndView(map, "portfolio-detail.ftl");
 		}, new FreeMarkerEngine());
