@@ -70,7 +70,7 @@ public class Portfolio {
 		initialValue = totalValue;
 	}
 	*/
-	public float getInitialValue() {
+	public float getInitialStockHoldingValue() {
 		float totalValue = 0.0f;
 		ListIterator<StockHolding> itr = stockHoldings.listIterator();
 		
@@ -79,6 +79,10 @@ public class Portfolio {
 		}
 	
 		return totalValue;
+	}
+	
+	public float getInitialValue() {
+		return initialValue;
 	}
 	
 	/* Since players may add and remove stocks between the game start and the match start, the value of each portfolio
@@ -148,10 +152,14 @@ public class Portfolio {
 		float totalValue = 0.0f;
 		ListIterator<StockHolding> itr = stockHoldings.listIterator();
 		
+		// Sum the value of each stock holding
 		while(itr.hasNext()) {
 			totalValue += itr.next().getCurrentValue();
 		}
 	
+		// Also add any remaining balance
+		totalValue += balance;
+		
 		return totalValue;
 	}
 

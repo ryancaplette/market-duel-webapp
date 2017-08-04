@@ -82,14 +82,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        	<#assign portfolioValue = balance>
+                        	<#assign allStockHoldingValue = 0>
                             <#if stockHoldings??>
                             <b>Detailed portfolio holdings for username: </b>
                             <#if username??>
                                 ${username}
                             </#if>
                             <br/>
-                            <b>Available balance: </b>$${balance}
+                            <b>Available balance: </b>${balance?string.currency}
                             <br/>
                                 <#list stockHoldings as stock>
                                     <tr>
@@ -105,30 +105,47 @@
                                         </td>
                                         <td>
                                             <#if stock.purchasePrice??>
-                                                ${stock.purchasePrice}
+                                                ${stock.purchasePrice?string.currency}
                                             </#if>
                                         </td>
                                         <td>
                                             <#assign currentPrice = stock.getCurrentPrice()>
-                                            ${currentPrice}
+                                            ${currentPrice?string.currency}
                                         </td>
                                         <td>
-                                            ${stock.shares*currentPrice}
-                                            <#assign portfolioValue = stock.shares*currentPrice+portfolioValue>
+                                        	<#assign stockHoldingValue = stock.shares*currentPrice>
+                                            ${stockHoldingValue?string.currency}
+                                            <#assign allStockHoldingValue = stockHoldingValue+allStockHoldingValue>
                                         </td>
                                         <td>
-                                            ${stock.shares*(currentPrice-stock.purchasePrice)}
+                                        	<#assign gain = stock.shares*(currentPrice-stock.purchasePrice)>
+                                        	<#if (gain > 0)>
+                                        		<font color=green>${gain?string.currency}</font>
+                                        	<#elseif (gain < 0)>
+                                        		<font color=red>${gain?string.currency}</font>
+                                        	<#else>
+                                        		${gain?string.currency}
+                                        	</#if>
                                         </td>
                                         <td>
                                         	<#if stock.getPurchaseValue()==0>
                                         		INF
                                         	<#else>
-                                            	${stock.shares*currentPrice*100/stock.getPurchaseValue() - 100}%
+                                        		<#assign gainPercent = ((stock.shares*currentPrice/stock.getPurchaseValue()) - 1)>
+                                        		<#if (gainPercent > 0)>
+                                            		<font color=green>${gainPercent?string["0.##%"]}</font>
+	                                        	<#elseif (gainPercent < 0)>
+	                                        		<font color=red>${gainPercent?string["0.##%"]}</font>
+	                                        	<#else>
+	                                        		${gainPercent?string?string["0.##%"]}
+	                                        	</#if>
                                         	</#if>
                                         </td>
                                     </tr>
                                 </#list>
-								<b>Total Portfolio Value: </b>$${portfolioValue}
+                                <b>Total Stock Holding Value: </b>${allStockHoldingValue?string.currency}
+                                <br/>
+								<b>Total Portfolio Value: </b>${(allStockHoldingValue+balance)?string.currency}
 								<br/><br/>
                             </#if>
                         </tbody>

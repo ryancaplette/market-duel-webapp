@@ -63,17 +63,31 @@
                                     </td>
                                     <td>
 	                                    <#assign currentValue = portfolio.getCurrentValue()>
-	                                    ${currentValue}
+	                                    ${currentValue?string.currency}
 	                                </td>
 	                                <td>
-	                                    <#assign initialValue = portfolio.getInitialValue()>
-	                                    ${currentValue - initialValue}
+	                                    <#assign initialValue = balance>
+	                                    <#assign gain = currentValue - initialValue>                               
+                                    	<#if (gain > 0)>
+                                    		<font color=green>${gain?string.currency}</font>
+                                    	<#elseif (gain < 0)>
+                                    		<font color=red>${gain?string.currency}</font>
+                                    	<#else>
+                                    		${gain?string.currency}
+                                    	</#if>
 	                                </td>
 	                                <td>
 	                                    <#if initialValue==0>
 	                                		INF
 	                                	<#else>
-	                                    	${currentValue*100/initialValue - 100}%
+	                                		<#assign gainPercent = ((currentValue/initialValue) - 1)>
+	                                    	<#if (gainPercent > 0)>
+                                        		<font color=green>${gainPercent?string["0.##%"]}</font>
+                                        	<#elseif (gainPercent < 0)>
+                                        		<font color=red>${gainPercent?string["0.##%"]}</font>
+                                        	<#else>
+                                        		${gainPercent?string?string["0.##%"]}
+                                        	</#if>
 	                                	</#if>
 	                                </td>
                                     <td>

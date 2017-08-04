@@ -8,6 +8,7 @@ import static spark.Spark.staticFileLocation;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -230,6 +231,7 @@ public class WebConfig {
 			map.put("pageTitle", "Match Name: " + match.getMatchName());
 			map.put("matchStart", "Match Start Date: " + match.getStartDate());
 			map.put("matchEnd", "Match End Date: " + match.getEndDate());
+			map.put("balance", match.getInitialBalance());
 
 			List<Portfolio> portfolios = service.getPortfoliosForMatchId(match.getMatchID());
 			map.put("portfolios", portfolios);
@@ -490,13 +492,17 @@ public class WebConfig {
 				map.put("portfolios", playerPortfolios);
 
 				Map<String, String> matchNames = new HashMap<>();
+				Map<String, Float> matchBalances = new HashMap<>();
 				for (Portfolio p : playerPortfolios) {
 					String matchName = service.getMatchById(p.getMatchId()).getMatchName();
+					Float matchBalance = service.getMatchById(p.getMatchId()).getInitialBalance();
 					matchName = (matchName == null) ? "" : matchName;
 					matchNames.put(Integer.toString(p.getMatchId()), matchName);
+					matchBalances.put(Integer.toString(p.getMatchId()), matchBalance);
 				}
 
 				map.put("matchNames", matchNames);
+				map.put("matchBalances", matchBalances);
 			}
 
 			return new ModelAndView(map, "portfolio.ftl");
@@ -525,6 +531,9 @@ public class WebConfig {
 			map.put("stockHoldings", portfolio.getStockHoldings());
 			map.put("balance", portfolio.getBalance());
 
+			DecimalFormat df = new DecimalFormat("#.##");
+			map.put("dFormat", df);
+			
 			if (portfolio.getPlayerId() == player.getPlayerId()) {
 
 				Match match = service.getMatchById(portfolio.getMatchId());
