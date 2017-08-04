@@ -86,7 +86,7 @@
                                         	<#elseif (gainPercent < 0)>
                                         		<font color=red>${gainPercent?string["0.##%"]}</font>
                                         	<#else>
-                                        		${gainPercent?string?string["0.##%"]}
+                                        		${gainPercent?string["0.##%"]}
                                         	</#if>
 	                                	</#if>
 	                                </td>
