@@ -713,10 +713,7 @@ public class WebConfig {
 			}
 		});
 	
-
-
-
-
+		/*
 		get("/alerts", (req, res) -> {
 			Player player = getAuthenticatedPlayer(req);
 			Map<String, Object> map = new HashMap<>();
@@ -731,7 +728,7 @@ public class WebConfig {
 				halt();
 			}
 		});
-
+		*/
 
 
 

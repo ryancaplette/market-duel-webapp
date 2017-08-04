@@ -62,8 +62,6 @@
                           <li><a href="/available-games">Available Games</a></li>
                         <li><a href="/portfolios">Portfolios</a></li>
                         <li><a href="/players">Players</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/alerts">Alerts</a></li>
                       </ul>
                     </li>
 
@@ -85,7 +83,6 @@
     </div>
 
     <footer class="footer">
-        <p><a href="#">Help</a> | <a href="#">Contact</a></p>
         <p>Market Duel v1.0.2 - <b>${.now?long?number_to_datetime}</b></p>
     </footer>
 </div><!-- /container -->
