@@ -208,7 +208,7 @@ public class PortfolioDaoImpl implements PortfolioDao {
 			if (rs.getString(stockStr + "Symb") == null) {
 				continue;
 			}
-			StockHolding sh = new StockHolding(rs.getString(stockStr + "Symb"), rs.getInt(stockStr + "NumShares"), rs.getFloat(stockStr + "InitCost"));
+			StockHolding sh = new StockHolding(rs.getString(stockStr + "Symb"), rs.getFloat(stockStr + "NumShares"), rs.getFloat(stockStr + "InitCost"));
 			pf.addHolding(sh);
 		}
 		return pf;
