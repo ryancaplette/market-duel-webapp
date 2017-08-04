@@ -8,7 +8,6 @@ import static spark.Spark.staticFileLocation;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -216,7 +215,7 @@ public class WebConfig {
 		get("/match-detail", (req, res) -> {
 			Player player = getAuthenticatedPlayer(req);
 			Map<String, Object> map = new HashMap<>();
-			map.put("pageTitle", "Match Detail");
+			map.put("pageTitle", "Game Detail");
 			map.put("player", player);
 
 			int matchId = Integer.parseInt(req.queryParams("id"));
@@ -229,8 +228,9 @@ public class WebConfig {
 
 			//display match info and all [players in the match portfolios
 			map.put("pageTitle", "Match Name: " + match.getMatchName());
-			map.put("matchStart", "Match Start Date: " + match.getStartDate());
-			map.put("matchEnd", "Match End Date: " + match.getEndDate());
+			map.put("matchStart", match.getStartDate());
+			map.put("matchEnd", match.getEndDate());
+			map.put("draftStart", match.getDraftStartDate());
 			map.put("balance", match.getInitialBalance());
 
 			List<Portfolio> portfolios = service.getPortfoliosForMatchId(match.getMatchID());
@@ -530,9 +530,6 @@ public class WebConfig {
 			map.put("pfId", portfolio.getPortfolioId());
 			map.put("stockHoldings", portfolio.getStockHoldings());
 			map.put("balance", portfolio.getBalance());
-
-			DecimalFormat df = new DecimalFormat("#.##");
-			map.put("dFormat", df);
 			
 			if (portfolio.getPlayerId() == player.getPlayerId()) {
 
@@ -540,6 +537,14 @@ public class WebConfig {
 
 				if (match.isTradingActive()) {
 					map.put("isTradingActive", true);
+				}
+				
+				if (match.isDraftActive()) {
+					map.put("message", "Draft is active until " + match.getDraftEndDate().toString());
+					/*
+					map.put("isDraftActive", true);
+					map.put("draftEndDate", match.getDraftEndDate());
+					*/
 				}
 
 				map.put("username", player.getUsername());
@@ -550,7 +555,7 @@ public class WebConfig {
 					map.put("username", opponent.getUsername());
 				}
 			}
-
+			
 			return new ModelAndView(map, "portfolio-detail.ftl");
         }, new FreeMarkerEngine());
 		before("/portfolio-detail", (req, res) -> {
@@ -567,17 +572,11 @@ public class WebConfig {
 			Map<String, Object> map = new HashMap<>();
 			map.put("pageTitle", "Stock Order");
 			map.put("player", player);
-			map.put("username", player.getUsername());
+			
 
-			String orderType = String.valueOf(req.queryParams("orderType"));
 			int pfId = Integer.parseInt(req.queryParams("pfId"));
 			float quantity = Float.valueOf(req.queryParams("quantity"));
-
-			if (quantity <= 0)
-			{
-				map.put("error", "Please enter a value greater than 0 to place an order.");
-				return new ModelAndView(map, "portfolio-detail.ftl");
-			}
+			
 
 			Portfolio portfolio = service.getPortfolioById(pfId);
 
@@ -615,57 +614,27 @@ public class WebConfig {
 			if (stockPriceData != null) {
 				float lastPrice = (float) stockPriceData.getClose();
 				if (lastPrice >= 0) {
-					if (orderType.equals("buy")) {
-						if (quantity * lastPrice > portfolio.getBalance()) {
-							map.put("error", "Value of that many shares of " + ticker + " ($" + quantity * lastPrice + ") exceeds available portfolio balance ($" + portfolio.getBalance() + ").");
-						} else {
-							map.put("message", ticker + " has been successfully added to your portfolio.");
-							StockHolding sh = new StockHolding(ticker, quantity, lastPrice);
-							portfolio.addHoldingToPortfolio(sh);
-							service.storeStockHoldingsInPortfolio(portfolio, portfolio.getStockHoldings());
-							map.put("stockHoldings", portfolio.getStockHoldings()); //update since new holding was just added
-							portfolio.updateBalance();
-							map.put("balance", portfolio.getBalance());  //update since new holding was just added
-						}
-					} else if (orderType.equals("sell")) {
-						boolean validTrade = false;
-						int index = 0;
-						for (StockHolding stock: stockHoldings) {
-							if (stock.getTicker().toLowerCase().equals(ticker.toLowerCase())) {
-								if (quantity > stock.getShares()) {
-									map.put("error", "You cannot sell more stock then you own, shorting stocks is not allowed.");
-									return new ModelAndView(map, "portfolio-detail.ftl");
-								} else {
-									if (stock.getShares() == quantity) {
-										portfolio.removeHoldingFromPortfolio(index);
-									} else {
-										stock.setShares(stock.getShares() - quantity);
-										portfolio.setBalance(portfolio.getBalance() + (quantity * lastPrice));
-									}
-									validTrade = true;
-									break;
-								}
-							}
-							index++;
-						 }
-
-						 if (validTrade) {
-
-							 service.storeStockHoldingsInPortfolio(portfolio, portfolio.getStockHoldings());
-							 map.put("stockHoldings", portfolio.getStockHoldings()); //update since new holding was just adjusted
-							 portfolio.updateBalance();
-							 map.put("balance", portfolio.getBalance());  //update since new holding was just adjusted
-							 map.put("message", ticker + " has been successfully sold from your portfolio.");
-						 } else {
-							 //if we ended up here then the stock must not be in the portfolio
-							 map.put("error", "You cannot sell stocks that you do not own, shorting stocks is not allowed.");
-							 return new ModelAndView(map, "portfolio-detail.ftl");
-						 }
+					if (quantity*lastPrice > portfolio.getBalance()) {
+						map.put("error", "Value of that many shares of " + ticker + " ($" + quantity*lastPrice + ") exceeds available portfolio balance ($" + portfolio.getBalance() + ").");
+					}
+					else if (quantity <= 0) {
+						map.put("error", "Quantity must be greater than zero.");
+					}
+					else {
+						map.put("message", ticker + " has been successfully added to your portfolio.");
+						StockHolding sh = new StockHolding(ticker, quantity, lastPrice);
+						portfolio.addHoldingToPortfolio(sh);
+						service.storeStockHoldingsInPortfolio(portfolio, portfolio.getStockHoldings());
+						map.put("stockHoldings", portfolio.getStockHoldings()); //update since new holding was just added
+						portfolio.updateBalance();
+						map.put("balance", portfolio.getBalance());  //update since new holding was just added
 					}
 				}
 			} else {
 				map.put("error", "Stock price data could not be found for " + ticker + ". Please confirm your ticker symbol is correct and try again.");
 			}
+
+			map.put("username", player.getUsername());
 
 			return new ModelAndView(map, "portfolio-detail.ftl");
 		}, new FreeMarkerEngine());
