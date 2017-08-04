@@ -12,7 +12,6 @@
                 <li><a href="/history">History</a></li>
                 <li><a href="/portfolios">Portfolios</a></li>
                 <li><a href="/players">Players</a></li>
-                <li><a href="/alerts">Alerts</a></li>
             </ul>
         </div>
 
@@ -86,7 +85,7 @@
                                         	<#elseif (gainPercent < 0)>
                                         		<font color=red>${gainPercent?string["0.##%"]}</font>
                                         	<#else>
-                                        		${gainPercent?string["0.##%"]}
+                                        		${gainPercent?string?string["0.##%"]}
                                         	</#if>
 	                                	</#if>
 	                                </td>

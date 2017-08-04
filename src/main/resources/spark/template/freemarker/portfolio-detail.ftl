@@ -25,7 +25,6 @@
                 <li><a href="/history">History</a></li>
                 <li class="active"><a href="/portfolios">Portfolios</a></li>
                 <li><a href="/players">Players</a></li>
-                <li><a href="/alerts">Alerts</a></li>
             </ul>
         </div>
 
