@@ -46,10 +46,7 @@
 
                         <div class="form-group">
                             <div class="col-sm-10">
-                                <button type="submit" class="btn btn-default" name="orderType" value="buy">Buy Stock</button>
-                            </div>
-                            <div class="col-sm-10">
-                                <button type="submit" class="btn btn-default" name="orderType" value="sell">Sell Stock</button>
+                                <button type="submit" class="btn btn-default">Buy Stock</button>
                             </div>
                         </div>
                     </form>

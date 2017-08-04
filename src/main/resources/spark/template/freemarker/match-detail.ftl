@@ -19,8 +19,9 @@
     <!-- todo: implement for each portfolio wil display a row for each portfolio that the user (or all?)-->
     <div class="col-md-8">
         <h3>${pageTitle}</h3>
-        <h6>${matchStart}</h6>
-        <h6>${matchEnd}</h6>
+        <h6>Match Start Date: ${matchStart?date}</h6>
+        <h6>Match End Date: ${matchEnd?date}</h6>
+        <h6>Draft Start: ${draftStart?datetime}</h6>
         <p>Portfolio comparison of players in this match: </p>
     </div>
     <div class="col-md-8">
