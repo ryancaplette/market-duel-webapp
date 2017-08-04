@@ -650,10 +650,12 @@ public class WebConfig {
 						 }
 
 						 if (validTrade) {
+
 							 service.storeStockHoldingsInPortfolio(portfolio, portfolio.getStockHoldings());
 							 map.put("stockHoldings", portfolio.getStockHoldings()); //update since new holding was just adjusted
 							 portfolio.updateBalance();
 							 map.put("balance", portfolio.getBalance());  //update since new holding was just adjusted
+							 map.put("message", ticker + " has been successfully sold from your portfolio.");
 						 } else {
 							 //if we ended up here then the stock must not be in the portfolio
 							 map.put("error", "You cannot sell stocks that you do not own, shorting stocks is not allowed.");

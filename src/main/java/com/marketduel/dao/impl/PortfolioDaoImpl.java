@@ -141,16 +141,22 @@ public class PortfolioDaoImpl implements PortfolioDao {
 	public Boolean storeStockHoldingsInPortfolio(Portfolio pf, ArrayList<StockHolding> shList) {
 		int result = -1;
 		//Build string pointing to next empty StockHolding
-		for (int i = 0; i < shList.size() && result != 0 ; i++) {
+		for (int i = 0; i < 10; i++) {
 			String stockStr = "Stock" + (i + 1);
 			String sql = "UPDATE portfolio " +
 			             "SET " + stockStr + "Symb = :symb, " + stockStr + "NumShares = :numShares, " + stockStr + "InitCost = :initCost " +
 					     "WHERE  PortfolioID = " + pf.getPortfolioId();
 
 			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("symb", shList.get(i).getTicker().toUpperCase());
-			params.put("numShares", shList.get(i).getShares());
-			params.put("initCost", shList.get(i).getPurchasePrice());
+			if (i < shList.size()) {
+				params.put("symb", shList.get(i).getTicker().toUpperCase());
+				params.put("numShares", shList.get(i).getShares());
+				params.put("initCost", shList.get(i).getPurchasePrice());
+			} else {
+				params.put("symb", null);
+				params.put("numShares", null);
+				params.put("initCost", null);
+			}
 
 			result = template.update(sql, params);
 		}
