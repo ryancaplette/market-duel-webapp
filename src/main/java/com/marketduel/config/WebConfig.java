@@ -8,7 +8,6 @@ import static spark.Spark.staticFileLocation;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -216,7 +215,7 @@ public class WebConfig {
 		get("/match-detail", (req, res) -> {
 			Player player = getAuthenticatedPlayer(req);
 			Map<String, Object> map = new HashMap<>();
-			map.put("pageTitle", "Match Detail");
+			map.put("pageTitle", "Game Detail");
 			map.put("player", player);
 
 			int matchId = Integer.parseInt(req.queryParams("id"));
@@ -229,8 +228,9 @@ public class WebConfig {
 
 			//display match info and all [players in the match portfolios
 			map.put("pageTitle", "Match Name: " + match.getMatchName());
-			map.put("matchStart", "Match Start Date: " + match.getStartDate());
-			map.put("matchEnd", "Match End Date: " + match.getEndDate());
+			map.put("matchStart", match.getStartDate());
+			map.put("matchEnd", match.getEndDate());
+			map.put("draftStart", match.getDraftStartDate());
 			map.put("balance", match.getInitialBalance());
 
 			List<Portfolio> portfolios = service.getPortfoliosForMatchId(match.getMatchID());
@@ -530,9 +530,6 @@ public class WebConfig {
 			map.put("pfId", portfolio.getPortfolioId());
 			map.put("stockHoldings", portfolio.getStockHoldings());
 			map.put("balance", portfolio.getBalance());
-
-			DecimalFormat df = new DecimalFormat("#.##");
-			map.put("dFormat", df);
 			
 			if (portfolio.getPlayerId() == player.getPlayerId()) {
 
@@ -542,6 +539,14 @@ public class WebConfig {
 					map.put("isTradingActive", true);
 				}
 
+				if (match.isDraftActive()) {
+					map.put("message", "Draft is active until " + match.getDraftEndDate().toString());
+					/*
+					map.put("isDraftActive", true);
+					map.put("draftEndDate", match.getDraftEndDate());
+					*/
+				}
+				
 				map.put("username", player.getUsername());
 
 			} else {
@@ -575,7 +580,7 @@ public class WebConfig {
 
 			if (quantity <= 0)
 			{
-				map.put("error", "Please enter a value greater than 0 to place an order.");
+				map.put("error", "Please enter a share value greater than 0.");
 				return new ModelAndView(map, "portfolio-detail.ftl");
 			}
 
