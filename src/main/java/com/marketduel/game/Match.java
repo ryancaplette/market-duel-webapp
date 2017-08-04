@@ -151,7 +151,7 @@ public abstract class Match {
 	{
 		return portfolioIds;
 	}
-	protected boolean isDraftActive() {
+	public boolean isDraftActive() {
 		Date currentDate = new Date();
 		
 		if(currentDate.after(getDraftStartDate()) && currentDate.before(getDraftEndDate()))
