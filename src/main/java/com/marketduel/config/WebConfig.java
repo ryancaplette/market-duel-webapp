@@ -236,6 +236,22 @@ public class WebConfig {
 			List<Portfolio> portfolios = service.getPortfoliosForMatchId(match.getMatchID());
 			map.put("portfolios", portfolios);
 
+			Date now = new Date();
+			if (now.after(match.getEndDate())) {
+				Portfolio winner = null;
+				for(Portfolio p: portfolios) {
+					if (winner == null && p != null) {
+						winner = p;
+					} else if (p.getCurrentValue() > winner.getCurrentValue()) {
+						winner = p;
+					}
+				}
+
+				if (winner != null) {
+					map.put("winner", winner.getPlayerUsername());
+				}
+			}
+
 			return new ModelAndView(map, "match-detail.ftl");
 		}, new FreeMarkerEngine());
 		before("/game-detail", (req, res) -> {

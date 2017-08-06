@@ -22,6 +22,9 @@
         <h6>Match Start Date: ${matchStart?date}</h6>
         <h6>Match End Date: ${matchEnd?date}</h6>
         <h6>Draft Start: ${draftStart?datetime}</h6>
+        <#if winner??>
+            <h6>Match Winner: ${winner}</h6>
+        </#if>
         <p>Portfolio comparison of players in this match: </p>
     </div>
     <div class="col-md-8">
