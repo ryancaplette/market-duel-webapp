@@ -62,7 +62,7 @@
                             </td>
                             <td>
                             	<#if (player.numGamesPlayed gt 0)>
-                            		${player.numWins / player.numGamesPlayed}%
+                            		${(player.numWins / player.numGamesPlayed)*100}%
                             	<#else>
                                 	0.0%
                             	</#if>
@@ -117,7 +117,7 @@
                             </td>
                             <td>
                             	<#if (pl.numGamesPlayed gt 0)>
-                            		${pl.numWins / pl.numGamesPlayed}%
+                            		${(pl.numWins / pl.numGamesPlayed)*100}%
                             	<#else>
                                 	0.0%
                             	</#if>
@@ -174,7 +174,7 @@
                             </td>
                             <td>
                             	<#if (pl.numGamesPlayed gt 0)>
-                            		${pl.numWins / pl.numGamesPlayed}%
+                            		${(pl.numWins / pl.numGamesPlayed)*100}%
                             	<#else>
                                 	0.0%
                             	</#if>
