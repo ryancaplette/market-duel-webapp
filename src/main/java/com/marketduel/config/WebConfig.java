@@ -578,12 +578,6 @@ public class WebConfig {
 			int pfId = Integer.parseInt(req.queryParams("pfId"));
 			float quantity = Float.valueOf(req.queryParams("quantity"));
 
-			if (quantity <= 0)
-			{
-				map.put("error", "Please enter a share value greater than 0.");
-				return new ModelAndView(map, "portfolio-detail.ftl");
-			}
-
 			Portfolio portfolio = service.getPortfolioById(pfId);
 
 			if (portfolio.getPlayerId() != player.getPlayerId()) {
@@ -597,6 +591,12 @@ public class WebConfig {
 			ArrayList<StockHolding> stockHoldings = portfolio.getStockHoldings();
 			map.put("stockHoldings", stockHoldings);
 			map.put("balance", portfolio.getBalance());
+
+			if (quantity <= 0)
+			{
+				map.put("error", "Please enter a share value greater than 0.");
+				return new ModelAndView(map, "portfolio-detail.ftl");
+			}
 
 			String ticker = req.queryParams("ticker").toUpperCase();
 
