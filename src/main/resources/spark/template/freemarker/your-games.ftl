@@ -83,7 +83,7 @@ ${message}
                                         </#if>
                                     </td>
                                     <td>
-                                        ${game.firstMatchStart}
+                                        ${game.firstMatchStart?date}
                                     </td>
                                     <td>
                                         ${game.getGameEndDate()?date}
@@ -129,7 +129,7 @@ ${message}
                                         </#if>
                                     </td>
                                     <td>
-                                        ${game.firstMatchStart}
+                                        ${game.firstMatchStart?date}
                                     </td>
                                     <td>
                                         ${game.getGameEndDate()?date}

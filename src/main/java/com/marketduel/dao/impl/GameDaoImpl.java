@@ -1,5 +1,7 @@
 package com.marketduel.dao.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -136,9 +138,18 @@ public class GameDaoImpl implements GameDao {
 			g = new LeagueGame();
 			g.setType(Game.GameType.LEAGUE);
 		}
-		
+
+
 		g.setGameId(rs.getInt("GameID"));
-		g.setFirstMatchStart(rs.getDate("FirstMatchStart"));
+		try {
+			SimpleDateFormat draftDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			if (rs.getString("FirstMatchStart") != null) {
+				g.setFirstMatchStart(draftDateFormat.parse(rs.getString("FirstMatchStart")));
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		g.setMatchDurationInDays(rs.getInt("MatchDurationDays"));
 		g.setContinuous(rs.getBoolean("IsContinuous"));
 		g.setGameName(rs.getString("GameName"));

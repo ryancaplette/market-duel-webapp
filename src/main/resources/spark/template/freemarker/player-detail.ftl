@@ -19,7 +19,7 @@ ${message}
             <#if playerGamesList??>
                 <b>Games Player Belongs to:</b><br/>
             	<#list playerGamesList as game>
-					Game ID: ${game.gameId}  Game Start: ${game.firstMatchStart}<br/>
+					Game ID: ${game.gameId}  Game Start: ${game.firstMatchStart?date}<br/>
 				</#list>
             </#if>
 
@@ -36,7 +36,7 @@ ${message}
                 <label for="available-games" class="col-sm-2 control-label">Available Games: </label>
                 <select name="join-game">
                     <#list joinableGamesList as game>
-                        <option value="${game.gameId}">Game ID: ${game.gameId}  Game Start: ${game.firstMatchStart}</option>
+                        <option value="${game.gameId}">Game ID: ${game.gameId}  Game Start: ${game.firstMatchStart?date}</option>
                     </#list>
 
                 </select>
