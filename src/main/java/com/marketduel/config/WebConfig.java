@@ -592,11 +592,6 @@ public class WebConfig {
 			map.put("stockHoldings", stockHoldings);
 			map.put("balance", portfolio.getBalance());
 
-			if (quantity <= 0)
-			{
-				map.put("error", "Please enter a share value greater than 0.");
-				return new ModelAndView(map, "portfolio-detail.ftl");
-			}
 
 			String ticker = req.queryParams("ticker").toUpperCase();
 
@@ -611,6 +606,12 @@ public class WebConfig {
 				return new ModelAndView(map, "portfolio-detail.ftl");
 			} else {
 				map.put("isTradingActive", true);
+			}
+
+			if (quantity <= 0)
+			{
+				map.put("error", "Please enter a share value greater than 0.");
+				return new ModelAndView(map, "portfolio-detail.ftl");
 			}
 
 			MarketDataFeed df = new MarketDataFeed(); //initiate a data feed (this object is a facade for the intrinio api
