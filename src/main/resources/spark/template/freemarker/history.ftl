@@ -32,9 +32,6 @@
                                 Game Name
                             </th>
                             <th>
-                                Draft Time
-                            </th>
-                            <th>
                                 Start Date
                             </th>
                             <th>
@@ -58,11 +55,6 @@
                                     <td>
                                         <#if game.gameName??>
                                             <a href="/game-detail?id=${game.gameId}">${game.gameName}</a>
-                                        </#if>
-                                    </td>
-                                    <td>
-                                        <#if game.draftTime??>
-                                        ${game.draftTime}
                                         </#if>
                                     </td>
                                     <td>
@@ -94,11 +86,6 @@
                                     <td>
                                         <#if game.gameName??>
                                             <a href="/game-detail?id=${game.gameId}">${game.gameName}</a>
-                                        </#if>
-                                    </td>
-                                    <td>
-                                        <#if game.draftTime??>
-                                        ${game.draftTime}
                                         </#if>
                                     </td>
                                     <td>
