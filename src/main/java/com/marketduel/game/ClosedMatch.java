@@ -84,7 +84,8 @@ public class ClosedMatch extends Match {
 			
 			//Update Player overall profits
 			Player player = pldao.getPlayerById(pair.getKey());
-			pldao.updateTotalPlayerProfits(player, (portfolioValue - pfl.getInitialValue()));
+			System.out.println("Values " + portfolioValue + " " + this.getInitialBalance());
+			pldao.updateTotalPlayerProfits(player, (portfolioValue - this.getInitialBalance()));
 			
 			//Determine if portfolio is max for match
 		    if (portfolioValue > maxPortfolioValue)
